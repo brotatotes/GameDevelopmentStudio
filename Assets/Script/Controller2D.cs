@@ -10,11 +10,14 @@ public class Controller2D : MonoBehaviour {
 	public int horizontalRayCount = 4;
 	public int verticalRayCount = 4;
 	public Vector2 playerInput = Vector2.zero;
+	public bool isGravity = true;
+	public float gravityScale = 1.0f;
 
 	float maxClimbAngle = 80;
 
 	float horizontalRaySpacing;
 	float verticalRaySpacing;
+	Vector3 velocity;
 
 	BoxCollider2D collider;
 	RaycastOrigins raycastOrigins;
@@ -29,19 +32,34 @@ public class Controller2D : MonoBehaviour {
 		Move (velocity, Vector2.zero);
 	}
 
-	public void Move(Vector3 velocity, Vector2 input) {
+	public void setGravityScale(float gravScale) {
+		gravityScale = gravScale;
+	}
+		
+	public void Move(Vector3 veloc, Vector2 input) {
+		//Debug.Log ("----");
+		//Debug.Log (veloc.y);
+		if (isGravity) {
+			veloc.y = veloc.y +  (gravityScale * Time.deltaTime);
+		//	Debug.Log (veloc.y);
+		}
+
+		veloc = veloc * Time.deltaTime;
+		velocity.x += veloc.x;
+		velocity.y += veloc.y;
+		//Debug.Log (velocity.y);
 		UpdateRaycastOrigins ();
 		collisions.Reset ();
 		playerInput = input;
-
+	
 		if (velocity.x != 0) {
-			HorizontalCollisions (ref velocity);
+			HorizontalCollisions (ref veloc);
 		}
 		if (velocity.y != 0) {
-			VerticalCollisions (ref velocity);
+			VerticalCollisions (ref veloc);
 		}
 
-		transform.Translate (velocity);
+		transform.Translate (veloc);
 	}
 
 	void HorizontalCollisions(ref Vector3 velocity) {
