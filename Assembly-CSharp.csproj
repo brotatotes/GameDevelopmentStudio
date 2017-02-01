@@ -48,10 +48,9 @@
      <Compile Include="Assets\Script\CameraFollow.cs" />
      <Compile Include="Assets\Script\Controller2D.cs" />
      <Compile Include="Assets\Script\Player.cs" />
+     <Compile Include="Assets\Script\PlayerCursor.cs" />
      <Compile Include="Assets\Script\activateGeyser.cs" />
-     <Compile Include="Assets\Script\bomb.cs" />
      <Compile Include="Assets\Script\deathZone.cs" />
-     <Compile Include="Assets\Script\hitbox.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
