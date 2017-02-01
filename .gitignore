@@ -1,4 +1,6 @@
 .DS_Store
 *.meta
-/Temp/*
-/Library/*
+Temp/
+Library/
+*.info
+*.dll
