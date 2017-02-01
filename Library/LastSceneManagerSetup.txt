@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/testBomb.unity
-  isLoaded: 1
-  isActive: 1
