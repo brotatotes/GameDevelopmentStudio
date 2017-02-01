@@ -12,12 +12,14 @@ public class Controller2D : MonoBehaviour {
 	public Vector2 playerInput = Vector2.zero;
 	public bool isGravity = true;
 	public float gravityScale = 1.0f;
+	public float health = 100.0f;
+	public bool isAlive = true;
 
 	float maxClimbAngle = 80;
 
 	float horizontalRaySpacing;
 	float verticalRaySpacing;
-	Vector3 velocity;
+	Vector2 velocity;
 
 	BoxCollider2D collider;
 	RaycastOrigins raycastOrigins;
@@ -28,7 +30,7 @@ public class Controller2D : MonoBehaviour {
 		CalculateRaySpacing ();
 	}
 
-	public void Move(Vector3 velocity) {
+	public void Move(Vector2 velocity) {
 		Move (velocity, Vector2.zero);
 	}
 
@@ -36,7 +38,7 @@ public class Controller2D : MonoBehaviour {
 		gravityScale = gravScale;
 	}
 		
-	public void Move(Vector3 veloc, Vector2 input) {
+	public void Move(Vector2 veloc, Vector2 input) {
 		//Debug.Log ("----");
 		//Debug.Log (veloc.y);
 		if (isGravity) {
@@ -62,7 +64,7 @@ public class Controller2D : MonoBehaviour {
 		transform.Translate (veloc);
 	}
 
-	void HorizontalCollisions(ref Vector3 velocity) {
+	void HorizontalCollisions(ref Vector2 velocity) {
 		float directionX = Mathf.Sign (velocity.x);
 		float rayLength = Mathf.Abs (velocity.x) + skinWidth;
 		
@@ -102,7 +104,7 @@ public class Controller2D : MonoBehaviour {
 		}
 	}
 	
-	void VerticalCollisions(ref Vector3 velocity) {
+	void VerticalCollisions(ref Vector2 velocity) {
 		float directionY = Mathf.Sign (velocity.y);
 		float rayLength = Mathf.Abs (velocity.y) + skinWidth;
 
@@ -127,7 +129,7 @@ public class Controller2D : MonoBehaviour {
 		}
 	}
 
-	void ClimbSlope(ref Vector3 velocity, float slopeAngle) {
+	void ClimbSlope(ref Vector2 velocity, float slopeAngle) {
 		float moveDistance = Mathf.Abs (velocity.x);
 		float climbVelocityY = Mathf.Sin (slopeAngle * Mathf.Deg2Rad) * moveDistance;
 
@@ -183,4 +185,14 @@ public class Controller2D : MonoBehaviour {
 		}
 	}
 
+	public void damageObj(float damage) {
+		Debug.Log ("Damage Taken. Health before: " + health);
+		health = health - damage;
+		Debug.Log("Health afterwards: " + health);
+		if (health < 0) {
+			isAlive = false;
+		} else {
+			isAlive = true;
+		}
+	}
 }
