@@ -39,7 +39,7 @@ public class hitbox : MonoBehaviour {
 			Debug.Log ("correct collision");
 			Controller2D otherObj = other.gameObject.GetComponent<Controller2D> ();
 			otherObj.damageObj (damage);
-			otherObj.Move (knockback);
+			otherObj.addToVelocity (knockback);
 		}
 	}
 }
