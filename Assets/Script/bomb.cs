@@ -19,6 +19,7 @@ public class bomb : MonoBehaviour {
 			fuseDuration = fuseDuration - Time.deltaTime;
 		} else {
 			Debug.Log ("Explosion");
+			Debug.Log (transform.position);
 			GameObject go = Instantiate(hitboxClass,transform.position,Quaternion.identity) as GameObject; 
 			hitbox newBox = go.GetComponent<hitbox> ();
 			newBox.setScale (new Vector2 (4.0f, 4.0f));
