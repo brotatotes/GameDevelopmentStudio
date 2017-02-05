@@ -4,33 +4,46 @@ using System.Collections;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 
+	private bool isAlive = true;
+	public float bottomOfTheWorld = -8.0f;
+
+	public Vector2 startPosition;
+	public float startPositionX = -8.0f;
+	public float startPositionY = 1.5f;
 	public float jumpHeight = 4.0f;
 	public float timeToJumpApex = .4f;
 	public string playerName = "Player 1";
 	float accelerationTimeAirborne = .2f;
 	float accelerationTimeGrounded = .1f;
-	float moveSpeed = 6.0f;
+	float moveSpeed = 8.0f;
 
 	float gravity;
 	float jumpVelocity;
 	Vector3 velocity;
 	float velocityXSmoothing;
+
 	public string leftKey = "a";
 	public string rightKey = "d";
-	public string upKey = "w";
+	public string upKey = "space";
 	public string downKey = "s";
-	public string jumpKey = "space";
+	public string jumpKey = "w";
 
 	public bool attemptingInteraction = false;
 	Controller2D controller;
 
 	void Start() {
+		Reset ();
 		controller = GetComponent<Controller2D> ();
-		float grav = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
-		gravity = grav;
-		controller.setGravityScale(grav);
-		jumpVelocity = Mathf.Abs(grav) * timeToJumpApex;
-		print ("Gravity: " + grav + "  Jump Velocity: " + jumpVelocity);
+		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
+		controller.setGravityScale(gravity);
+		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+//		print ("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
+	}
+
+	void Reset() {
+		startPosition = new Vector2 (-8.0f, 1.5f);
+		transform.position = startPosition;
+		isAlive = true;
 	}
 
 	void Update() {
@@ -68,5 +81,16 @@ public class Player : MonoBehaviour {
 		//controller.Move (velocity * Time.deltaTime, input);
 		//Debug.Log(velocity.y);
 		controller.Move (velocity, input);
+
+		if (transform.position.y < bottomOfTheWorld) {
+			isAlive = false;
+		}
+
+		if (!isAlive) {
+			Reset ();
+		}
+
+//		Debug.Log (transform.position.x + ", " + transform.position.y);
+
 	}
 }
