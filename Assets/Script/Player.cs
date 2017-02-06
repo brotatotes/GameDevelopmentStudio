@@ -39,9 +39,10 @@ public class Player : MonoBehaviour {
 
 	public void Reset() {
 		startPosition = new Vector2 (-8.0f, 1.5f);
-		FindObjectOfType<EndZone> ().WinMessage.text = "";
+//		startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
 		transform.position = startPosition;
 		controller.alive = true;
+		controller.health = 100.0f;
 		// reset should also bring back the startblock, if we want to keep using it.
 	}
 
@@ -73,7 +74,7 @@ public class Player : MonoBehaviour {
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move (velocity, input);
 
-		controller.alive = transform.position.y >= bottomOfTheWorld;
+		controller.alive = transform.position.y >= bottomOfTheWorld && controller.health > 0;
 
 		if (!controller.alive) {
 			Reset ();
