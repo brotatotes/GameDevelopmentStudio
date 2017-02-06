@@ -70,9 +70,9 @@ public class Controller2D : MonoBehaviour {
 		//	velocity.y += (gravityScale * Time.deltaTime);
 			//	Debug.Log (veloc.y);
 		//}
-		Debug.Log (velocity.y);
+		//Debug.Log (velocity.y);
 		velocity.y += (accumulatedVelocity.y * Time.deltaTime);
-		Debug.Log (velocity.y);
+		//Debug.Log (velocity.y);
 		UpdateRaycastOrigins ();
 		collisions.Reset ();
 		playerInput = input;

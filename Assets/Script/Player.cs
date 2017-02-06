@@ -41,7 +41,8 @@ public class Player : MonoBehaviour {
 //		print ("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
 	}
 
-	void Reset() {
+	public void Reset() {
+		FindObjectOfType<EndZone> ().WinMessage.text = "";
 		startPosition = new Vector2 (-8.0f, 1.5f);
 		transform.position = startPosition;
 		isAlive = true;
