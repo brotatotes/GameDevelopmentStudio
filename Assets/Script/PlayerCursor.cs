@@ -31,7 +31,7 @@ public class PlayerCursor : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Pressed left click.");
 			if (currentPower >= bombCost) {
-//				GameObject go = Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
+				Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
 				currentPower = currentPower - bombCost;
 			}
 		}
@@ -39,7 +39,7 @@ public class PlayerCursor : MonoBehaviour {
 			Debug.Log ("Pressed right click.");
 			if (currentPower >= boxCost) {
 				Debug.Log ("Pressed left click.");
-//				GameObject go = Instantiate (boxObstacle, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
+				Instantiate (boxObstacle, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
 				currentPower = currentPower - boxCost;
 			}
 		}

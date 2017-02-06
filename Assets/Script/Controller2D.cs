@@ -50,6 +50,7 @@ public class Controller2D : MonoBehaviour {
 		} else {
 			accumulatedVelocity.y = 0f;
 		}
+			
 	}
 
 	public void addToVelocity(Vector2 veloc )
