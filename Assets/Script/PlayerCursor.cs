@@ -8,9 +8,11 @@ public class PlayerCursor : MonoBehaviour {
 	public CursorMode curMode = CursorMode.Auto;
 	public Vector2 hotSpot = Vector2.zero;
 	public GameObject bombClass;
+	public GameObject boxObstacle;
 	public UnityEngine.UI.Text player1Power;
 	public float currentPower = 100.0f;
 	public float rechargeRate = 3.0f;
+	public float boxCost = 15.0f;
 	public float bombCost = 10.0f;
 
 	// Use this for initialization
@@ -27,15 +29,21 @@ public class PlayerCursor : MonoBehaviour {
 		}
 		player1Power.text = "Current Power: " + currentPower.ToString ();
 		if (Input.GetMouseButtonDown (0)) {
+			Debug.Log ("Pressed left click.");
 			if (currentPower >= bombCost) {
-				Debug.Log ("Pressed left click.");
-				Debug.Log ("SpawningBomb");
 				GameObject go = Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
 				currentPower = currentPower - bombCost;
 			}
 		}
-		if (Input.GetMouseButtonDown(1))
+		if (Input.GetMouseButtonDown (1)) {
 			Debug.Log("Pressed right click.");
+			if (currentPower >= boxCost) {
+				Debug.Log ("Pressed left click.");
+				GameObject go = Instantiate (boxObstacle, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
+				currentPower = currentPower - boxCost;
+			}
+		}
+
 		if (Input.GetMouseButtonDown(2))
 			Debug.Log("Pressed middle click.");
 	}
