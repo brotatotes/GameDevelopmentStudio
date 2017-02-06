@@ -4,12 +4,9 @@ using System.Collections;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 
-	private bool isAlive = true;
-	public float bottomOfTheWorld = -20.0f;
+	public float bottomOfTheWorld = -10.0f;
 
 	public Vector2 startPosition;
-	public float startPositionX = -8.0f;
-	public float startPositionY = 1.5f;
 	public float jumpHeight = 4.0f;
 	public float timeToJumpApex = .4f;
 	public string playerName = "Player 1";
@@ -32,23 +29,23 @@ public class Player : MonoBehaviour {
 	public bool attemptingInteraction = false;
 	Controller2D controller;
 
-	void Start() {
-		Reset ();
+	internal void Start() {
 		controller = GetComponent<Controller2D> ();
+		Reset ();
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		controller.setGravityScale(gravity);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-//		print ("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
 	}
 
 	public void Reset() {
-		FindObjectOfType<EndZone> ().WinMessage.text = "";
 		startPosition = new Vector2 (-8.0f, 1.5f);
+		FindObjectOfType<EndZone> ().WinMessage.text = "";
 		transform.position = startPosition;
-		isAlive = true;
+		controller.alive = true;
+		// reset should also bring back the startblock, if we want to keep using it.
 	}
 
-	void Update() {
+	internal void Update() {
 		playerHealth.text = "Player Health: " + gameObject.GetComponent<Controller2D>().health.ToString ();
 
 		if (controller.collisions.above || controller.collisions.below) {
@@ -56,44 +53,30 @@ public class Player : MonoBehaviour {
 		}
 
 		float inputX = 0.0f;
-		if (Input.GetKey(leftKey)) {
-			inputX = -1.0f;
-		} else if (Input.GetKey(rightKey)) {
-			inputX = 1.0f;
-		}
 		float inputY = 0.0f;
-		if (Input.GetKey(upKey)) {
-			inputY = 1.0f;
-		} else if (Input.GetKey(downKey) ){
-			inputY = -1.0f;
-		}
-		if (Input.GetKeyDown (downKey)) {
-			attemptingInteraction = true;
-		} else {
-			attemptingInteraction = false;
-		}
 
+		if (Input.GetKey(leftKey)) { inputX = -1.0f; }  
+		else if (Input.GetKey(rightKey)) { inputX = 1.0f; }
+
+		if (Input.GetKey(upKey)) { inputY = 1.0f; } 
+		else if (Input.GetKey(downKey) ){ inputY = -1.0f; }
+
+		attemptingInteraction = Input.GetKeyDown (downKey);
 				
 		if (Input.GetKey (jumpKey) && controller.collisions.below) {
 			velocity.y = jumpVelocity;
 		}
+
 		float targetVelocityX = inputX * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 		Vector2 input = new Vector2 (inputX, inputY);
 		velocity.y += gravity * Time.deltaTime;
-		//controller.Move (velocity * Time.deltaTime, input);
-		//Debug.Log(velocity.y);
 		controller.Move (velocity, input);
 
-		if (transform.position.y < bottomOfTheWorld) {
-			isAlive = false;
-		}
+		controller.alive = transform.position.y >= bottomOfTheWorld;
 
-		if (!isAlive) {
+		if (!controller.alive) {
 			Reset ();
 		}
-
-//		Debug.Log (transform.position.x + ", " + transform.position.y);
-
 	}
 }

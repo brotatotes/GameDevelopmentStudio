@@ -31,21 +31,22 @@ public class PlayerCursor : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Pressed left click.");
 			if (currentPower >= bombCost) {
-				GameObject go = Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
+//				GameObject go = Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
 				currentPower = currentPower - bombCost;
 			}
 		}
 		if (Input.GetMouseButtonDown (1)) {
-			Debug.Log("Pressed right click.");
+			Debug.Log ("Pressed right click.");
 			if (currentPower >= boxCost) {
 				Debug.Log ("Pressed left click.");
-				GameObject go = Instantiate (boxObstacle, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
+//				GameObject go = Instantiate (boxObstacle, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity) as GameObject; 
 				currentPower = currentPower - boxCost;
 			}
 		}
 
-		if (Input.GetMouseButtonDown(2))
-			Debug.Log("Pressed middle click.");
+		if (Input.GetMouseButtonDown (2)) {
+			Debug.Log ("Pressed middle click.");
+		}
 	}
 
 	void OnMouseEnter(){
