@@ -14,7 +14,7 @@ public class Controller2D : MonoBehaviour {
 	public bool isGravity = true;
 	public float gravityScale = 40.0f;
 	public float health = 100.0f;
-	public bool isAlive = true;
+	public bool alive = true;
 
 	float maxClimbAngle = 80;
 
@@ -213,9 +213,9 @@ public class Controller2D : MonoBehaviour {
 		health = health - damage;
 		Debug.Log("Health afterwards: " + health);
 		if (health < 0) {
-			isAlive = false;
+			alive = false;
 		} else {
-			isAlive = true;
+			alive = true;
 		}
 	}
 }
