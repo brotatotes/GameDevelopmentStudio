@@ -5,7 +5,7 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	private bool isAlive = true;
-	public float bottomOfTheWorld = -8.0f;
+	public float bottomOfTheWorld = -20.0f;
 
 	public Vector2 startPosition;
 	public float startPositionX = -8.0f;
