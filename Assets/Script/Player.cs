@@ -24,7 +24,7 @@ public class Player : MonoBehaviour {
 	public string upKey = "space";
 	public string downKey = "s";
 	public string jumpKey = "w";
-	public UnityEngine.UI.Text playerHealth;
+
 
 	public bool attemptingInteraction = false;
 	Controller2D controller;
@@ -49,7 +49,6 @@ public class Player : MonoBehaviour {
 	}
 
 	internal void Update() {
-		playerHealth.text = "Player Health: " + gameObject.GetComponent<Controller2D>().health.ToString ();
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0.0f;

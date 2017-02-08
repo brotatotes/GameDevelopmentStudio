@@ -7,6 +7,7 @@ public class bomb : MonoBehaviour {
 	public float damage = 10.0f;
 	public Vector2 knockback = new Vector2(0.0f,40.0f);
 	public float fuseDuration = 3.0f;
+	public Vector2 hitboxScale = new Vector2 (1.0f, 1.0f);
 	public bool timedbomb = true;
 
 
@@ -18,12 +19,10 @@ public class bomb : MonoBehaviour {
 		if (fuseDuration > 0.0f && timedbomb) {
 			fuseDuration = fuseDuration - Time.deltaTime;
 		} else {
-			Debug.Log ("Explosion");
-			Debug.Log (transform.position);
 			GameObject go = Instantiate(hitboxClass,transform.position,Quaternion.identity) as GameObject; 
 			hitbox newBox = go.GetComponent<hitbox> ();
-			newBox.setScale (new Vector2 (4.0f, 4.0f));
-			newBox.setDamage (40.0f);
+			newBox.setScale (hitboxScale);
+			newBox.setDamage (damage);
 			newBox.setHitboxDuration (0.5f);
 			newBox.setKnockback (knockback);
 
