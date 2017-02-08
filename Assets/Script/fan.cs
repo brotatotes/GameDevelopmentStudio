@@ -3,22 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class fan : MonoBehaviour {
-	public Vector2 knockback = new Vector2(-100.0f,0.0f);
+	public Vector2 knockback = new Vector2(50.0f,0.0f);
 	public GameObject hitboxClass;
+	public bool facingLeft = true;
+	continuousHitbox mHitbox;
 
 	// Use this for initialization
 	void Start () {
-		
+		float xOffset = 0;
+		if (facingLeft) {
+			xOffset = -7;
+		} else {
+			xOffset = 7;
+		}
+		Vector3 initPos = new Vector3 (transform.position.x + xOffset, transform.position.y, transform.position.z);
+		GameObject go = Instantiate(hitboxClass,initPos,Quaternion.identity) as GameObject; 
+		mHitbox = go.GetComponent<continuousHitbox> ();
+		mHitbox.setScale (new Vector2 (14.0f, 4.0f));
+		mHitbox.setDamage (0.0f);
+		mHitbox.setFixedKnockback (true); 
+		mHitbox.setTimedHitbox (false);
+		if (!facingLeft) {
+			mHitbox.setKnockback (new Vector2(knockback.x,knockback.y));
+		} else {
+			mHitbox.setKnockback (new Vector2(knockback.x * -1.0f,knockback.y));
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject go = Instantiate(hitboxClass,transform.position,Quaternion.identity) as GameObject; 
-		hitbox newBox = go.GetComponent<hitbox> ();
-		newBox.setScale (new Vector2 (-14.0f, 4.0f));
-		newBox.setDamage (0.0f);
-		newBox.setHitboxDuration (0.5f);
+		float xOffset = 0;
+		if (facingLeft) {
+			xOffset = -7;
+		} else {
+			xOffset = 7;
+		}
+		Vector3 fanPos = new Vector3 (transform.position.x + xOffset, transform.position.y, transform.position.z);
+		mHitbox.transform.position = fanPos;
+	}
 
-		GameObject.Destroy (gameObject);
+	void OnDestroy () {
+		GameObject.Destroy (mHitbox.gameObject);
 	}
 }

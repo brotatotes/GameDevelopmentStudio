@@ -21,7 +21,6 @@ public class hitbox : MonoBehaviour {
 			GameObject.Destroy (gameObject);
 		}
 	}
-
 	public void setKnockback(Vector2 kb) {
 		knockback = kb;
 	}
