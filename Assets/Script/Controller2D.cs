@@ -40,12 +40,12 @@ public class Controller2D : MonoBehaviour {
 	}
 
 	void Update() {
-		if (accumulatedVelocity.x > 0.1f) {
+		if (Mathf.Abs(accumulatedVelocity.x) > 0.05f) {
 			accumulatedVelocity.x *= 0.95f;
 		} else {
 			accumulatedVelocity.x = 0f;
 		}
-		if (accumulatedVelocity.y > 0.1f) {
+		if (Mathf.Abs(accumulatedVelocity.y) > 0.05f) {
 			accumulatedVelocity.y *= 0.95f;
 		} else {
 			accumulatedVelocity.y = 0f;
@@ -55,7 +55,9 @@ public class Controller2D : MonoBehaviour {
 
 	public void addToVelocity(Vector2 veloc )
 	{
+		//Debug.Log ("beforeVel: " + accumulatedVelocity);
 		accumulatedVelocity += veloc;
+		//Debug.Log ("accumulatedVel: " + accumulatedVelocity);
 	}
 
 	public void Move(Vector2 veloc, Vector2 input) {
