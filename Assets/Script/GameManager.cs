@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour {
 	public bool gameOver = false;
 	public Player Player1;
 
-	// Use this for initialization
 	void Awake () {
 		if (instance == null)
 			instance = this;
