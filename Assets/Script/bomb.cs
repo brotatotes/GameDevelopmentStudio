@@ -25,6 +25,7 @@ public class bomb : MonoBehaviour {
 			newBox.setScale (new Vector2 (4.0f, 4.0f));
 			newBox.setDamage (40.0f);
 			newBox.setHitboxDuration (0.5f);
+			newBox.setKnockback (knockback);
 
 			GameObject.Destroy (gameObject);
 		}
