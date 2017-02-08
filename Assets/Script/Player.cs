@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
 		transform.position = startPosition;
 		controller.alive = true;
 		controller.health = 100.0f;
+		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
 		// reset should also bring back the startblock, if we want to keep using it.
 	}
 
