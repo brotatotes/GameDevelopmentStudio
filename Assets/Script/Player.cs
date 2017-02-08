@@ -41,6 +41,7 @@ public class Player : MonoBehaviour {
 		startPosition = new Vector2 (-8.0f, 1.5f);
 //		startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
 		transform.position = startPosition;
+		controller.accumulatedVelocity = Vector2.zero;
 		controller.alive = true;
 		controller.health = 100.0f;
 		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
