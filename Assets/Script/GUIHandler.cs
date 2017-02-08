@@ -14,7 +14,9 @@ public class GUIHandler : MonoBehaviour {
 	private float displayStart;
 	private float displayTimePassed;
 
+
 	void Start() {
+		
 //		textMessage = new Text ();
 //		textMessage.text = "";
 //		p1 = FindObjectOfType<Player> ();
