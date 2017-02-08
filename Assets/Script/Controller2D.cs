@@ -212,9 +212,9 @@ public class Controller2D : MonoBehaviour {
 	}
 
 	public void damageObj(float damage) {
-		Debug.Log ("Damage Taken. Health before: " + health);
+		//Debug.Log ("Damage Taken. Health before: " + health);
 		health = health - damage;
-		Debug.Log("Health afterwards: " + health);
+		//Debug.Log("Health afterwards: " + health);
 		if (health < 0) {
 			alive = false;
 		} else {
