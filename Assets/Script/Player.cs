@@ -78,6 +78,8 @@ public class Player : MonoBehaviour {
 		controller.alive = transform.position.y >= bottomOfTheWorld && controller.health > 0;
 
 		if (!controller.alive) {
+//			controller.gameOver = true;
+//			controller.winner = 2;
 			Reset ();
 		}
 	}
