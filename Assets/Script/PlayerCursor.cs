@@ -9,11 +9,13 @@ public class PlayerCursor : MonoBehaviour {
 	public Vector2 hotSpot = Vector2.zero;
 	public GameObject bombClass;
 	public GameObject boxObstacle;
+	public GameObject fanItem;
 	public UnityEngine.UI.Text player1Power;
 	public float currentPower = 100.0f;
 	public float rechargeRate = 3.0f;
 	public float boxCost = 15.0f;
 	public float bombCost = 10.0f;
+	public float fanCost = 10.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -46,6 +48,8 @@ public class PlayerCursor : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown (2)) {
 			Debug.Log ("Pressed middle click.");
+			Instantiate (fanItem, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+			currentPower = currentPower - fanCost;
 		}
 	}
 
