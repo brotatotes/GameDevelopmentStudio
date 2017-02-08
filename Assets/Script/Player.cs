@@ -41,6 +41,7 @@ public class Player : MonoBehaviour {
 		startPosition = new Vector2 (-8.0f, 1.5f);
 //		startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
 		transform.position = startPosition;
+		controller.accumulatedVelocity = Vector2.zero;
 		controller.alive = true;
 		controller.health = 100.0f;
 		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
@@ -78,6 +79,8 @@ public class Player : MonoBehaviour {
 		controller.alive = transform.position.y >= bottomOfTheWorld && controller.health > 0;
 
 		if (!controller.alive) {
+//			controller.gameOver = true;
+//			controller.winner = 2;
 			Reset ();
 		}
 	}
