@@ -22,6 +22,14 @@ public class hitbox : MonoBehaviour {
 		}
 	}
 
+	public void setKnockback(Vector2 kb) {
+		knockback = kb;
+	}
+
+	public void setFixedKnockback(bool fixedKB) {
+		fixedKnockback = fixedKB;
+	}
+
 	public void setDamage(float dmg) {
 		damage = dmg;
 	}
