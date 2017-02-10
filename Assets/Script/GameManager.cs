@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject godPower;
 
 	void Awake () {
-		Debug.Log ("Awake");
+//		Debug.Log ("Awake");
 		if (instance == null)
 			instance = this;
 		else if (instance != this) {
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
 	void InitGame() {
 		godCursor = (GameObject)Instantiate (playerCursorPrefab);
 
-		Debug.Log ("init game");
+//		Debug.Log ("init game");
 		Object[] allObjs = Resources.LoadAll ("");
 		float xPos = 0.0f;
 		float maxX = 50.0f;
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 				Spawnable spawnInfo = go.GetComponent<Spawnable> ();
 				GameObject buttonObj = (GameObject)Instantiate (prefabButton);
 				Button tempButton = buttonObj.GetComponent<Button> ();
-				Debug.Log (tempButton);
+//				Debug.Log (tempButton);
 				buttonObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
 				buttonObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, 0.0f);
 				tempButton.GetComponentsInChildren<Text>()[0].text = spawnInfo.name;

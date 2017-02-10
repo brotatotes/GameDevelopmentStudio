@@ -25,6 +25,7 @@ public class Player : MonoBehaviour {
 	public string downKey = "s";
 	public string jumpKey = "w";
 
+	public bool spawnNextToEndzone = false;
 
 	public bool attemptingInteraction = false;
 	Controller2D controller;
@@ -38,8 +39,10 @@ public class Player : MonoBehaviour {
 	}
 
 	public void Reset() {
-		startPosition = new Vector2 (-8.0f, 1.5f);
-//		startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
+		if (spawnNextToEndzone)
+			startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
+		else
+			startPosition = new Vector2 (-8.0f, 1.5f);
 		transform.position = startPosition;
 		controller.accumulatedVelocity = Vector2.zero;
 		controller.alive = true;

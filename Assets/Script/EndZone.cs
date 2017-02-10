@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EndZone : MonoBehaviour {
 
+	public GameObject gameManager;
 //	Controller2D controller;
 //	public Text WinMessage;
 //	private bool display =  false;
