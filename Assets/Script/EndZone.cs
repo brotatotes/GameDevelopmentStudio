@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EndZone : MonoBehaviour {
 
-	public GameObject gameManager;
+	private GameManager gameManager;
 //	Controller2D controller;
 //	public Text WinMessage;
 //	private bool display =  false;
@@ -22,11 +22,14 @@ public class EndZone : MonoBehaviour {
 //			displayTimePassed = 0f;
 //			controller.gameOver = true;
 //			controller.winner = 1;
+			gameManager.winner = 1;
+			gameManager.gameOver = true;
 			other.gameObject.GetComponent<Player> ().Reset();
 		}
 	}
 
 	internal void Start() {
+		gameManager = FindObjectOfType<GameManager> ();
 //		WinMessage.text = "";
 //		controller = FindObjectOfType<Controller2D> ();
 	}
