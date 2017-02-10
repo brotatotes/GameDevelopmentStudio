@@ -5,23 +5,30 @@ using UnityEngine.UI;
 
 public class GUIHandler : MonoBehaviour {
 
-//	Player p1;
-//	Controller2D p1controller;
-	// display text notifiers
-	public Text textMessage;
+	public static GUIHandler instance = null;
+	[TextArea(1,10)]
+	public string textMessage = "";
 	private bool displayTextMessage = false;
 	private float displayTime;
 	private float displayStart;
 	private float displayTimePassed;
 
 
-	void Start() {
-		
-//		textMessage = new Text ();
-		textMessage.text = "Hello";
-//		p1 = FindObjectOfType<Player> ();
-//		p1controller = p1.gameObject.GetComponent<Controller2D> ();
-//		Debug.Log (p1controller);
+//	void Start() {
+//		
+////		textMessage = new Text ();
+//		textMessage.text = "Hello";
+////		p1 = FindObjectOfType<Player> ();
+////		p1controller = p1.gameObject.GetComponent<Controller2D> ();
+////		Debug.Log (p1controller);
+//	}
+	void Awake () {
+		Debug.Log ("Awake");
+		if (instance == null)
+			instance = this;
+		else if (instance != this) {
+			Destroy (gameObject);
+		}
 	}
 
 	void Update() {
@@ -37,14 +44,14 @@ public class GUIHandler : MonoBehaviour {
 				displayTimePassed = Time.time - displayStart;
 			} else {
 				displayTextMessage = false;
-				textMessage.text = "";
+				textMessage = "";
 			}
 		}
 	}
 
 	public void displayText(string msg, float dTime) {
 		displayTextMessage = true;
-		textMessage.text = msg;
+		textMessage = msg;
 		displayTime = dTime;
 		displayStart = Time.time;
 		displayTimePassed = 0f;
@@ -52,7 +59,9 @@ public class GUIHandler : MonoBehaviour {
 
 	void OnGUI() {
 		if (displayTextMessage) {
-			GUI.Label (new Rect (0, 0, Screen.width, Screen.height), textMessage.text);
+			var centeredStyle = GUI.skin.GetStyle("Label");
+			centeredStyle.alignment = TextAnchor.UpperCenter;
+			GUI.Label (new Rect (Screen.width/2-50, Screen.height/2-25, 100, 50), textMessage, centeredStyle);
 		}
 	}
 }
