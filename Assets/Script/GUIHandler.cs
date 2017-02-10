@@ -13,6 +13,8 @@ public class GUIHandler : MonoBehaviour {
 	private float displayStart;
 	private float displayTimePassed;
 
+	private GameManager gameManager;
+
 
 //	void Start() {
 //		
@@ -29,6 +31,7 @@ public class GUIHandler : MonoBehaviour {
 		else if (instance != this) {
 			Destroy (gameObject);
 		}
+		gameManager = FindObjectOfType<GameManager> ();
 	}
 
 	void Update() {
@@ -38,6 +41,11 @@ public class GUIHandler : MonoBehaviour {
 //			p1controller.winner = 0;
 //		}
 //		displayText ("Player " + p1controller.winner + " wins!", 3f);
+		if (gameManager.gameOver) {
+			displayText ("Player " + gameManager.winner + " wins!", 3f);
+			gameManager.gameOver = false;
+			gameManager.winner = 0;
+		}
 
 		if (displayTextMessage) {
 			if (displayTimePassed < displayTime) {
@@ -59,6 +67,7 @@ public class GUIHandler : MonoBehaviour {
 
 	void OnGUI() {
 		if (displayTextMessage) {
+			Debug.Log (Screen.width + ", " + Screen.height);
 			var centeredStyle = GUI.skin.GetStyle("Label");
 			centeredStyle.alignment = TextAnchor.UpperCenter;
 			GUI.Label (new Rect (Screen.width/2-50, Screen.height/2-25, 100, 50), textMessage, centeredStyle);
