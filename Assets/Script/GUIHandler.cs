@@ -18,7 +18,7 @@ public class GUIHandler : MonoBehaviour {
 	void Start() {
 		
 //		textMessage = new Text ();
-//		textMessage.text = "";
+		textMessage.text = "Hello";
 //		p1 = FindObjectOfType<Player> ();
 //		p1controller = p1.gameObject.GetComponent<Controller2D> ();
 //		Debug.Log (p1controller);
