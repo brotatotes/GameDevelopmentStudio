@@ -67,7 +67,7 @@ public class GUIHandler : MonoBehaviour {
 
 	void OnGUI() {
 		if (displayTextMessage) {
-			Debug.Log (Screen.width + ", " + Screen.height);
+//			Debug.Log (Screen.width + ", " + Screen.height);
 			var centeredStyle = GUI.skin.GetStyle("Label");
 			centeredStyle.fontSize = Screen.width / 40;
 			centeredStyle.alignment = TextAnchor.UpperCenter;
