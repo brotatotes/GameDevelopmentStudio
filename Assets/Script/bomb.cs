@@ -9,6 +9,7 @@ public class bomb : MonoBehaviour {
 	public float fuseDuration = 3.0f;
 	public Vector2 hitboxScale = new Vector2 (1.0f, 1.0f);
 	public bool timedbomb = true;
+	public float hitboxDuration = 0.5f;
 
 
 	// Use this for initialization
@@ -23,7 +24,7 @@ public class bomb : MonoBehaviour {
 			hitbox newBox = go.GetComponent<hitbox> ();
 			newBox.setScale (hitboxScale);
 			newBox.setDamage (damage);
-			newBox.setHitboxDuration (0.5f);
+			newBox.setHitboxDuration (hitboxDuration);
 			newBox.setKnockback (knockback);
 
 			GameObject.Destroy (gameObject);
