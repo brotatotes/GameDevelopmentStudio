@@ -20,7 +20,7 @@ public class Controller2D : MonoBehaviour {
 
 	float horizontalRaySpacing;
 	float verticalRaySpacing;
-	Vector2 velocity;
+	public Vector2 velocity;
 
 	BoxCollider2D bCollider;
 	RaycastOrigins raycastOrigins;
