@@ -23,6 +23,10 @@ public class PlayerCursor : MonoBehaviour {
 	public bool initRight = false;
 	public float deadX = 0.0f;
 	float deadY = 30.0f;
+	float toCreateL = 0f;
+	float toCreateR = 0f;
+	Vector3 initDownL;
+	Vector3 initDownR;
 
 	// Use this for initialization
 	void Start () {
@@ -38,22 +42,30 @@ public class PlayerCursor : MonoBehaviour {
 			Vector3 currMousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
 			if (Input.GetMouseButtonDown (0)) {
-				Debug.Log ("Pressed left click.");
 				float cost = leftObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
-					Debug.Log (Resources.Load ("Bomb"));
-					Instantiate (leftObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
-					//Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
-					currentPower = currentPower - cost;
+					initDownL = currMousePos;
+					toCreateL = cost;
 				}
 			}
+			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
+				Instantiate (leftObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+				//Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+				currentPower = currentPower - toCreateL;
+				toCreateL = 0f;
+			}
 			if (Input.GetMouseButtonDown (1)) {
-				Debug.Log ("Pressed right click.");
 				float cost = rightObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
-					Instantiate (rightObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
-					currentPower = currentPower - cost;
+					initDownR = currMousePos;
+					toCreateR = cost;
 				}
+			}
+			if (Input.GetMouseButtonUp (1) && toCreateR != 0f) {
+				Instantiate (rightObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+				//Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+				currentPower = currentPower - toCreateR;
+				toCreateR = 0f;
 			}
 		}
 		/*
