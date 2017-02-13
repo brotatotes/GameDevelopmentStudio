@@ -55,6 +55,7 @@ public class continuousHitbox : MonoBehaviour {
 	public void setTimedHitbox(bool timed) {
 		timedHitbox = timed;
 	}
+
 	internal void OnTriggerEnter2D(Collider2D other) {
 		//Debug.Log ("collision detected with Continuous hitbox");
 		if (other.gameObject.GetComponent<Controller2D>()) {

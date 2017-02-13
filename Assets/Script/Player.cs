@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof (Controller2D))]
+[RequireComponent (typeof (Fighter))]
 public class Player : MonoBehaviour {
 
 	public float bottomOfTheWorld = -10.0f;
@@ -64,13 +65,24 @@ public class Player : MonoBehaviour {
 		float inputX = 0.0f;
 		float inputY = 0.0f;
 
-		if (Input.GetKey(leftKey)) { inputX = -1.0f; }  
-		else if (Input.GetKey(rightKey)) { inputX = 1.0f; }
+		if (Input.GetKey(leftKey)) { 
+			controller.setFacingLeft (true);
+			inputX = -1.0f; 
+		}  
+		else if (Input.GetKey(rightKey)) { 
+			inputX = 1.0f; 
+			controller.setFacingLeft (false);
+		}
 
 		if (Input.GetKey(upKey)) { inputY = 1.0f; } 
 		else if (Input.GetKey(downKey) ){ inputY = -1.0f; }
 
-		attemptingInteraction = Input.GetKeyDown (downKey);
+		if (Input.GetKeyDown (downKey)) {
+			gameObject.GetComponent<Fighter> ().tryAttack ();
+			attemptingInteraction = true;
+		} else {
+			attemptingInteraction = false;
+		}
 				
 		if (Input.GetKey (jumpKey) && controller.collisions.below) {
 			velocity.y = jumpVelocity;
