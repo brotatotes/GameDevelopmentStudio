@@ -44,12 +44,21 @@ public class PlayerCursor : MonoBehaviour {
 			if (Input.GetMouseButtonDown (0)) {
 				float cost = leftObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
-					initDownL = currMousePos;
-					toCreateL = cost;
+					if (leftObj.GetComponent<Spawnable> ().instantDeploy) {
+						GameObject obj = Instantiate (leftObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+						obj.GetComponent<Spawnable> ().angleDiff = Vector2.zero;
+						currentPower = currentPower - cost;
+						toCreateL = 0f;
+					} else {
+						initDownL = currMousePos;
+						toCreateL = cost;
+					}
 				}
 			}
 			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
-				Instantiate (leftObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+				Debug.Log ("Before Instantiate");
+				GameObject obj = Instantiate (leftObj, new Vector3(initDownL.x, initDownL.y,0), Quaternion.identity);
+				obj.GetComponent<Spawnable> ().angleDiff = new Vector2 (currMousePos.x - initDownL.x, currMousePos.y - initDownL.y);
 				//Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
 				currentPower = currentPower - toCreateL;
 				toCreateL = 0f;
@@ -57,12 +66,20 @@ public class PlayerCursor : MonoBehaviour {
 			if (Input.GetMouseButtonDown (1)) {
 				float cost = rightObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
-					initDownR = currMousePos;
-					toCreateR = cost;
+					if (rightObj.GetComponent<Spawnable> ().instantDeploy) {
+						GameObject obj = Instantiate (rightObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+						obj.GetComponent<Spawnable> ().angleDiff = Vector2.zero;
+						currentPower = currentPower - cost;
+						toCreateR = 0f;
+					} else {
+						initDownR = currMousePos;
+						toCreateR = cost;
+					}
 				}
 			}
 			if (Input.GetMouseButtonUp (1) && toCreateR != 0f) {
-				Instantiate (rightObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+				GameObject obj = Instantiate (rightObj, new Vector3(initDownR.x, initDownR.y,0), Quaternion.identity);
+				obj.GetComponent<Spawnable> ().angleDiff = new Vector2 (currMousePos.x - initDownR.x, currMousePos.y - initDownR.y);
 				//Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
 				currentPower = currentPower - toCreateR;
 				toCreateR = 0f;
