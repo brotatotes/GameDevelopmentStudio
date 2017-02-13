@@ -57,7 +57,9 @@ public class hitbox : MonoBehaviour {
 				float counterF = (other.gameObject.GetComponent<Controller2D> ().velocity.y * (1/Time.deltaTime));
 				Debug.Log ("KB: " + force);
 				Debug.Log(counterF);
-				force.y = force.y - counterF;
+				if (counterF < 0) {
+					force.y = force.y - counterF;
+				}
 				Debug.Log ("KBA: " + force);
 				otherObj.addToVelocity (force);
 			}
