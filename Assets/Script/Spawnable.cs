@@ -7,6 +7,7 @@ public class Spawnable : MonoBehaviour {
 	public string myName;
 	public GameObject prefab;
 	public float cost;
+	public Vector2 angleDiff;
 	// Use this for initialization
 	void Start () {
 		
