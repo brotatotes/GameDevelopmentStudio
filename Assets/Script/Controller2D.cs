@@ -15,6 +15,8 @@ public class Controller2D : MonoBehaviour {
 	public float gravityScale = 40.0f;
 	public float health = 100.0f;
 	public bool alive = true;
+	public string faction = "noFaction";
+	public bool facingLeft = false;
 
 	float maxClimbAngle = 80;
 
@@ -210,7 +212,9 @@ public class Controller2D : MonoBehaviour {
 			slopeAngle = 0;
 		}
 	}
-
+	public void setFacingLeft(bool left) {
+		facingLeft = left;
+	}
 	public void damageObj(float damage) {
 		//Debug.Log ("Damage Taken. Health before: " + health);
 		health = health - damage;
