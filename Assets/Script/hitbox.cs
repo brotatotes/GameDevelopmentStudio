@@ -54,8 +54,12 @@ public class hitbox : MonoBehaviour {
 				float forceX = Mathf.Cos (angle) * magnitude;
 				float forceY = Mathf.Sin (angle) * magnitude;
 				Vector2 force = new Vector2 (-forceX, -forceY);
+				float counterF = (other.gameObject.GetComponent<Controller2D> ().velocity.y * (1/Time.deltaTime));
 				Debug.Log ("KB: " + force);
-				otherObj.addToVelocity (new Vector2 (-forceX, -forceY));
+				Debug.Log(counterF);
+				force.y = force.y - counterF;
+				Debug.Log ("KBA: " + force);
+				otherObj.addToVelocity (force);
 			}
 			collidedObjs.Add (other.gameObject.GetComponent<Controller2D> ());
 		}
