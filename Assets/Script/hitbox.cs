@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class hitbox : MonoBehaviour {
 
+	List<Controller2D> collidedObjs = new List<Controller2D> (); 
 	public float damage = 10.0f;
 	public bool fixedKnockback = false;
 	public Vector2 knockback = new Vector2(0.0f,40.0f);
@@ -40,7 +41,8 @@ public class hitbox : MonoBehaviour {
 	}
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.GetComponent<Controller2D>()) {
+		if (other.gameObject.GetComponent<Controller2D>() &&
+			!collidedObjs.Contains (other.gameObject.GetComponent<Controller2D> ())) {
 			Controller2D otherObj = other.gameObject.GetComponent<Controller2D> ();
 			otherObj.damageObj (damage);
 			if (fixedKnockback) {
@@ -55,6 +57,7 @@ public class hitbox : MonoBehaviour {
 				Debug.Log ("KB: " + force);
 				otherObj.addToVelocity (new Vector2 (-forceX, -forceY));
 			}
+			collidedObjs.Add (other.gameObject.GetComponent<Controller2D> ());
 		}
 	}
 }
