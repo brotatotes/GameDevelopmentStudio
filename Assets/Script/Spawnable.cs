@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawnable : MonoBehaviour {
 
-	public string name;
+	public string myName;
 	public GameObject prefab;
 	public float cost;
 	// Use this for initialization
