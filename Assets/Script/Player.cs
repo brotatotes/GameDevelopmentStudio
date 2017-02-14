@@ -47,7 +47,7 @@ public class Player : MonoBehaviour {
 		if (spawnNextToEndzone)
 			startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
 		else
-			startPosition = new Vector2 (-8.0f, 1.5f);
+			startPosition = new Vector2 (-4.0f, 1.5f);
 		transform.position = startPosition;
 		controller.accumulatedVelocity = Vector2.zero;
 		controller.alive = true;

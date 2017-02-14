@@ -59,7 +59,7 @@ public class hitbox : MonoBehaviour {
 	{
 		if (other.gameObject.GetComponent<Controller2D>() &&
 			!collidedObjs.Contains (other.gameObject.GetComponent<Controller2D> ())) {
-			Debug.Log ("Detected Collision");
+//			Debug.Log ("Detected Collision");
 			Controller2D otherObj = other.gameObject.GetComponent<Controller2D> ();
 			if (faction == "noFaction" || otherObj.faction == "noFaction" ||
 			    faction != otherObj.faction) {
@@ -74,12 +74,12 @@ public class hitbox : MonoBehaviour {
 					float forceY = Mathf.Sin (angle) * magnitude;
 					Vector2 force = new Vector2 (-forceX, -forceY);
 					float counterF = (other.gameObject.GetComponent<Controller2D> ().velocity.y * (1 / Time.deltaTime));
-					Debug.Log ("KB: " + force);
-					Debug.Log (counterF);
+//					Debug.Log ("KB: " + force);
+//					Debug.Log (counterF);
 					if (counterF < 0) {
 						force.y = force.y - counterF;
 					}
-					Debug.Log ("KBA: " + force);
+//					Debug.Log ("KBA: " + force);
 					otherObj.addToVelocity (force);
 				}
 			}

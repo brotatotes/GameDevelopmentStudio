@@ -25,7 +25,7 @@ public class GUIHandler : MonoBehaviour {
 ////		Debug.Log (p1controller);
 //	}
 	void Awake () {
-		Debug.Log ("Awake");
+//		Debug.Log ("Awake");
 		if (instance == null)
 			instance = this;
 		else if (instance != this) {

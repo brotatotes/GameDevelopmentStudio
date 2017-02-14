@@ -10,7 +10,7 @@ public class GodButtons : MonoBehaviour, IPointerClickHandler {
 	public GameObject godCursor;
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		Debug.Log ("OnPointerClick");
+//		Debug.Log ("OnPointerClick");
 		if (eventData.button == PointerEventData.InputButton.Left) {
 			godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
 		} else {
