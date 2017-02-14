@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject playerCursorPrefab;
 	GameObject godCursor;
 	GameObject curPlayer;
-	GameObject playerHealthUI;
-	GameObject godPowerUI;
+//	GameObject playerHealthUI;
+//	GameObject godPowerUI;
 	bool foundPlayer;
 
 	public GameObject playerHealth;
@@ -40,7 +40,8 @@ public class GameManager : MonoBehaviour {
 
 //		Debug.Log ("init game");
 		Object[] allObjs = Resources.LoadAll ("");
-		float xPos = 0.0f;
+//		float xPos = 0.0f;
+		float xPos = Screen.width - allObjs.Length * 50.0f;
 		float maxX = 50.0f;
 		foreach (Object obj in allObjs) {
 			GameObject go = (GameObject)obj;
@@ -67,9 +68,9 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		godCursor.GetComponent<PlayerCursor> ().deadX = maxX;
-		godPowerUI = (GameObject)Instantiate (godPower);
-		godPowerUI.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
-		godPowerUI.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0.0f, -45.0f);
+//		godPowerUI = (GameObject)Instantiate (godPower);
+//		godPowerUI.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+//		godPowerUI.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0.0f, -45.0f);
 	}
 		
 	// Update is called once per frame
@@ -77,13 +78,13 @@ public class GameManager : MonoBehaviour {
 		if (!foundPlayer) {
 			curPlayer = GameObject.FindGameObjectWithTag("Player") as GameObject;
 			foundPlayer = true;
-			playerHealthUI = (GameObject)Instantiate (playerHealth);
-			playerHealthUI.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
-			playerHealthUI.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0.0f, -60.0f);
+//			playerHealthUI = (GameObject)Instantiate (playerHealth);
+//			playerHealthUI.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+//			playerHealthUI.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0.0f, -60.0f);
 		} else {
-			playerHealthUI.GetComponent<Text>().text = "Player Health: " + curPlayer.GetComponent<Controller2D>().health.ToString ();
+//			playerHealthUI.GetComponent<Text>().text = "Player Health: " + curPlayer.GetComponent<Controller2D>().health.ToString ();
 		}
-		godPowerUI.GetComponent<Text>().text = "Current Power: " + godCursor.GetComponent<PlayerCursor>().currentPower.ToString ();
+//		godPowerUI.GetComponent<Text>().text = "Current Power: " + godCursor.GetComponent<PlayerCursor>().currentPower.ToString ();
 
 		if (Input.GetMouseButton (0))
 			lastMouseButtonPressed = "Left button";

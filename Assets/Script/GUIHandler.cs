@@ -34,9 +34,6 @@ public class GUIHandler : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		gameManager = FindObjectOfType<GameManager> ();
-//		var scale = new Vector3 (Screen.width / 667, Screen.height / 330, 1);
-//		P1HealthBar.transform.localScale = scale;
-//		P2EnergyBar.transform.localScale = scale;
 	}
 
 	void Update() {
