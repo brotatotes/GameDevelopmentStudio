@@ -9,6 +9,7 @@ public class GUIHandler : MonoBehaviour {
 	[TextArea(1,10)]
 	public string textMessage = "";
 	public Slider P1HealthBar;
+	public Slider P2EnergyBar;
 	private bool displayTextMessage = false;
 	private float displayTime;
 	private float displayStart;
@@ -42,6 +43,7 @@ public class GUIHandler : MonoBehaviour {
 //			p1controller.winner = 0;
 //		}
 //		displayText ("Player " + p1controller.winner + " wins!", 3f);
+		P2EnergyBar.value = FindObjectOfType<PlayerCursor> ().currentPower;
 
 		if (gameManager.gameOver) {
 			displayText ("Player " + gameManager.winner + " wins!", 3f);
