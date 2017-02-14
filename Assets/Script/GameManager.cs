@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject playerHealth;
 	public GameObject godPower;
 
+	public float startX; // used by PlayerCursor for deadZone
+
 	void Awake () {
 //		Debug.Log ("Awake");
 		if (instance == null)
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour {
 		Object[] allObjs = Resources.LoadAll ("");
 //		float xPos = 0.0f;
 		float xPos = Screen.width - allObjs.Length * 50.0f;
+		startX = xPos;
 		float maxX = 50.0f;
 		foreach (Object obj in allObjs) {
 			GameObject go = (GameObject)obj;

@@ -38,7 +38,7 @@ public class PlayerCursor : MonoBehaviour {
 		if (currentPower < 100.0f) {
 			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
 		}
-		if (Input.mousePosition.y < (Screen.height - deadY) || Input.mousePosition.x > deadX) {
+		if (Input.mousePosition.y < (Screen.height - deadY) || Input.mousePosition.x < FindObjectOfType<GameManager>().startX) {
 			Vector3 currMousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
 			if (Input.GetMouseButtonDown (0)) {
