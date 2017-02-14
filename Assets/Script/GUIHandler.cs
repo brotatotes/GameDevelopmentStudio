@@ -22,15 +22,6 @@ public class GUIHandler : MonoBehaviour {
 
 	private GameManager gameManager;
 
-
-//	void Start() {
-//		
-////		textMessage = new Text ();
-//		textMessage.text = "Hello";
-////		p1 = FindObjectOfType<Player> ();
-////		p1controller = p1.gameObject.GetComponent<Controller2D> ();
-////		Debug.Log (p1controller);
-//	}
 	void Awake () {
 //		Debug.Log ("Awake");
 		if (instance == null)
@@ -44,12 +35,7 @@ public class GUIHandler : MonoBehaviour {
 	}
 
 	void Update() {
-//		if (p1controller.gameOver) {
-//			displayText ("Player " + p1controller.winner + " wins!", 3f);
-//			p1controller.gameOver = false;
-//			p1controller.winner = 0;
-//		}
-//		displayText ("Player " + p1controller.winner + " wins!", 3f);
+
 		var P2 = FindObjectOfType<PlayerCursor> ();
 		P2EnergyBar.value = P2.currentPower;
 
