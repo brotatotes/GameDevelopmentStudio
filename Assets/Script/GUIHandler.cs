@@ -8,6 +8,7 @@ public class GUIHandler : MonoBehaviour {
 	public static GUIHandler instance = null;
 	[TextArea(1,10)]
 	public string textMessage = "";
+	public Slider P1HealthBar;
 	private bool displayTextMessage = false;
 	private float displayTime;
 	private float displayStart;
@@ -41,10 +42,14 @@ public class GUIHandler : MonoBehaviour {
 //			p1controller.winner = 0;
 //		}
 //		displayText ("Player " + p1controller.winner + " wins!", 3f);
+
 		if (gameManager.gameOver) {
 			displayText ("Player " + gameManager.winner + " wins!", 3f);
 			gameManager.gameOver = false;
 			gameManager.winner = 0;
+			P1HealthBar.value = 0;
+		} else {
+			P1HealthBar.value = FindObjectOfType<Player> ().GetComponent<Controller2D> ().health;
 		}
 
 		if (displayTextMessage) {
