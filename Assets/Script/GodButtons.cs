@@ -15,7 +15,7 @@ public class GodButtons : MonoBehaviour, IPointerClickHandler {
 			godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
 		} else {
 			godCursor.GetComponent<PlayerCursor> ().rightObj = spawnObj;
-			gameObject.GetComponent<Button> ().Invoke ("OnClick", 0.0f);
+//			gameObject.GetComponent<Button> ().Invoke ("OnClick", 0.0f);
 		}
 	}
 }

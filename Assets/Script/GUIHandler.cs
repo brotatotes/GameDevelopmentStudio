@@ -8,8 +8,13 @@ public class GUIHandler : MonoBehaviour {
 	public static GUIHandler instance = null;
 	[TextArea(1,10)]
 	public string textMessage = "";
+
 	public Slider P1HealthBar;
 	public Slider P2EnergyBar;
+
+	public Dictionary<string, Button> allButtons;
+	public Dictionary<string, Spawnable> allPowers;
+
 	private bool displayTextMessage = false;
 	private float displayTime;
 	private float displayStart;
@@ -34,6 +39,8 @@ public class GUIHandler : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		gameManager = FindObjectOfType<GameManager> ();
+		allButtons = gameManager.allButtons;
+		allPowers = gameManager.allPowers;
 	}
 
 	void Update() {
@@ -43,7 +50,35 @@ public class GUIHandler : MonoBehaviour {
 //			p1controller.winner = 0;
 //		}
 //		displayText ("Player " + p1controller.winner + " wins!", 3f);
-		P2EnergyBar.value = FindObjectOfType<PlayerCursor> ().currentPower;
+		var P2 = FindObjectOfType<PlayerCursor> ();
+		P2EnergyBar.value = P2.currentPower;
+
+//		allButtons [P2.leftObj.name].GetComponent<Image> ().color = Color.cyan;
+//		allButtons [P2.rightObj.name].GetComponent<Image> ().color = Color.green;
+		foreach(KeyValuePair<string, Button> entry in allButtons) {
+			Color buttonColor;
+			string click = "";
+			if (entry.Key == P2.leftObj.name) {
+				buttonColor = new Color (0.4f, 0.7f, 1f);
+				click = "left";
+			} else if (entry.Key == P2.rightObj.name) {
+				buttonColor = new Color(0.6f, 0.6f, 1f);
+				click = "right";
+			} else {
+				buttonColor = Color.white;
+			}
+
+			if (P2.currentPower < allPowers[entry.Key].cost) {
+				if (buttonColor == Color.white)
+					buttonColor = Color.grey;
+				else if (click == "left"){
+					buttonColor = new Color (0.2f, 0.5f, 0.8f);
+				} else {
+					buttonColor = new Color (0.4f, 0.4f, 0.8f);
+				}
+			}
+			entry.Value.GetComponent<Image> ().color = buttonColor;
+		}
 
 		if (gameManager.gameOver) {
 			displayText ("Player " + gameManager.winner + " wins!", 3f);

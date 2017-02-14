@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
 	public Player Player1;
 	List<GameObject> godPowers = new List<GameObject>();
 	public GameObject prefabButton;
+	public GameObject prefabText;
 	public GameObject playerCursorPrefab;
 	GameObject godCursor;
 	GameObject curPlayer;
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject playerHealth;
 	public GameObject godPower;
+	public Dictionary<string, Button> allButtons;
+	public Dictionary<string, Spawnable> allPowers;
 
 	public float startX; // used by PlayerCursor for deadZone
 
@@ -42,6 +45,8 @@ public class GameManager : MonoBehaviour {
 
 //		Debug.Log ("init game");
 		Object[] allObjs = Resources.LoadAll ("");
+		allButtons = new Dictionary<string, Button> ();
+		allPowers = new Dictionary<string, Spawnable> ();
 //		float xPos = 0.0f;
 		float xPos = Screen.width - allObjs.Length * 50.0f;
 		startX = xPos;
@@ -53,10 +58,13 @@ public class GameManager : MonoBehaviour {
 				Spawnable spawnInfo = go.GetComponent<Spawnable> ();
 				GameObject buttonObj = (GameObject)Instantiate (prefabButton);
 				Button tempButton = buttonObj.GetComponent<Button> ();
+//				GameObject textObj = (GameObject)Instantiate (prefabText);
+//				Text tempText = textObj.GetComponent<Text> ();
+
 //				Debug.Log (tempButton);
 				buttonObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
 				buttonObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, 0.0f);
-				tempButton.GetComponentsInChildren<Text>()[0].text = spawnInfo.name;
+				tempButton.GetComponentsInChildren<Text> () [0].text = spawnInfo.name;
 				buttonObj.GetComponent<GodButtons> ().godCursor = godCursor;
 				buttonObj.GetComponent<GodButtons> ().spawnObj = go;
 				if (!godCursor.GetComponent<PlayerCursor> ().initLeft) {
@@ -66,6 +74,15 @@ public class GameManager : MonoBehaviour {
 					godCursor.GetComponent<PlayerCursor> ().rightObj = go;
 					godCursor.GetComponent<PlayerCursor> ().initRight = true;
 				}
+
+//				textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+//				textObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, -25.0f);
+//				tempText.text = spawnInfo.cost.ToString ();
+
+
+				allButtons.Add (spawnInfo.name, tempButton);
+				allPowers.Add (spawnInfo.name, spawnInfo);
+
 				xPos += 50.0f;
 				maxX += 50.0f;
 			}
