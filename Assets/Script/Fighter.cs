@@ -7,7 +7,6 @@ using UnityEngine;
 public class Fighter : MonoBehaviour {
 	public float damage = 10.0f;
 	public Vector2 knockback = new Vector2(0.0f,40.0f);
-	public float fuseDuration = 3.0f;
 	public Vector2 hitboxScale = new Vector2 (1.0f, 1.0f);
 	public bool timedbomb = true;
 	public float hitboxDuration = 0.5f;
@@ -26,9 +25,7 @@ public class Fighter : MonoBehaviour {
 	}
 
 	public void tryAttack() {
-		Debug.Log ("Attempting attack");
 		if (currentCooldown <= 0.0f) {
-			Debug.Log ("attack");
 			currentCooldown = attackCooldown;
 			string myFac = gameObject.GetComponent<Controller2D> ().faction;
 			Vector2 realKB = knockback;
@@ -37,7 +34,7 @@ public class Fighter : MonoBehaviour {
 				realKB = new Vector2 (-knockback.x, knockback.y);
 				realOff = new Vector2 (-offset.x, offset.y);
 			}
-			gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,realOff,damage,hitboxDuration,realKB,true,myFac);
+			gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,realOff,damage,hitboxDuration,realKB,true,myFac,true);
 		}
 	}
 }

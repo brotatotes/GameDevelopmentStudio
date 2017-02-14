@@ -10,6 +10,9 @@ public class hitbox : MonoBehaviour {
 	public float hitboxDuration = 1.0f;
 	public bool timedHitbox = true;
 	public string faction = "noFaction";
+	public GameObject followObj;
+	public bool toFollow = false;
+	public Vector2 followOffset;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +24,9 @@ public class hitbox : MonoBehaviour {
 			hitboxDuration = hitboxDuration - Time.deltaTime;
 		} else {
 			GameObject.Destroy (gameObject);
+		}
+		if (toFollow) {
+			transform.position = new Vector3(followObj.transform.position.x + followOffset.x, followObj.transform.position.y + followOffset.y,0);
 		}
 	}
 	public void setKnockback(Vector2 kb) {
@@ -43,11 +49,17 @@ public class hitbox : MonoBehaviour {
 	public void setFaction(string fact) {
 		faction = fact;
 	}
+	public void setFollow(GameObject obj, Vector2 offset) {
+		toFollow = true;
+		followObj = obj;
+		followOffset = offset;
+	}
+
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
-		
 		if (other.gameObject.GetComponent<Controller2D>() &&
 			!collidedObjs.Contains (other.gameObject.GetComponent<Controller2D> ())) {
+			Debug.Log ("Detected Collision");
 			Controller2D otherObj = other.gameObject.GetComponent<Controller2D> ();
 			if (faction == "noFaction" || otherObj.faction == "noFaction" ||
 			    faction != otherObj.faction) {

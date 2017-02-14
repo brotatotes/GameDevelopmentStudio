@@ -18,6 +18,6 @@ public class bomb : MonoBehaviour {
 	void Update () {}
 
 	void OnDestroy () {
-		gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,Vector2.zero,damage,hitboxDuration,knockback,false,"noFaction");
+		gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,Vector2.zero,damage,hitboxDuration,knockback,false,"noFaction",false);
 	}
 }
