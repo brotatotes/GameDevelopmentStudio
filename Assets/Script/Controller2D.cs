@@ -14,6 +14,7 @@ public class Controller2D : MonoBehaviour {
 	public bool isGravity = true;
 	public float gravityScale = 40.0f;
 	public float health = 100.0f;
+	public float energy = 100.0f;
 	public bool alive = true;
 	public string faction = "noFaction";
 	public bool facingLeft = false;
