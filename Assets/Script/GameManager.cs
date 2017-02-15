@@ -58,10 +58,7 @@ public class GameManager : MonoBehaviour {
 				Spawnable spawnInfo = go.GetComponent<Spawnable> ();
 				GameObject buttonObj = (GameObject)Instantiate (prefabButton);
 				Button tempButton = buttonObj.GetComponent<Button> ();
-//				GameObject textObj = (GameObject)Instantiate (prefabText);
-//				Text tempText = textObj.GetComponent<Text> ();
 
-//				Debug.Log (tempButton);
 				buttonObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
 				buttonObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, 0.0f);
 				tempButton.GetComponentsInChildren<Text> () [0].text = spawnInfo.name;
@@ -75,9 +72,12 @@ public class GameManager : MonoBehaviour {
 					godCursor.GetComponent<PlayerCursor> ().initRight = true;
 				}
 
-//				textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
-//				textObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, -25.0f);
-//				tempText.text = spawnInfo.cost.ToString ();
+				GameObject textObj = (GameObject)Instantiate (prefabText);
+				Text tempText = textObj.GetComponent<Text> ();
+				textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+				textObj.GetComponent<RectTransform> ().transform.position = 
+					new Vector3 (tempButton.transform.position.x+25f, tempButton.transform.position.y-38f);
+				tempText.text = spawnInfo.cost.ToString ();
 
 
 				allButtons.Add (spawnInfo.name, tempButton);

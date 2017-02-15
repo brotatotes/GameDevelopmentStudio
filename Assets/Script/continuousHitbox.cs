@@ -2,7 +2,7 @@
 using System.Collections.Generic; //REMEMBER! In order to use lists! Make sure it is System.Collections.Generic instead of System.Collections
 // Example of an object that can affect the physics of another object.
 public class continuousHitbox : MonoBehaviour {
-	List<Controller2D> overlappingControl = new List<Controller2D> (); 
+	List<Attackable> overlappingControl = new List<Attackable> (); 
 
 	public float damage = 10.0f;
 	public bool fixedKnockback = false;
@@ -16,7 +16,7 @@ public class continuousHitbox : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (hitboxDuration > 0.0f || !timedHitbox) {
-			foreach(Controller2D cont in overlappingControl) {
+			foreach(Attackable cont in overlappingControl) {
 				cont.damageObj (damage * Time.deltaTime);
 				if (fixedKnockback) {
 					cont.addToVelocity (knockback * Time.deltaTime);
@@ -58,14 +58,14 @@ public class continuousHitbox : MonoBehaviour {
 
 	internal void OnTriggerEnter2D(Collider2D other) {
 		//Debug.Log ("collision detected with Continuous hitbox");
-		if (other.gameObject.GetComponent<Controller2D>()) {
-			overlappingControl.Add (other.gameObject.GetComponent<Controller2D> ()); //Adds the other object's Controller2D to list of contacting objects
+		if (other.gameObject.GetComponent<Attackable>()) {
+			overlappingControl.Add (other.gameObject.GetComponent<Attackable> ()); //Adds the other object's Controller2D to list of contacting objects
 		}
 	} 
 	internal void OnTriggerExit2D(Collider2D other) {
 		//Debug.Log ("Collision ended with Continuous hitbox");
-		if (other.gameObject.GetComponent<Controller2D> ()) {
-			overlappingControl.Remove (other.gameObject.GetComponent<Controller2D> ()); //Removes the object from the list
+		if (other.gameObject.GetComponent<Attackable> ()) {
+			overlappingControl.Remove (other.gameObject.GetComponent<Attackable> ()); //Removes the object from the list
 		}
 	}
 }

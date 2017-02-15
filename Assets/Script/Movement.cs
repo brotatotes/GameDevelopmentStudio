@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof (BoxCollider2D))]
-public class Controller2D : MonoBehaviour {
+public class Movement : MonoBehaviour {
 
 	public LayerMask collisionMask;
 
@@ -13,9 +13,7 @@ public class Controller2D : MonoBehaviour {
 	public Vector2 accumulatedVelocity = Vector2.zero;
 	public bool isGravity = true;
 	public float gravityScale = 40.0f;
-	public float health = 100.0f;
-	public bool alive = true;
-	public string faction = "noFaction";
+
 	public bool facingLeft = false;
 
 	float maxClimbAngle = 80;
@@ -23,7 +21,7 @@ public class Controller2D : MonoBehaviour {
 	float horizontalRaySpacing;
 	float verticalRaySpacing;
 	public Vector2 velocity;
-
+	public string falling;
 	BoxCollider2D bCollider;
 	RaycastOrigins raycastOrigins;
 	public CollisionInfo collisions;
@@ -71,10 +69,6 @@ public class Controller2D : MonoBehaviour {
 		velocity.x = veloc.x;
 		velocity.x += (accumulatedVelocity.x * Time.deltaTime);
 		velocity.y = veloc.y;
-		//if (isGravity) {
-		//	velocity.y += (gravityScale * Time.deltaTime);
-			//	Debug.Log (veloc.y);
-		//}
 		//Debug.Log (velocity.y);
 		velocity.y += (accumulatedVelocity.y * Time.deltaTime);
 		//Debug.Log (velocity.y);
@@ -95,7 +89,7 @@ public class Controller2D : MonoBehaviour {
 	void HorizontalCollisions(ref Vector2 velocity) {
 		float directionX = Mathf.Sign (velocity.x);
 		float rayLength = Mathf.Abs (velocity.x) + skinWidth;
-		
+
 		for (int i = 0; i < horizontalRayCount; i ++) {
 			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
@@ -140,19 +134,50 @@ public class Controller2D : MonoBehaviour {
 			Vector2 rayOrigin = (directionY == -1)?raycastOrigins.bottomLeft:raycastOrigins.topLeft;
 			rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
-
-			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
+		
+			//Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 
 			if (hit && !hit.collider.isTrigger) {
 				velocity.y = (hit.distance - skinWidth) * directionY;
+				if ((directionY > 0) && accumulatedVelocity.y > 0) {
+					accumulatedVelocity.y = -(accumulatedVelocity.y * 0.7f);
+				}
 				rayLength = hit.distance;
 
 				if (collisions.climbingSlope) {
-					velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+					velocity.x = velocity.y / Mathf.Tan (collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign (velocity.x);
 				}
 
 				collisions.below = directionY == -1;
 				collisions.above = directionY == 1;
+			}
+		}
+		falling = "none";
+		if (directionY == -1) {
+			string tempFalling = "none";
+			bool collide = false;
+			bool started = false;
+			rayLength = 0.1f;
+			//Debug.Log ("cast");
+			for (int i = 0; i < verticalRayCount; i++) {
+				Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
+				rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
+				RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
+				Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
+				if (hit && !hit.collider.isTrigger) {
+					//Debug.Log ("collide");
+					//Debug.Log (hit.collider.gameObject.tag);
+					if ( started && !collide) {
+						falling = "left";
+					}
+					collide = true;
+				}  else {
+					//Debug.Log ("nocollide");
+					if (started && collide) {
+							falling = "right";
+					}
+				}
+				started = true;
 			}
 		}
 	}
@@ -215,14 +240,5 @@ public class Controller2D : MonoBehaviour {
 	public void setFacingLeft(bool left) {
 		facingLeft = left;
 	}
-	public void damageObj(float damage) {
-		//Debug.Log ("Damage Taken. Health before: " + health);
-		health = health - damage;
-		//Debug.Log("Health afterwards: " + health);
-		if (health < 0) {
-			alive = false;
-		} else {
-			alive = true;
-		}
-	}
+
 }

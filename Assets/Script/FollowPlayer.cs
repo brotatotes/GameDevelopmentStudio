@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (Controller2D))]
+[RequireComponent (typeof (Movement))]
 public class FollowPlayer : MonoBehaviour {
 
 	public Player followObj;
 	public float bottomOfTheWorld = -10.0f;
-	public Controller2D controller;
+	public Movement controller;
 	float gravity;
 	float jumpVelocity;
 	Vector3 velocity;
@@ -21,11 +21,9 @@ public class FollowPlayer : MonoBehaviour {
 	float moveSpeed = 8.0f;
 	public bool targetSet = true;
 
-	// Use this for initialization
-	private GameManager gameManager;
+
 	void Start () {
-		controller = GetComponent<Controller2D> ();
-		gameManager = FindObjectOfType<GameManager> ();
+		controller = GetComponent<Movement> ();
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		controller.setGravityScale(gravity);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -53,12 +51,13 @@ public class FollowPlayer : MonoBehaviour {
 		float targetVelocityX = inputX * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 		Vector2 input = new Vector2 (inputX, inputY);
+		//Debug.Log (controller.falling);
+		//Debug.Log ((controller.falling == "right"));
+		if ((controller.falling == "left" || controller.falling == "right") && controller.collisions.below) {
+			velocity.y = jumpVelocity;
+		}
 		velocity.y += gravity * Time.deltaTime;
 
 		controller.Move (velocity, input);
-		controller.alive = transform.position.y >= bottomOfTheWorld && controller.health > 0;
-		if (!controller.alive) {
-			Destroy (gameObject);
-		}
 	}
 }

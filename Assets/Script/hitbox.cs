@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class hitbox : MonoBehaviour {
 
-	List<Controller2D> collidedObjs = new List<Controller2D> (); 
+	List<Attackable> collidedObjs = new List<Attackable> (); 
 	public float damage = 10.0f;
 	public bool fixedKnockback = false;
 	public Vector2 knockback = new Vector2(0.0f,40.0f);
@@ -57,10 +57,9 @@ public class hitbox : MonoBehaviour {
 
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.GetComponent<Controller2D>() &&
-			!collidedObjs.Contains (other.gameObject.GetComponent<Controller2D> ())) {
-//			Debug.Log ("Detected Collision");
-			Controller2D otherObj = other.gameObject.GetComponent<Controller2D> ();
+		if (other.gameObject.GetComponent<Attackable>() &&
+			!collidedObjs.Contains (other.gameObject.GetComponent<Attackable> ())) {
+			Attackable otherObj = other.gameObject.GetComponent<Attackable> ();
 			if (faction == "noFaction" || otherObj.faction == "noFaction" ||
 			    faction != otherObj.faction) {
 				otherObj.damageObj (damage);
@@ -73,17 +72,14 @@ public class hitbox : MonoBehaviour {
 					float forceX = Mathf.Cos (angle) * magnitude;
 					float forceY = Mathf.Sin (angle) * magnitude;
 					Vector2 force = new Vector2 (-forceX, -forceY);
-					float counterF = (other.gameObject.GetComponent<Controller2D> ().velocity.y * (1 / Time.deltaTime));
-//					Debug.Log ("KB: " + force);
-//					Debug.Log (counterF);
+					float counterF = (other.gameObject.GetComponent<Movement> ().velocity.y * (1 / Time.deltaTime));
 					if (counterF < 0) {
 						force.y = force.y - counterF;
 					}
-//					Debug.Log ("KBA: " + force);
 					otherObj.addToVelocity (force);
 				}
 			}
-			collidedObjs.Add (other.gameObject.GetComponent<Controller2D> ());
+			collidedObjs.Add (otherObj);
 		}
 	}
 }

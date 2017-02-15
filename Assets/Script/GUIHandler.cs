@@ -10,6 +10,7 @@ public class GUIHandler : MonoBehaviour {
 	public string textMessage = "";
 
 	public Slider P1HealthBar;
+	public Slider P1EnergyBar;
 	public Slider P2EnergyBar;
 
 	public Dictionary<string, Button> allButtons;
@@ -22,15 +23,6 @@ public class GUIHandler : MonoBehaviour {
 
 	private GameManager gameManager;
 
-
-//	void Start() {
-//		
-////		textMessage = new Text ();
-//		textMessage.text = "Hello";
-////		p1 = FindObjectOfType<Player> ();
-////		p1controller = p1.gameObject.GetComponent<Controller2D> ();
-////		Debug.Log (p1controller);
-//	}
 	void Awake () {
 //		Debug.Log ("Awake");
 		if (instance == null)
@@ -44,14 +36,13 @@ public class GUIHandler : MonoBehaviour {
 	}
 
 	void Update() {
-//		if (p1controller.gameOver) {
-//			displayText ("Player " + p1controller.winner + " wins!", 3f);
-//			p1controller.gameOver = false;
-//			p1controller.winner = 0;
-//		}
-//		displayText ("Player " + p1controller.winner + " wins!", 3f);
+
+		var P1 = FindObjectOfType<Player> ();
+		var P1Controller = P1.GetComponent<Attackable> ();
 		var P2 = FindObjectOfType<PlayerCursor> ();
 		P2EnergyBar.value = P2.currentPower;
+
+		P1EnergyBar.value = P1Controller.energy;
 
 //		allButtons [P2.leftObj.name].GetComponent<Image> ().color = Color.cyan;
 //		allButtons [P2.rightObj.name].GetComponent<Image> ().color = Color.green;
@@ -86,7 +77,7 @@ public class GUIHandler : MonoBehaviour {
 			gameManager.winner = 0;
 			P1HealthBar.value = 0;
 		} else {
-			P1HealthBar.value = FindObjectOfType<Player> ().GetComponent<Controller2D> ().health;
+			P1HealthBar.value = P1Controller.health;
 		}
 
 		if (displayTextMessage) {

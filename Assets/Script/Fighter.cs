@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof (HitboxMaker))]
-[RequireComponent (typeof (Controller2D))]
+[RequireComponent (typeof (Movement))]
 public class Fighter : MonoBehaviour {
 	public float damage = 10.0f;
 	public Vector2 knockback = new Vector2(0.0f,40.0f);
@@ -14,8 +14,11 @@ public class Fighter : MonoBehaviour {
 	public Vector2 offset = new Vector2(0f,0f);
 
 	float currentCooldown = 0.0f;
+	string myFac;
 	// Use this for initialization
-	void Start () {}
+	void Start () {
+		myFac = gameObject.GetComponent<Attackable> ().faction;
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,10 +30,9 @@ public class Fighter : MonoBehaviour {
 	public void tryAttack() {
 		if (currentCooldown <= 0.0f) {
 			currentCooldown = attackCooldown;
-			string myFac = gameObject.GetComponent<Controller2D> ().faction;
 			Vector2 realKB = knockback;
 			Vector2 realOff = offset;
-			if (gameObject.GetComponent<Controller2D> ().facingLeft) {
+			if (gameObject.GetComponent<Movement> ().facingLeft) {
 				realKB = new Vector2 (-knockback.x, knockback.y);
 				realOff = new Vector2 (-offset.x, offset.y);
 			}
