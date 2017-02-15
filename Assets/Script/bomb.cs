@@ -9,7 +9,7 @@ public class bomb : MonoBehaviour {
 	public Vector2 hitboxScale = new Vector2 (1.0f, 1.0f);
 	public bool timedbomb = true;
 	public float hitboxDuration = 0.5f;
-
+	public GameObject ExplosionPrefab;
 
 	// Use this for initialization
 	void Start () {}
@@ -18,6 +18,8 @@ public class bomb : MonoBehaviour {
 	void Update () {}
 
 	void OnDestroy () {
+		GameObject explosion = GameObject.Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);
+		explosion.transform.localScale = new Vector3 (hitboxScale.x/16f,hitboxScale.y/16f,hitboxScale.x/16f);
 		gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,Vector2.zero,damage,hitboxDuration,knockback,false,"noFaction",false);
 	}
 }

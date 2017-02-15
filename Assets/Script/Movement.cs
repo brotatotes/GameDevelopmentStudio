@@ -25,9 +25,11 @@ public class Movement : MonoBehaviour {
 	BoxCollider2D bCollider;
 	RaycastOrigins raycastOrigins;
 	public CollisionInfo collisions;
+	SpriteRenderer sprite;
 
 	void Start() {
 		bCollider = GetComponent<BoxCollider2D> ();
+		sprite = GetComponent<SpriteRenderer> ();
 		CalculateRaySpacing ();
 	}
 
@@ -239,6 +241,13 @@ public class Movement : MonoBehaviour {
 	}
 	public void setFacingLeft(bool left) {
 		facingLeft = left;
+		if (sprite) {
+			if (facingLeft) {
+				sprite.flipX = true;
+			} else {
+				sprite.flipX = false;
+			}
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ public class fan : MonoBehaviour {
 	public GameObject hitboxClass;
 	public bool facingLeft = true;
 	continuousHitbox mHitbox;
+	Movement movement;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,7 @@ public class fan : MonoBehaviour {
 
 		if (gameObject.GetComponent<Spawnable> ().angleDiff.x < 0) {
 			facingLeft = true;
+			GetComponent<SpriteRenderer>().flipX = true;
 		} else {
 			facingLeft = false;
 		}
@@ -35,6 +37,8 @@ public class fan : MonoBehaviour {
 			mHitbox.setKnockback (new Vector2(knockback.x,knockback.y));
 		} else {
 			mHitbox.setKnockback (new Vector2(knockback.x * -1.0f,knockback.y));
+			ParticleSystem ps = gameObject.GetComponentInChildren<ParticleSystem> ();
+			ps.transform.rotation = Quaternion.Euler (0.0f, 270.0f, 0.0f);
 		}
 	}
 	
