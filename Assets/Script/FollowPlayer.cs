@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (Controller2D))]
+[RequireComponent (typeof (Movement))]
 public class FollowPlayer : MonoBehaviour {
 
 	public Player followObj;
 	public float bottomOfTheWorld = -10.0f;
-	public Controller2D controller;
+	public Movement controller;
 	float gravity;
 	float jumpVelocity;
 	Vector3 velocity;
@@ -21,11 +21,9 @@ public class FollowPlayer : MonoBehaviour {
 	float moveSpeed = 8.0f;
 	public bool targetSet = true;
 
-	// Use this for initialization
-	private GameManager gameManager;
+
 	void Start () {
-		controller = GetComponent<Controller2D> ();
-		gameManager = FindObjectOfType<GameManager> ();
+		controller = GetComponent<Movement> ();
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		controller.setGravityScale(gravity);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;

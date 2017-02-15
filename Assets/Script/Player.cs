@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (Controller2D))]
+[RequireComponent (typeof (Movement))]
 [RequireComponent (typeof (Fighter))]
 public class Player : MonoBehaviour {
 
@@ -29,13 +29,13 @@ public class Player : MonoBehaviour {
 	public bool spawnNextToEndzone = false;
 
 	public bool attemptingInteraction = false;
-	Controller2D controller;
+	Movement controller;
 		
 
 	private GameManager gameManager;
 
 	internal void Start() {
-		controller = GetComponent<Controller2D> ();
+		controller = GetComponent<Movement> ();
 		Reset ();
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		controller.setGravityScale(gravity);

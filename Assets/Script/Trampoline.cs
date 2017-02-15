@@ -11,9 +11,9 @@ public class Trampoline : MonoBehaviour {
 
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.GetComponent<Controller2D>()) {
-			Controller2D otherObj = other.gameObject.GetComponent<Controller2D> ();
-			float counterF = (other.gameObject.GetComponent<Controller2D> ().velocity.y * (1/Time.deltaTime));
+		if (other.gameObject.GetComponent<Movement>()) {
+			Movement otherObj = other.gameObject.GetComponent<Movement> ();
+			float counterF = (other.gameObject.GetComponent<Movement> ().velocity.y * (1/Time.deltaTime));
 			if (fixedKnockback) {
 				
 				if (counterF > 0.0f) {
