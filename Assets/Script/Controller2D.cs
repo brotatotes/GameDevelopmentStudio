@@ -145,6 +145,9 @@ public class Controller2D : MonoBehaviour {
 
 			if (hit && !hit.collider.isTrigger) {
 				velocity.y = (hit.distance - skinWidth) * directionY;
+				if ((directionY > 0) && accumulatedVelocity.y > 0) {
+					accumulatedVelocity.y = -(accumulatedVelocity.y *0.7f);
+				}
 				rayLength = hit.distance;
 
 				if (collisions.climbingSlope) {
