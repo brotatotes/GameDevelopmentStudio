@@ -65,7 +65,6 @@ public class Player : MonoBehaviour {
 
 		float inputX = 0.0f;
 		float inputY = 0.0f;
-
 		if (Input.GetKey(leftKey)) { 
 			controller.setFacingLeft (true);
 			inputX = -1.0f; 

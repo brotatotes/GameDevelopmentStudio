@@ -53,6 +53,11 @@ public class FollowPlayer : MonoBehaviour {
 		float targetVelocityX = inputX * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 		Vector2 input = new Vector2 (inputX, inputY);
+		//Debug.Log (controller.falling);
+		//Debug.Log ((controller.falling == "right"));
+		if ((controller.falling == "left" || controller.falling == "right") && controller.collisions.below) {
+			velocity.y = jumpVelocity;
+		}
 		velocity.y += gravity * Time.deltaTime;
 
 		controller.Move (velocity, input);
