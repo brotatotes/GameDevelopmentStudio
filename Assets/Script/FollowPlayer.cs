@@ -59,9 +59,5 @@ public class FollowPlayer : MonoBehaviour {
 		velocity.y += gravity * Time.deltaTime;
 
 		controller.Move (velocity, input);
-		controller.alive = transform.position.y >= bottomOfTheWorld && controller.health > 0;
-		if (!controller.alive) {
-			Destroy (gameObject);
-		}
 	}
 }

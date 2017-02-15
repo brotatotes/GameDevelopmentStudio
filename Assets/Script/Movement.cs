@@ -13,10 +13,7 @@ public class Movement : MonoBehaviour {
 	public Vector2 accumulatedVelocity = Vector2.zero;
 	public bool isGravity = true;
 	public float gravityScale = 40.0f;
-	public float health = 100.0f;
-	public float energy = 100.0f;
-	public bool alive = true;
-	public string faction = "noFaction";
+
 	public bool facingLeft = false;
 
 	float maxClimbAngle = 80;
@@ -72,10 +69,6 @@ public class Movement : MonoBehaviour {
 		velocity.x = veloc.x;
 		velocity.x += (accumulatedVelocity.x * Time.deltaTime);
 		velocity.y = veloc.y;
-		//if (isGravity) {
-		//	velocity.y += (gravityScale * Time.deltaTime);
-			//	Debug.Log (veloc.y);
-		//}
 		//Debug.Log (velocity.y);
 		velocity.y += (accumulatedVelocity.y * Time.deltaTime);
 		//Debug.Log (velocity.y);
@@ -247,14 +240,5 @@ public class Movement : MonoBehaviour {
 	public void setFacingLeft(bool left) {
 		facingLeft = left;
 	}
-	public void damageObj(float damage) {
-		//Debug.Log ("Damage Taken. Health before: " + health);
-		health = health - damage;
-		//Debug.Log("Health afterwards: " + health);
-		if (health < 0) {
-			alive = false;
-		} else {
-			alive = true;
-		}
-	}
+
 }

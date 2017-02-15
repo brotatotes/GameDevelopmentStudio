@@ -14,8 +14,11 @@ public class Fighter : MonoBehaviour {
 	public Vector2 offset = new Vector2(0f,0f);
 
 	float currentCooldown = 0.0f;
+	string myFac;
 	// Use this for initialization
-	void Start () {}
+	void Start () {
+		myFac = gameObject.GetComponent<Attackable> ().faction;
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,7 +30,6 @@ public class Fighter : MonoBehaviour {
 	public void tryAttack() {
 		if (currentCooldown <= 0.0f) {
 			currentCooldown = attackCooldown;
-			string myFac = gameObject.GetComponent<Movement> ().faction;
 			Vector2 realKB = knockback;
 			Vector2 realOff = offset;
 			if (gameObject.GetComponent<Movement> ().facingLeft) {

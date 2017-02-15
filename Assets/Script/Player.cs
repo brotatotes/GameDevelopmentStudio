@@ -3,9 +3,8 @@ using System.Collections;
 
 [RequireComponent (typeof (Movement))]
 [RequireComponent (typeof (Fighter))]
+[RequireComponent (typeof (Attackable))]
 public class Player : MonoBehaviour {
-
-	public float bottomOfTheWorld = -10.0f;
 
 	public Vector2 startPosition;
 	public float jumpHeight = 4.0f;
@@ -30,12 +29,14 @@ public class Player : MonoBehaviour {
 
 	public bool attemptingInteraction = false;
 	Movement controller;
+	Attackable attackable;
 		
 
 	private GameManager gameManager;
 
 	internal void Start() {
 		controller = GetComponent<Movement> ();
+		attackable = GetComponent<Attackable> ();
 		Reset ();
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		controller.setGravityScale(gravity);
@@ -51,8 +52,7 @@ public class Player : MonoBehaviour {
 			startPosition = new Vector2 (-4.0f, 1.5f);
 		transform.position = startPosition;
 		controller.accumulatedVelocity = Vector2.zero;
-		controller.alive = true;
-		controller.health = 100.0f;
+		attackable.resetHealth ();
 		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
 		// reset should also bring back the startblock, if we want to keep using it.
 	}
@@ -92,11 +92,10 @@ public class Player : MonoBehaviour {
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 		Vector2 input = new Vector2 (inputX, inputY);
 		velocity.y += gravity * Time.deltaTime;
+		//Debug.Log (gravity);
 		controller.Move (velocity, input);
 
-		controller.alive = transform.position.y >= bottomOfTheWorld && controller.health > 0;
-
-		if (!controller.alive) {
+		if (!attackable.alive) {
 			gameManager.gameOver = true;
 			gameManager.winner = 2;
 			Reset ();

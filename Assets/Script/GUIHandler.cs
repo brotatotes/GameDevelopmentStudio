@@ -38,7 +38,7 @@ public class GUIHandler : MonoBehaviour {
 	void Update() {
 
 		var P1 = FindObjectOfType<Player> ();
-		var P1Controller = P1.GetComponent<Movement> ();
+		var P1Controller = P1.GetComponent<Attackable> ();
 		var P2 = FindObjectOfType<PlayerCursor> ();
 		P2EnergyBar.value = P2.currentPower;
 
