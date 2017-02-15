@@ -30,6 +30,7 @@ public class Player : MonoBehaviour {
 
 	public bool attemptingInteraction = false;
 	Controller2D controller;
+		
 
 	private GameManager gameManager;
 
