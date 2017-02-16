@@ -14,6 +14,7 @@ public class hitbox : MonoBehaviour {
 	public bool toFollow = false;
 	public Vector2 followOffset;
 
+
 	// Use this for initialization
 	void Start () {
 	}

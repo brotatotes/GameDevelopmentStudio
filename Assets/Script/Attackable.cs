@@ -11,6 +11,8 @@ public class Attackable : MonoBehaviour {
 	public bool alive = true;
 	public bool immortal = false;
 	public string faction = "noFaction";
+	public GameObject HitEffect;
+	public GameObject HealEffect;
 
 	Movement movementController;
 	// Use this for initialization
@@ -30,6 +32,11 @@ public class Attackable : MonoBehaviour {
 	public void damageObj(float damage) {
 		//Debug.Log ("Damage Taken. Health before: " + health);
 		health = Mathf.Min(max_health, health - damage);
+		if (damage > 0) {
+			GameObject explosion = GameObject.Instantiate (HitEffect, transform.position, Quaternion.identity);
+		} else {
+			GameObject explosion = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
+		}
 		//Debug.Log("Health afterwards: " + health);
 		if (health < 0) {
 			alive = false;
