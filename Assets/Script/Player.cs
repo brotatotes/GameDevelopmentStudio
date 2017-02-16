@@ -30,6 +30,12 @@ public class Player : MonoBehaviour {
 	public bool attemptingInteraction = false;
 	Movement controller;
 	Attackable attackable;
+	public bool canDoubleJump = true;
+
+	float timeSinceLeft = 0.0f;
+	float timeSinceRight = 0.0f;
+	float timeSinceLastDash = 0.0f;
+	public float dashThreashold = 0.6f;
 		
 
 	private GameManager gameManager;
@@ -58,9 +64,35 @@ public class Player : MonoBehaviour {
 	}
 
 	internal void Update() {
+		timeSinceLeft += Time.deltaTime;
+		timeSinceRight += Time.deltaTime;
+		timeSinceLastDash += Time.deltaTime;
+		if (Input.GetKeyDown (leftKey) ) {
+			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
+				&& timeSinceLastDash > 1.0f) {
+				controller.addToVelocity (new Vector2 (-45.0f, 0.0f));
+				attackable.energy -= 25.0f;
+				timeSinceLastDash = 0.0f;
+			}
+			timeSinceRight += dashThreashold;
+			timeSinceLeft = 0.0f;
+		}
+		if (Input.GetKeyDown (rightKey)) {
+			if (timeSinceRight < dashThreashold && attackable.energy > 25.0f
+				&& timeSinceLastDash > 1.0f) {
+				controller.addToVelocity(new Vector2(45.0f,0.0f));
+				attackable.energy -= 25.0f;
+				timeSinceLastDash = 0.0f;
+			}
+			timeSinceLeft += dashThreashold;
+			timeSinceRight = 0.0f;
+		}
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0.0f;
+		}
+		if (controller.collisions.below) {
+			canDoubleJump = true;
 		}
 
 		float inputX = 0.0f;
@@ -84,8 +116,14 @@ public class Player : MonoBehaviour {
 			attemptingInteraction = false;
 		}
 				
-		if (Input.GetKey (jumpKey) && controller.collisions.below) {
-			velocity.y = jumpVelocity;
+		if (Input.GetKeyDown (jumpKey)) {
+			if (controller.collisions.below) {
+				velocity.y = jumpVelocity;
+			} else if (canDoubleJump && attackable.energy > 30.0f) {
+				velocity.y = jumpVelocity;
+				canDoubleJump = false;
+				attackable.energy = attackable.energy - 30.0f;
+			}
 		}
 
 		float targetVelocityX = inputX * moveSpeed;

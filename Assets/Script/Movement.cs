@@ -42,12 +42,16 @@ public class Movement : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Mathf.Abs(accumulatedVelocity.x) > 0.05f) {
-			accumulatedVelocity.x *= 0.95f;
+		if (Mathf.Abs(accumulatedVelocity.x) > 0.1f) {
+			if (collisions.below) {
+				accumulatedVelocity.x *= 0.9f;
+			} else {
+				accumulatedVelocity.x *= 0.95f;
+			}
 		} else {
 			accumulatedVelocity.x = 0f;
 		}
-		if (Mathf.Abs(accumulatedVelocity.y) > 0.05f) {
+		if (Mathf.Abs(accumulatedVelocity.y) > 0.1f) {
 			accumulatedVelocity.y *= 0.95f;
 		} else {
 			accumulatedVelocity.y = 0f;
