@@ -31,6 +31,7 @@ public class PlayerCursor : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);
+		deadX = FindObjectOfType<GameManager> ().startX;
 	}
 	
 	// Update is called once per frame
@@ -38,14 +39,14 @@ public class PlayerCursor : MonoBehaviour {
 		if (currentPower < 100.0f) {
 			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
 		}
-		if (Input.mousePosition.y < (Screen.height - deadY) || Input.mousePosition.x < FindObjectOfType<GameManager>().startX) {
+		if (Input.mousePosition.y < (Screen.height - deadY) || Input.mousePosition.x < deadX) {
 			Vector3 currMousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
 			if (Input.GetMouseButtonDown (0)) {
 				float cost = leftObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
 					if (leftObj.GetComponent<Spawnable> ().instantDeploy) {
-						GameObject obj = Instantiate (leftObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+						GameObject obj = Instantiate (leftObj, GetPlacePos(leftObj,currMousePos), Quaternion.identity);
 						obj.GetComponent<Spawnable> ().angleDiff = Vector2.zero;
 						currentPower = currentPower - cost;
 						toCreateL = 0f;
@@ -56,7 +57,6 @@ public class PlayerCursor : MonoBehaviour {
 				}
 			}
 			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
-				Debug.Log ("Before Instantiate");
 				GameObject obj = Instantiate (leftObj, new Vector3(initDownL.x, initDownL.y,0), Quaternion.identity);
 				obj.GetComponent<Spawnable> ().angleDiff = new Vector2 (currMousePos.x - initDownL.x, currMousePos.y - initDownL.y);
 				//Instantiate (bombClass, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
@@ -67,7 +67,7 @@ public class PlayerCursor : MonoBehaviour {
 				float cost = rightObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
 					if (rightObj.GetComponent<Spawnable> ().instantDeploy) {
-						GameObject obj = Instantiate (rightObj, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
+						GameObject obj = Instantiate (rightObj, GetPlacePos(leftObj,currMousePos), Quaternion.identity);
 						obj.GetComponent<Spawnable> ().angleDiff = Vector2.zero;
 						currentPower = currentPower - cost;
 						toCreateR = 0f;
@@ -91,6 +91,45 @@ public class PlayerCursor : MonoBehaviour {
 			Instantiate (fanItem, new Vector3 (currMousePos.x, currMousePos.y, 0), Quaternion.identity);
 			currentPower = currentPower - fanCost;
 		}*/
+	}
+
+	// expects a spawnable object, gets position to be placed, which handles special case of block.
+	// block should never be placed on top of P1
+	public Vector3 GetPlacePos(GameObject obj, Vector3 mousePos) {
+		if (obj.name != "Block") {
+			return new Vector3 (mousePos.x, mousePos.y, 0);
+		} else {
+			GameObject P1 = FindObjectOfType<Player> ().gameObject;
+			float Playerx = P1.transform.position.x;
+			float Playery = P1.transform.position.y;
+			float bufferx = obj.GetComponent<Renderer> ().bounds.size.x/2 + P1.GetComponent <Renderer> ().bounds.size.x/2;
+			float buffery = obj.GetComponent<Renderer> ().bounds.size.y/2 + P1.GetComponent <Renderer> ().bounds.size.y/2;
+			if (mousePos.x < Playerx - bufferx || mousePos.x > Playerx + bufferx || mousePos.y < Playery - buffery || mousePos.y > Playery + buffery) {
+				return new Vector3 (mousePos.x, mousePos.y, 0);
+			} else {
+				// get a new location to place block
+				float leftx = mousePos.x - (Playerx-bufferx);
+				float rightx = (Playerx + bufferx) - mousePos.x;
+				float topy = (Playery + buffery) - mousePos.y;
+				float boty = mousePos.y - (Playery-buffery);
+				float finalx;
+				float finaly;
+				if (leftx < rightx)
+					finalx = Playerx - bufferx;
+				else
+					finalx = Playerx + bufferx;
+
+				if (boty < topy)
+					finaly = Playery - buffery;
+				else
+					finaly = Playery + buffery;
+
+				if (Mathf.Abs (finaly - mousePos.y) < Mathf.Abs (finalx - mousePos.x))
+					return new Vector3 (mousePos.x, finaly, 0);
+				else
+					return new Vector3 (finalx, mousePos.y, 0);
+			}
+		}
 	}
 
 	void OnMouseEnter(){
