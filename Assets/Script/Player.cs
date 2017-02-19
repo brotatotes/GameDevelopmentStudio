@@ -36,11 +36,15 @@ public class Player : MonoBehaviour {
 	float timeSinceRight = 0.0f;
 	float timeSinceLastDash = 0.0f;
 	public float dashThreashold = 0.6f;
-		
+
+	public bool grounded;
 
 	private GameManager gameManager;
 
+	Animator anim;
+
 	internal void Start() {
+		anim = GetComponent<Animator> ();
 		controller = GetComponent<Movement> ();
 		attackable = GetComponent<Attackable> ();
 		Reset ();
@@ -67,6 +71,7 @@ public class Player : MonoBehaviour {
 		timeSinceLeft += Time.deltaTime;
 		timeSinceRight += Time.deltaTime;
 		timeSinceLastDash += Time.deltaTime;
+		anim.SetBool ("grounded", true);
 		if (Input.GetKeyDown (leftKey) ) {
 			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 1.0f) {
@@ -138,5 +143,7 @@ public class Player : MonoBehaviour {
 			gameManager.winner = 2;
 			Reset ();
 		}
+			
+		anim.SetFloat ("speed", Mathf.Abs (velocity.x));
 	}
 }

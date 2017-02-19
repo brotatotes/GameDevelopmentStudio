@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour {
 	public Vector2 accumulatedVelocity = Vector2.zero;
 	public bool isGravity = true;
 	public float gravityScale = 40.0f;
-
+	public float speed;
 	public bool facingLeft = false;
 
 	float maxClimbAngle = 80;
@@ -56,7 +56,7 @@ public class Movement : MonoBehaviour {
 		} else {
 			accumulatedVelocity.y = 0f;
 		}
-			
+
 	}
 
 	public void addToVelocity(Vector2 veloc )
@@ -90,6 +90,7 @@ public class Movement : MonoBehaviour {
 		}
 
 		transform.Translate (velocity);
+		speed = Mathf.Abs(velocity.x);
 	}
 
 	void HorizontalCollisions(ref Vector2 velocity) {
