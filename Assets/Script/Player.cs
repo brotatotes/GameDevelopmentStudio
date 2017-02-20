@@ -71,7 +71,8 @@ public class Player : MonoBehaviour {
 		timeSinceLeft += Time.deltaTime;
 		timeSinceRight += Time.deltaTime;
 		timeSinceLastDash += Time.deltaTime;
-		anim.SetBool ("grounded", true);
+		anim.SetBool ("grounded", controller.collisions.below);
+		anim.SetBool ("tryingToMove", false);
 		if (Input.GetKeyDown (leftKey) ) {
 			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 1.0f) {
@@ -103,10 +104,12 @@ public class Player : MonoBehaviour {
 		float inputX = 0.0f;
 		float inputY = 0.0f;
 		if (Input.GetKey(leftKey)) { 
+			anim.SetBool ("tryingToMove",true);
 			controller.setFacingLeft (true);
 			inputX = -1.0f; 
 		}  
 		else if (Input.GetKey(rightKey)) { 
+			anim.SetBool ("tryingToMove",true);
 			inputX = 1.0f; 
 			controller.setFacingLeft (false);
 		}
@@ -144,6 +147,5 @@ public class Player : MonoBehaviour {
 			Reset ();
 		}
 			
-		anim.SetFloat ("speed", Mathf.Abs (velocity.x));
 	}
 }
