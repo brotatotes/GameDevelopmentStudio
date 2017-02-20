@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour {
 	public GameObject godPower;
 	public Dictionary<string, Button> allButtons;
 	public Dictionary<string, Spawnable> allPowers;
+	public List<GodButtons> godButtons = new List<GodButtons> (); 
+	public int currIndex = 0;
+	public int maxButtons = 0;
 
 	public float startX; // used by PlayerCursor for deadZone
 
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour {
 		float maxX = 50.0f;
 		foreach (Object obj in allObjs) {
 			GameObject go = (GameObject)obj;
+
 			if (go.GetComponent<Spawnable> ()) {
 				godPowers.Add (go);
 				Spawnable spawnInfo = go.GetComponent<Spawnable> ();
@@ -64,6 +68,9 @@ public class GameManager : MonoBehaviour {
 				tempButton.GetComponentsInChildren<Text> () [0].text = spawnInfo.name;
 				buttonObj.GetComponent<GodButtons> ().godCursor = godCursor;
 				buttonObj.GetComponent<GodButtons> ().spawnObj = go;
+				maxButtons = maxButtons + 1;
+				godButtons.Add (buttonObj.GetComponent<GodButtons> ());
+				buttonObj.GetComponent<GodButtons> ().buttonID = maxButtons;
 				if (!godCursor.GetComponent<PlayerCursor> ().initLeft) {
 					godCursor.GetComponent<PlayerCursor> ().leftObj = go;
 					godCursor.GetComponent<PlayerCursor> ().initLeft = true;

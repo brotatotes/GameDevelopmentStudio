@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class PlayerCursor : MonoBehaviour {
@@ -27,11 +27,14 @@ public class PlayerCursor : MonoBehaviour {
 	float toCreateR = 0f;
 	Vector3 initDownL;
 	Vector3 initDownR;
+	GameManager gm;
+
 
 	// Use this for initialization
 	void Start () {
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);
 		deadX = FindObjectOfType<GameManager> ().startX;
+		gm = FindObjectOfType<GameManager> ();
 	}
 	
 	// Update is called once per frame
@@ -39,6 +42,28 @@ public class PlayerCursor : MonoBehaviour {
 		if (currentPower < 100.0f) {
 			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
 		}
+		if (Input.mouseScrollDelta.y == -1) {
+			Debug.Log ("scroll down");
+			Debug.Log (gm.godButtons.Count);
+			int nextInd = gm.currIndex - 1;
+			if (nextInd < 0) {
+				nextInd = gm.godButtons.Count - 1;
+			}
+			Debug.Log (nextInd);
+			gm.currIndex = nextInd;
+			gm.godButtons [nextInd].setSpawnObj ("left");
+		}
+		if (Input.mouseScrollDelta.y == 1) {
+			Debug.Log ("scroll up");
+			int nextInd = gm.currIndex + 1;
+			if (nextInd >= gm.godButtons.Count) {
+				nextInd = 0;
+			}
+			Debug.Log (nextInd);
+			gm.currIndex = nextInd;
+			gm.godButtons [nextInd].setSpawnObj ("left");
+		}
+
 		if (Input.mousePosition.y < (Screen.height - deadY) || Input.mousePosition.x < deadX) {
 			Vector3 currMousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
@@ -54,7 +79,7 @@ public class PlayerCursor : MonoBehaviour {
 						initDownL = currMousePos;
 						toCreateL = cost;
 					}
-				}
+				} 
 			}
 			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
 				GameObject obj = Instantiate (leftObj, new Vector3(initDownL.x, initDownL.y,0), Quaternion.identity);
