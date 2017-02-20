@@ -27,7 +27,7 @@ public class Fighter : MonoBehaviour {
 		}
 	}
 
-	public void tryAttack() {
+	public bool tryAttack() {
 		if (currentCooldown <= 0.0f) {
 			currentCooldown = attackCooldown;
 			Vector2 realKB = knockback;
@@ -37,6 +37,8 @@ public class Fighter : MonoBehaviour {
 				realOff = new Vector2 (-offset.x, offset.y);
 			}
 			gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,realOff,damage,hitboxDuration,realKB,true,myFac,true);
+			return true;
 		}
+		return false;
 	}
 }

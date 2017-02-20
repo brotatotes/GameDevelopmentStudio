@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
 
 public class PlayerCursor : MonoBehaviour {
@@ -36,7 +36,8 @@ public class PlayerCursor : MonoBehaviour {
 		deadX = FindObjectOfType<GameManager> ().startX;
 		gm = FindObjectOfType<GameManager> ();
 	}
-	
+
+
 	// Update is called once per frame
 	void Update() {
 		if (currentPower < 100.0f) {

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent (typeof (BoxCollider2D))]
 public class Movement : MonoBehaviour {
@@ -26,6 +26,8 @@ public class Movement : MonoBehaviour {
 	RaycastOrigins raycastOrigins;
 	public CollisionInfo collisions;
 	SpriteRenderer sprite;
+	List<Vector2> CharForces = new List<Vector2>();
+	List<float> timeForces = new List<float>();
 
 	void Start() {
 		bCollider = GetComponent<BoxCollider2D> ();
@@ -65,6 +67,10 @@ public class Movement : MonoBehaviour {
 		accumulatedVelocity += veloc;
 		//Debug.Log ("accumulatedVel: " + accumulatedVelocity);
 	}
+	public void addSelfForce(Vector2 force, float duration) {
+		CharForces.Add (force);
+		timeForces.Add (duration);
+	}
 
 	public void Move(Vector2 veloc, Vector2 input) {
 		//Debug.Log ("----");
@@ -73,10 +79,20 @@ public class Movement : MonoBehaviour {
 
 		veloc = veloc * Time.deltaTime;
 		velocity.x = veloc.x;
-		velocity.x += (accumulatedVelocity.x * Time.deltaTime);
 		velocity.y = veloc.y;
 		//Debug.Log (velocity.y);
+		velocity.x += (accumulatedVelocity.x * Time.deltaTime);
 		velocity.y += (accumulatedVelocity.y * Time.deltaTime);
+
+		for (int i = CharForces.Count - 1; i >= 0; i--) {
+			Vector2 selfVec = CharForces [i];
+			velocity += (selfVec * Time.deltaTime);
+			timeForces [i] = timeForces [i] - Time.deltaTime;
+			if (timeForces [i] < 0f) {
+				CharForces.RemoveAt (i);
+				timeForces.RemoveAt (i);
+			}
+		}
 		//Debug.Log (velocity.y);
 		UpdateRaycastOrigins ();
 		collisions.Reset ();

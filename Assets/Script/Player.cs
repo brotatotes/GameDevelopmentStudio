@@ -36,6 +36,8 @@ public class Player : MonoBehaviour {
 	float timeSinceRight = 0.0f;
 	float timeSinceLastDash = 0.0f;
 	public float dashThreashold = 0.6f;
+	float timeSinceLastAttack = 0.0f;
+	public float dashTime = 0.15f;
 
 	public bool grounded;
 
@@ -71,12 +73,13 @@ public class Player : MonoBehaviour {
 		timeSinceLeft += Time.deltaTime;
 		timeSinceRight += Time.deltaTime;
 		timeSinceLastDash += Time.deltaTime;
+		timeSinceLastAttack += Time.deltaTime;
 		anim.SetBool ("grounded", controller.collisions.below);
 		anim.SetBool ("tryingToMove", false);
 		if (Input.GetKeyDown (leftKey) ) {
 			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
-				&& timeSinceLastDash > 1.0f) {
-				controller.addToVelocity (new Vector2 (-45.0f, 0.0f));
+				&& timeSinceLastDash > 0.5f) {
+				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
 				attackable.energy -= 25.0f;
 				timeSinceLastDash = 0.0f;
 			}
@@ -85,8 +88,8 @@ public class Player : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (rightKey)) {
 			if (timeSinceRight < dashThreashold && attackable.energy > 25.0f
-				&& timeSinceLastDash > 1.0f) {
-				controller.addToVelocity(new Vector2(45.0f,0.0f));
+				&& timeSinceLastDash > 0.5f) {
+				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
 				attackable.energy -= 25.0f;
 				timeSinceLastDash = 0.0f;
 			}
@@ -118,7 +121,9 @@ public class Player : MonoBehaviour {
 		else if (Input.GetKey(downKey) ){ inputY = -1.0f; }
 
 		if (Input.GetKeyDown (downKey)) {
-			gameObject.GetComponent<Fighter> ().tryAttack ();
+			if (gameObject.GetComponent<Fighter> ().tryAttack ()) {
+				timeSinceLastAttack = 0.0f;
+			}
 			attemptingInteraction = true;
 		} else {
 			attemptingInteraction = false;
