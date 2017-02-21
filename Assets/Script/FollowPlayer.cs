@@ -18,7 +18,7 @@ public class FollowPlayer : MonoBehaviour {
 	public string playerName = "Player 1";
 	float accelerationTimeAirborne = .2f;
 	float accelerationTimeGrounded = .1f;
-	float moveSpeed = 8.0f;
+	public float moveSpeed = 8.0f;
 	public bool targetSet = true;
 
 
