@@ -125,7 +125,7 @@ public class Player : MonoBehaviour {
 			if (gameObject.GetComponent<Fighter> ().tryAttack ()) {
 				timeSinceLastAttack = 0.0f;
 				anim.SetBool ("isattacking", true);
-				Debug.Log ("goteeem");
+//				Debug.Log ("goteeem");
 			}
 			attemptingInteraction = true;
 		} else {

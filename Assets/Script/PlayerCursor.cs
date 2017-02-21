@@ -128,8 +128,8 @@ public class PlayerCursor : MonoBehaviour {
 			GameObject P1 = FindObjectOfType<Player> ().gameObject;
 			float Playerx = P1.transform.position.x;
 			float Playery = P1.transform.position.y;
-			float bufferx = obj.GetComponent<Renderer> ().bounds.size.x/2 + P1.GetComponent <Renderer> ().bounds.size.x/2;
-			float buffery = obj.GetComponent<Renderer> ().bounds.size.y/2 + P1.GetComponent <Renderer> ().bounds.size.y/2;
+			float bufferx = obj.GetComponent<Renderer> ().bounds.size.x/2 + P1.GetComponent <Renderer> ().bounds.size.x/2 + 0.1f;
+			float buffery = obj.GetComponent<Renderer> ().bounds.size.y/2 + P1.GetComponent <Renderer> ().bounds.size.y/2 + 0.1f;
 			if (mousePos.x < Playerx - bufferx || mousePos.x > Playerx + bufferx || mousePos.y < Playery - buffery || mousePos.y > Playery + buffery) {
 				return new Vector3 (mousePos.x, mousePos.y, 0);
 			} else {
