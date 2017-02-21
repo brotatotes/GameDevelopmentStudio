@@ -76,6 +76,7 @@ public class Player : MonoBehaviour {
 		timeSinceLastAttack += Time.deltaTime;
 		anim.SetBool ("grounded", controller.collisions.below);
 		anim.SetBool ("tryingToMove", false);
+		anim.SetBool ("isattacking", false);
 		if (Input.GetKeyDown (leftKey) ) {
 			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
@@ -123,6 +124,8 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (downKey)) {
 			if (gameObject.GetComponent<Fighter> ().tryAttack ()) {
 				timeSinceLastAttack = 0.0f;
+				anim.SetBool ("isattacking", true);
+				Debug.Log ("goteeem");
 			}
 			attemptingInteraction = true;
 		} else {
