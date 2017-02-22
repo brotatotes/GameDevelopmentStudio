@@ -12,6 +12,7 @@ public class GUIHandler : MonoBehaviour {
 	public Slider P1HealthBar;
 	public Slider P1EnergyBar;
 	public Slider P2EnergyBar;
+	public Image P2EnergyBarFill;
 
 	public Dictionary<string, Button> allButtons;
 	public Dictionary<string, Spawnable> allPowers;
@@ -36,6 +37,8 @@ public class GUIHandler : MonoBehaviour {
 	}
 
 	void Update() {
+//		Debug.Log (P2EnergyBarFill);
+//		P2EnergyBarFill.color = Color.green;
 
 		var P1 = FindObjectOfType<Player> ();
 		var P1Controller = P1.GetComponent<Attackable> ();
