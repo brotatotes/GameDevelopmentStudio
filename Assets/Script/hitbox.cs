@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 public class hitbox : MonoBehaviour {
 
@@ -20,6 +21,7 @@ public class hitbox : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
+	//[ServerCallback]
 	void Update () {
 		if (hitboxDuration > 0.0f && timedHitbox) {
 			hitboxDuration = hitboxDuration - Time.deltaTime;
@@ -58,11 +60,15 @@ public class hitbox : MonoBehaviour {
 
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
+		//if (!isServer)
+		//	return;
+		Debug.Log("On Trigger Enter");
 		if (other.gameObject.GetComponent<Attackable>() &&
 			!collidedObjs.Contains (other.gameObject.GetComponent<Attackable> ())) {
 			Attackable otherObj = other.gameObject.GetComponent<Attackable> ();
 			if (faction == "noFaction" || otherObj.faction == "noFaction" ||
 			    faction != otherObj.faction) {
+				Debug.Log ("Registering Hit");
 				otherObj.damageObj (damage);
 				if (fixedKnockback) {
 					otherObj.addToVelocity (knockback);
@@ -73,7 +79,10 @@ public class hitbox : MonoBehaviour {
 					float forceX = Mathf.Cos (angle) * magnitude;
 					float forceY = Mathf.Sin (angle) * magnitude;
 					Vector2 force = new Vector2 (-forceX, -forceY);
-					float counterF = (other.gameObject.GetComponent<Movement> ().velocity.y * (1 / Time.deltaTime));
+					float counterF = 0f;
+					if (other.gameObject.GetComponent<Movement> ()) {
+						counterF = (other.gameObject.GetComponent<Movement> ().velocity.y * (1 / Time.deltaTime));
+					}
 					if (counterF < 0) {
 						force.y = force.y - counterF;
 					}

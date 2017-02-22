@@ -20,6 +20,8 @@ public class bomb : MonoBehaviour {
 	void OnDestroy () {
 		GameObject explosion = GameObject.Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);
 		explosion.transform.localScale = new Vector3 (hitboxScale.x/16f,hitboxScale.y/16f,hitboxScale.x/16f);
+		Debug.Log ("trying to create hitbox");
+		Debug.Log (gameObject.GetComponent<HitboxMaker> ());
 		gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,Vector2.zero,damage,hitboxDuration,knockback,false,"noFaction",false);
 	}
 }

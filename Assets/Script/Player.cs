@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 [RequireComponent (typeof (Movement))]
 [RequireComponent (typeof (Fighter))]
 [RequireComponent (typeof (Attackable))]
-public class Player : MonoBehaviour {
+
+public class Player : NetworkBehaviour {
 
 	public Vector2 startPosition;
 	public float jumpHeight = 4.0f;
@@ -18,12 +20,6 @@ public class Player : MonoBehaviour {
 	float jumpVelocity;
 	Vector3 velocity;
 	float velocityXSmoothing;
-
-	public string leftKey = "a";
-	public string rightKey = "d";
-	public string upKey = "space";
-	public string downKey = "s";
-	public string jumpKey = "w";
 
 	public bool spawnNextToEndzone = false;
 
@@ -45,7 +41,51 @@ public class Player : MonoBehaviour {
 
 	Animator anim;
 
+	bool leftDown;
+	bool left;
+	bool rightDown;
+	bool right;
+	bool attackDown;
+	bool jumpDown;
+
+	[ClientRpc]
+	public void RpcControls(bool lD, bool l, bool rD, bool r, bool aD, bool jD) {
+		leftDown = lD;
+		left = l;
+		rightDown = rD;
+		right = r;
+		attackDown = aD;
+		jumpDown = jD;
+		if (lD) {
+			Debug.Log (netId);
+		}
+	}
+	[Command]
+	public void CmdControls(bool lD, bool l, bool rD, bool r, bool aD, bool jD) {
+		leftDown = lD;
+		left = l;
+		rightDown = rD;
+		right = r;
+		attackDown = aD;
+		jumpDown = jD;
+		if (lD) {
+			Debug.Log (netId);
+		}
+	}
+	public void updateControls(bool lD, bool l, bool rD, bool r, bool aD, bool jD) {
+		leftDown = lD;
+		left = l;
+		rightDown = rD;
+		right = r;
+		attackDown = aD;
+		jumpDown = jD;
+		if (lD) {
+			Debug.Log (netId);
+		}
+	}
+
 	internal void Start() {
+
 		anim = GetComponent<Animator> ();
 		controller = GetComponent<Movement> ();
 		attackable = GetComponent<Attackable> ();
@@ -65,7 +105,7 @@ public class Player : MonoBehaviour {
 		transform.position = startPosition;
 		controller.accumulatedVelocity = Vector2.zero;
 		attackable.resetHealth ();
-		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
+		// FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
 		// reset should also bring back the startblock, if we want to keep using it.
 	}
 
@@ -77,7 +117,7 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("grounded", controller.collisions.below);
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
-		if (Input.GetKeyDown (leftKey) ) {
+		if (leftDown ) {
 			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
@@ -87,7 +127,7 @@ public class Player : MonoBehaviour {
 			timeSinceRight += dashThreashold;
 			timeSinceLeft = 0.0f;
 		}
-		if (Input.GetKeyDown (rightKey)) {
+		if (rightDown) {
 			if (timeSinceRight < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
 				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
@@ -107,21 +147,21 @@ public class Player : MonoBehaviour {
 
 		float inputX = 0.0f;
 		float inputY = 0.0f;
-		if (Input.GetKey(leftKey)) { 
+		if (left) { 
 			anim.SetBool ("tryingToMove",true);
 			controller.setFacingLeft (true);
 			inputX = -1.0f; 
 		}  
-		else if (Input.GetKey(rightKey)) { 
+		else if (right) { 
 			anim.SetBool ("tryingToMove",true);
 			inputX = 1.0f; 
 			controller.setFacingLeft (false);
 		}
 
-		if (Input.GetKey(upKey)) { inputY = 1.0f; } 
-		else if (Input.GetKey(downKey) ){ inputY = -1.0f; }
+		//if (Input.GetKey(upKey)) { inputY = 1.0f; } 
+		//else if (Input.GetKey(downKey) ){ inputY = -1.0f; }
 
-		if (Input.GetKeyDown (downKey)) {
+		if (attackDown) {
 			if (gameObject.GetComponent<Fighter> ().tryAttack ()) {
 				timeSinceLastAttack = 0.0f;
 				anim.SetBool ("isattacking", true);
@@ -132,7 +172,7 @@ public class Player : MonoBehaviour {
 			attemptingInteraction = false;
 		}
 				
-		if (Input.GetKeyDown (jumpKey)) {
+		if (jumpDown) {
 			if (controller.collisions.below) {
 				velocity.y = jumpVelocity;
 			} else if (canDoubleJump && attackable.energy > 30.0f) {
@@ -147,8 +187,10 @@ public class Player : MonoBehaviour {
 		Vector2 input = new Vector2 (inputX, inputY);
 		velocity.y += gravity * Time.deltaTime;
 		//Debug.Log (gravity);
-		controller.Move (velocity, input);
-
+		if (isLocalPlayer)
+			controller.Move (velocity, input);
+		else
+			controller.Move (new Vector2(0.0f,-0.01f), Vector2.zero);
 		if (!attackable.alive) {
 			gameManager.gameOver = true;
 			gameManager.winner = 2;

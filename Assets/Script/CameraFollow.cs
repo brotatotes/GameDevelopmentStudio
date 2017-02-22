@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using UnityEngine.Networking;
 
 public class CameraFollow : MonoBehaviour {
 
@@ -19,37 +20,61 @@ public class CameraFollow : MonoBehaviour {
 	float smoothVelocityY;
 
 	bool lookAheadStopped;
-
-	void Start() {
-		focusArea = new FocusArea (target.GetComponent<Collider2D>().bounds, focusAreaSize);
+	bool gameStarted = false;
+	bool targetFound = false;
+	/*
+	public override void OnStartClient(NetworkClient client)
+	{
+		gameStarted = true;
 	}
 
+	public override void OnStartHost()
+	{
+		gameStarted = true;
+	}
+	public override void OnStopClient()
+	{
+		gameStarted = false;
+	}
+	public override void OnStopHost() {
+		gameStarted = false;
+	}*/
+	void Start() {
+	}
+
+	public void setTarget( Movement tgt) {
+		Debug.Log ("setting follow target");
+		targetFound = true;
+		target = tgt;
+		focusArea = new FocusArea (target.GetComponent<Collider2D>().bounds, focusAreaSize);
+	}
 	void LateUpdate() {
-		focusArea.Update (target.GetComponent<Collider2D>().bounds);
+		if (targetFound && target) {
+			focusArea.Update (target.GetComponent<Collider2D> ().bounds);
 
-		Vector2 focusPosition = focusArea.centre + Vector2.up * verticalOffset;
+			Vector2 focusPosition = focusArea.centre + Vector2.up * verticalOffset;
 
 
-		if (focusArea.velocity.x != 0) {
-			lookAheadDirX = Mathf.Sign (focusArea.velocity.x);
-			if (Mathf.Sign(target.playerInput.x) == Mathf.Sign(focusArea.velocity.x) && target.playerInput.x != 0) {
-				lookAheadStopped = false;
-				targetLookAheadX = lookAheadDirX * lookAheadDstX;
-			}
-			else {
-				if (!lookAheadStopped) {
-					lookAheadStopped = true;
-					targetLookAheadX = currentLookAheadX + (lookAheadDirX * lookAheadDstX - currentLookAheadX)/4f;
+			if (focusArea.velocity.x != 0) {
+				lookAheadDirX = Mathf.Sign (focusArea.velocity.x);
+				if (Mathf.Sign (target.playerInput.x) == Mathf.Sign (focusArea.velocity.x) && target.playerInput.x != 0) {
+					lookAheadStopped = false;
+					targetLookAheadX = lookAheadDirX * lookAheadDstX;
+				} else {
+					if (!lookAheadStopped) {
+						lookAheadStopped = true;
+						targetLookAheadX = currentLookAheadX + (lookAheadDirX * lookAheadDstX - currentLookAheadX) / 4f;
+					}
 				}
 			}
+
+
+			currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX);
+
+			focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
+			focusPosition += Vector2.right * currentLookAheadX;
+			transform.position = (Vector3)focusPosition + Vector3.forward * -10;
 		}
-
-
-		currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX);
-
-		focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
-		focusPosition += Vector2.right * currentLookAheadX;
-		transform.position = (Vector3)focusPosition + Vector3.forward * -10;
 	}
 
 	void OnDrawGizmos() {

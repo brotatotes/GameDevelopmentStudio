@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : NetworkBehaviour {
 
 	public static GameManager instance = null;
 	public int winner = 0; // 0 for no winner, 1 for player 1, 2 for player 2
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour {
 //	GameObject godPowerUI;
 	bool foundPlayer;
 
+	//[SyncVar]
+	public bool foundGodPlayer = false;
+
 	public GameObject playerHealth;
 	public GameObject godPower;
 	public Dictionary<string, Button> allButtons;
@@ -27,6 +31,7 @@ public class GameManager : MonoBehaviour {
 	public List<GodButtons> godButtons = new List<GodButtons> (); 
 	public int currIndex = 0;
 	public int maxButtons = 0;
+	public bool godPlayer = false;
 
 	public float startX; // used by PlayerCursor for deadZone
 
@@ -40,13 +45,16 @@ public class GameManager : MonoBehaviour {
 		DontDestroyOnLoad (gameObject);
 		winner = 0;
 		gameOver = false;
-		InitGame ();
+		//InitGame ();
+		godCursor = (GameObject)Instantiate (playerCursorPrefab);
 	}
 
-	void InitGame() {
-		godCursor = (GameObject)Instantiate (playerCursorPrefab);
-
-//		Debug.Log ("init game");
+	public void InitGod( bool isGod) {
+		//foundGodPlayer = true;
+		godPlayer = isGod;
+		foundGodPlayer = true;
+		//godCursor = (GameObject)Instantiate (playerCursorPrefab);
+		Debug.Log ("init game");
 		Object[] allObjs = Resources.LoadAll ("");
 		allButtons = new Dictionary<string, Button> ();
 		allPowers = new Dictionary<string, Spawnable> ();
@@ -60,41 +68,42 @@ public class GameManager : MonoBehaviour {
 			if (go.GetComponent<Spawnable> ()) {
 				godPowers.Add (go);
 				Spawnable spawnInfo = go.GetComponent<Spawnable> ();
-				GameObject buttonObj = (GameObject)Instantiate (prefabButton);
-				Button tempButton = buttonObj.GetComponent<Button> ();
+				if (isGod) {
+					GameObject buttonObj = (GameObject)Instantiate (prefabButton);
+					Button tempButton = buttonObj.GetComponent<Button> ();
 
-				buttonObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
-				buttonObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, 0.0f);
-				tempButton.GetComponentsInChildren<Text> () [0].text = spawnInfo.name;
-				buttonObj.GetComponent<GodButtons> ().godCursor = godCursor;
-				buttonObj.GetComponent<GodButtons> ().spawnObj = go;
-				maxButtons = maxButtons + 1;
-				godButtons.Add (buttonObj.GetComponent<GodButtons> ());
-				buttonObj.GetComponent<GodButtons> ().buttonID = maxButtons;
-				if (!godCursor.GetComponent<PlayerCursor> ().initLeft) {
-					godCursor.GetComponent<PlayerCursor> ().leftObj = go;
-					godCursor.GetComponent<PlayerCursor> ().initLeft = true;
-				} else if (!godCursor.GetComponent<PlayerCursor> ().initRight) {
-					godCursor.GetComponent<PlayerCursor> ().rightObj = go;
-					godCursor.GetComponent<PlayerCursor> ().initRight = true;
+					buttonObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+					buttonObj.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (xPos, 0.0f);
+					tempButton.GetComponentsInChildren<Text> () [0].text = spawnInfo.name;
+					buttonObj.GetComponent<GodButtons> ().godCursor = godCursor;
+					buttonObj.GetComponent<GodButtons> ().spawnObj = go;
+					maxButtons = maxButtons + 1;
+					godButtons.Add (buttonObj.GetComponent<GodButtons> ());
+					buttonObj.GetComponent<GodButtons> ().buttonID = maxButtons;
+					GameObject textObj = (GameObject)Instantiate (prefabText);
+					Text tempText = textObj.GetComponent<Text> ();
+					textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+					textObj.GetComponent<RectTransform> ().transform.position = 
+						new Vector3 (tempButton.transform.position.x+25f, tempButton.transform.position.y-38f);
+					tempText.text = spawnInfo.cost.ToString ();
+					allButtons.Add (spawnInfo.name, tempButton);
+
+					xPos += 50.0f;
+					maxX += 50.0f;
 				}
-
-				GameObject textObj = (GameObject)Instantiate (prefabText);
-				Text tempText = textObj.GetComponent<Text> ();
-				textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
-				textObj.GetComponent<RectTransform> ().transform.position = 
-					new Vector3 (tempButton.transform.position.x+25f, tempButton.transform.position.y-38f);
-				tempText.text = spawnInfo.cost.ToString ();
-
-
-				allButtons.Add (spawnInfo.name, tempButton);
+				if (!FindObjectOfType<Player_net> ().initLeft) {
+					FindObjectOfType<Player_net> ().leftObj = go;
+					FindObjectOfType<Player_net> ().initLeft = true;
+				} else if (!FindObjectOfType<Player_net> ().initRight) {
+					FindObjectOfType<Player_net> ().rightObj = go;
+					FindObjectOfType<Player_net> ().initRight = true;
+				}
 				allPowers.Add (spawnInfo.name, spawnInfo);
-
-				xPos += 50.0f;
-				maxX += 50.0f;
 			}
 		}
 		godCursor.GetComponent<PlayerCursor> ().deadX = maxX;
+		Debug.Log ("Setting god interface from gamemanager");
+		FindObjectOfType<GUIHandler> ().setGodInterface ();
 //		godPowerUI = (GameObject)Instantiate (godPower);
 //		godPowerUI.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
 //		godPowerUI.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0.0f, -45.0f);

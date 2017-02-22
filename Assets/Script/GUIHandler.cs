@@ -37,6 +37,10 @@ public class GUIHandler : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		gameManager = FindObjectOfType<GameManager> ();
+	}
+
+	public void setGodInterface() {
+		Debug.Log ("initializing god interface");
 		allButtons = gameManager.allButtons;
 		allPowers = gameManager.allPowers;
 	}
@@ -44,68 +48,73 @@ public class GUIHandler : MonoBehaviour {
 	void Update() {
 
 		var P1 = FindObjectOfType<Player> ();
-		var P1Controller = P1.GetComponent<Attackable> ();
-		var P2 = FindObjectOfType<PlayerCursor> ();
-		P2EnergyBar.value = P2.currentPower;
 
-		P1EnergyBar.value = P1Controller.energy;
+		if (P1 ) {
+			var P1Controller = P1.GetComponent<Attackable> ();
 
-//		allButtons [P2.leftObj.name].GetComponent<Image> ().color = Color.cyan;
-//		allButtons [P2.rightObj.name].GetComponent<Image> ().color = Color.green;
-		foreach(KeyValuePair<string, Button> entry in allButtons) {
-			Color buttonColor;
-			string click = "";
-			if (entry.Key == P2.leftObj.name) {
-				buttonColor = new Color (0.4f, 0.7f, 1f);
-				click = "left";
-			} else if (entry.Key == P2.rightObj.name) {
-				buttonColor = new Color(0.6f, 0.6f, 1f);
-				click = "right";
+			P1EnergyBar.value = P1Controller.energy;
+
+			//		allButtons [P2.leftObj.name].GetComponent<Image> ().color = Color.cyan;
+			//		allButtons [P2.rightObj.name].GetComponent<Image> ().color = Color.green;
+
+			if (gameManager.gameOver) {
+				displayText ("Player " + gameManager.winner + " wins!", 3f);
+				gameManager.gameOver = false;
+				gameManager.winner = 0;
+				P1HealthBar.value = 0;
 			} else {
-				buttonColor = Color.white;
+				P1HealthBar.value = P1Controller.health;
 			}
-
-			if (P2.currentPower < allPowers[entry.Key].cost) {
-				if (buttonColor == Color.white)
-					buttonColor = Color.grey;
-				else if (click == "left"){
-					buttonColor = new Color (0.2f, 0.5f, 0.8f);
+		}
+		var P2 = FindObjectOfType<Player_net> ();
+		if (P2) {
+			P2EnergyBar.value = P2.currentPower;
+			if (displayTextMessage) {
+				if (displayTimePassed < displayTime) {
+					displayTimePassed = Time.time - displayStart;
 				} else {
-					buttonColor = new Color (0.4f, 0.4f, 0.8f);
+					displayTextMessage = false;
+					textMessage = "";
 				}
 			}
-			entry.Value.GetComponent<Image> ().color = buttonColor;
-		}
-
-		if (gameManager.gameOver) {
-			displayText ("Player " + gameManager.winner + " wins!", 3f);
-			gameManager.gameOver = false;
-			gameManager.winner = 0;
-			P1HealthBar.value = 0;
-		} else {
-			P1HealthBar.value = P1Controller.health;
-		}
-
-		if (displayTextMessage) {
-			if (displayTimePassed < displayTime) {
-				displayTimePassed = Time.time - displayStart;
-			} else {
-				displayTextMessage = false;
-				textMessage = "";
-			}
-		}
-
-		if (flashRed) {
-			if (flashTimePassed < flashTime) {
-				flashTimePassed = Time.time - flashStart;
-				float fTimeRatio = flashTimePassed / flashTime;
-				if (fTimeRatio <= 0.25f || (fTimeRatio > 0.5f && fTimeRatio <= 0.75f)) {
-					P2EnergyBarFill.color = Color.red;
+			foreach (KeyValuePair<string, Button> entry in allButtons) {
+				Color buttonColor;
+				string click = "";
+				if (entry.Key == P2.leftObj.name) {
+					buttonColor = new Color (0.4f, 0.7f, 1f);
+					click = "left";
+				} else if (entry.Key == P2.rightObj.name) {
+					buttonColor = new Color (0.6f, 0.6f, 1f);
+					click = "right";
 				} else {
-					P2EnergyBarFill.color = Color.yellow;
+					buttonColor = Color.white;
 				}
-			} else {
-				flashRed = false;
+
+				if (P2.currentPower < allPowers [entry.Key].cost) {
+					if (buttonColor == Color.white)
+						buttonColor = Color.grey;
+					else if (click == "left") {
+						buttonColor = new Color (0.2f, 0.5f, 0.8f);
+					} else {
+						buttonColor = new Color (0.4f, 0.4f, 0.8f);
+					}
+				}
+				entry.Value.GetComponent<Image> ().color = buttonColor;
+			}
+
+
+			if (flashRed) {
+				if (flashTimePassed < flashTime) {
+					flashTimePassed = Time.time - flashStart;
+					float fTimeRatio = flashTimePassed / flashTime;
+					if (fTimeRatio <= 0.25f || (fTimeRatio > 0.5f && fTimeRatio <= 0.75f)) {
+						P2EnergyBarFill.color = Color.red;
+					} else {
+						P2EnergyBarFill.color = Color.yellow;
+					}
+				} else {
+					flashRed = false;
+				}
 			}
 		}
 	}

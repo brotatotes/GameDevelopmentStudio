@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Attackable : MonoBehaviour {
+public class Attackable : NetworkBehaviour {
 
 	public float bottomOfTheWorld = -10.0f;
 	public float health = 100.0f;
@@ -27,12 +28,21 @@ public class Attackable : MonoBehaviour {
 	void Update () {
 		alive = transform.position.y >= bottomOfTheWorld && health > 0;
 		if (!alive && !immortal) {
-			Destroy (gameObject);
+			RpcDied ();
+			//Destroy (gameObject);
 		}
 		modifyEnergy(EnergyRegenRate * Time.deltaTime);
 	}
 
+	[ClientRpc]
+	void RpcDied()
+	{
+		Destroy (gameObject);
+	}
+
 	public void damageObj(float damage) {
+		if (!isServer)
+			return;
 		//Debug.Log ("Damage Taken. Health before: " + health);
 		health = Mathf.Max(Mathf.Min(max_health, health - damage),0);
 		if (damage > 0) {
@@ -49,6 +59,8 @@ public class Attackable : MonoBehaviour {
 	}
 
 	public void modifyEnergy(float energyDiff) {
+		if (!isServer)
+			return;
 		//Debug.Log ("Damage Taken. Health before: " + health);
 		energy = Mathf.Max(Mathf.Min(max_energy, energy + energyDiff),0);
 		if (energyDiff > 20) {
@@ -62,6 +74,8 @@ public class Attackable : MonoBehaviour {
 
 	public void addToVelocity(Vector2 veloc )
 	{
+		if (!isServer)
+			return;
 		if (movementController) {
 			movementController.addToVelocity(veloc);
 		} 

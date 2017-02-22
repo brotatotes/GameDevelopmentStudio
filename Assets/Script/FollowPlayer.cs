@@ -19,7 +19,7 @@ public class FollowPlayer : MonoBehaviour {
 	float accelerationTimeAirborne = .2f;
 	float accelerationTimeGrounded = .1f;
 	public float moveSpeed = 8.0f;
-	public bool targetSet = true;
+	public bool targetSet = false;
 
 
 	void Start () {
@@ -27,13 +27,15 @@ public class FollowPlayer : MonoBehaviour {
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		controller.setGravityScale(gravity);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+		targetSet = false;
 		setTarget(FindObjectOfType<Player> ());
-
 	}
 
 	void setTarget(Player target) {
-		targetSet = true;
-		followObj = target;
+		if (target) {
+			targetSet = true;
+			followObj = target;
+		}
 	}
 	// Update is called once per frame
 	void Update () {
@@ -42,21 +44,26 @@ public class FollowPlayer : MonoBehaviour {
 		}
 		float inputX = 0.0f;
 		float inputY = 0.0f;
-		if (followObj.transform.position.x > transform.position.x) {
-			controller.setFacingLeft (false);
-			inputX = 1.0f;
+		if (targetSet) {
+			if (followObj.transform.position.x > transform.position.x) {
+				controller.setFacingLeft (false);
+				inputX = 1.0f;
+			} else {
+				controller.setFacingLeft (true);
+				inputX = -1.0f;
+			}
+			float targetVelocityX = inputX * moveSpeed;
+			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+
+			//Debug.Log (controller.falling);
+			//Debug.Log ((controller.falling == "right"));
+			if ((controller.falling == "left" || controller.falling == "right") && controller.collisions.below) {
+				velocity.y = jumpVelocity;
+			}
 		} else {
-			controller.setFacingLeft (true);
-			inputX = -1.0f;
+			setTarget(FindObjectOfType<Player> ());
 		}
-		float targetVelocityX = inputX * moveSpeed;
-		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 		Vector2 input = new Vector2 (inputX, inputY);
-		//Debug.Log (controller.falling);
-		//Debug.Log ((controller.falling == "right"));
-		if ((controller.falling == "left" || controller.falling == "right") && controller.collisions.below) {
-			velocity.y = jumpVelocity;
-		}
 		velocity.y += gravity * Time.deltaTime;
 
 		controller.Move (velocity, input);
