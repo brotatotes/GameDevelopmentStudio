@@ -81,7 +81,7 @@ public class Player : MonoBehaviour {
 			if (timeSinceLeft < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
-				attackable.energy -= 25.0f;
+				attackable.modifyEnergy( -25.0f);
 				timeSinceLastDash = 0.0f;
 			}
 			timeSinceRight += dashThreashold;
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour {
 			if (timeSinceRight < dashThreashold && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
 				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
-				attackable.energy -= 25.0f;
+				attackable.modifyEnergy(-25.0f);
 				timeSinceLastDash = 0.0f;
 			}
 			timeSinceLeft += dashThreashold;

@@ -8,6 +8,7 @@ public class Attackable : MonoBehaviour {
 	public float health = 100.0f;
 	public float max_health = 100.0f;
 	public float energy = 100.0f;
+	public float max_energy = 100.0f;
 	public bool alive = true;
 	public bool immortal = false;
 	public string faction = "noFaction";
@@ -28,12 +29,12 @@ public class Attackable : MonoBehaviour {
 		if (!alive && !immortal) {
 			Destroy (gameObject);
 		}
-		energy = Mathf.Min (energy + (EnergyRegenRate * Time.deltaTime), 100.0f);
+		modifyEnergy(EnergyRegenRate * Time.deltaTime);
 	}
 
 	public void damageObj(float damage) {
 		//Debug.Log ("Damage Taken. Health before: " + health);
-		health = Mathf.Min(max_health, health - damage);
+		health = Mathf.Max(Mathf.Min(max_health, health - damage),0);
 		if (damage > 0) {
 			GameObject explosion = GameObject.Instantiate (HitEffect, transform.position, Quaternion.identity);
 		} else if (damage < 0) {
@@ -45,6 +46,15 @@ public class Attackable : MonoBehaviour {
 		} else {
 			alive = true;
 		}
+	}
+
+	public void modifyEnergy(float energyDiff) {
+		//Debug.Log ("Damage Taken. Health before: " + health);
+		energy = Mathf.Max(Mathf.Min(max_energy, energy + energyDiff),0);
+		if (energyDiff > 20) {
+			GameObject explosion = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
+		}
+		//Debug.Log("Health afterwards: " + health);
 	}
 	public void resetHealth() {
 		damageObj (-1000f);
