@@ -14,6 +14,9 @@ public class GUIHandler : MonoBehaviour {
 	public Slider P2EnergyBar;
 	public Image P2EnergyBarFill;
 
+	public Color leftColor;
+	public Color rightColor;
+
 	public Dictionary<string, Button> allButtons;
 	public Dictionary<string, Spawnable> allPowers;
 
@@ -30,7 +33,6 @@ public class GUIHandler : MonoBehaviour {
 	private GameManager gameManager;
 
 	void Awake () {
-//		Debug.Log ("Awake");
 		if (instance == null)
 			instance = this;
 		else if (instance != this) {
@@ -50,29 +52,21 @@ public class GUIHandler : MonoBehaviour {
 
 		P1EnergyBar.value = P1Controller.energy;
 
-//		allButtons [P2.leftObj.name].GetComponent<Image> ().color = Color.cyan;
-//		allButtons [P2.rightObj.name].GetComponent<Image> ().color = Color.green;
 		foreach(KeyValuePair<string, Button> entry in allButtons) {
 			Color buttonColor;
 			string click = "";
 			if (entry.Key == P2.leftObj.name) {
-				buttonColor = new Color (0.4f, 0.7f, 1f);
+				buttonColor = leftColor;
 				click = "left";
 			} else if (entry.Key == P2.rightObj.name) {
-				buttonColor = new Color(0.6f, 0.6f, 1f);
+				buttonColor = rightColor;
 				click = "right";
 			} else {
 				buttonColor = Color.white;
 			}
 
 			if (P2.currentPower < allPowers[entry.Key].cost) {
-				if (buttonColor == Color.white)
-					buttonColor = Color.grey;
-				else if (click == "left"){
-					buttonColor = new Color (0.2f, 0.5f, 0.8f);
-				} else {
-					buttonColor = new Color (0.4f, 0.4f, 0.8f);
-				}
+				buttonColor = buttonColor - new Color(0.2f, 0.2f, 0.2f, 0f);
 			}
 			entry.Value.GetComponent<Image> ().color = buttonColor;
 		}
