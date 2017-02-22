@@ -12,6 +12,7 @@ public class GUIHandler : MonoBehaviour {
 	public Slider P1HealthBar;
 	public Slider P1EnergyBar;
 	public Slider P2EnergyBar;
+	public Image P2EnergyBarFill;
 
 	public Dictionary<string, Button> allButtons;
 	public Dictionary<string, Spawnable> allPowers;
@@ -20,6 +21,11 @@ public class GUIHandler : MonoBehaviour {
 	private float displayTime;
 	private float displayStart;
 	private float displayTimePassed;
+
+	private bool flashRed = false;
+	private float flashTime;
+	private float flashStart;
+	private float flashTimePassed;
 
 	private GameManager gameManager;
 
@@ -88,6 +94,20 @@ public class GUIHandler : MonoBehaviour {
 				textMessage = "";
 			}
 		}
+
+		if (flashRed) {
+			if (flashTimePassed < flashTime) {
+				flashTimePassed = Time.time - flashStart;
+				float fTimeRatio = flashTimePassed / flashTime;
+				if (fTimeRatio <= 0.25f || (fTimeRatio > 0.5f && fTimeRatio <= 0.75f)) {
+					P2EnergyBarFill.color = Color.red;
+				} else {
+					P2EnergyBarFill.color = Color.yellow;
+				}
+			} else {
+				flashRed = false;
+			}
+		}
 	}
 
 	public void displayText(string msg, float dTime) {
@@ -96,6 +116,13 @@ public class GUIHandler : MonoBehaviour {
 		displayTime = dTime;
 		displayStart = Time.time;
 		displayTimePassed = 0f;
+	}
+
+	public void P2EnergyBarFlashRed() {
+		flashRed = true;
+		flashTime = 0.4f;
+		flashStart = Time.time;
+		flashTimePassed = 0f;
 	}
 
 	void OnGUI() {

@@ -5,6 +5,10 @@ using UnityEngine.UI;
 public class PlayerCursor : MonoBehaviour {
 
 	public Texture2D defaultTexture; 
+	public Texture2D leftFull;
+	public Texture2D rightFull;
+	public Texture2D noneFull;
+
 	public CursorMode curMode = CursorMode.Auto;
 	public Vector2 hotSpot = Vector2.zero;
 //	public GameObject bombClass;
@@ -13,6 +17,7 @@ public class PlayerCursor : MonoBehaviour {
 
 	public float currentPower = 100.0f;
 	public float rechargeRate = 3.0f;
+	public bool notEnoughEnergy = false;
 //	public float boxCost = 15.0f;
 //	public float bombCost = 10.0f;
 //	public float fanCost = 10.0f;
@@ -37,12 +42,28 @@ public class PlayerCursor : MonoBehaviour {
 		gm = FindObjectOfType<GameManager> ();
 	}
 
+	void checkCursor(float currentPower, float left_cost, float right_cost){
+		if (currentPower < left_cost && currentPower >= right_cost){
+			Cursor.SetCursor(rightFull, hotSpot, curMode);
+		}
+		if (currentPower >= left_cost &&  currentPower < right_cost){
+			Cursor.SetCursor(leftFull, hotSpot, curMode);
+		}
+		if (currentPower < left_cost && currentPower < right_cost){
+			Cursor.SetCursor(noneFull, hotSpot, curMode);
+		}
+		if (currentPower >= left_cost && currentPower >= right_cost){
+			Cursor.SetCursor(defaultTexture, hotSpot, curMode);
+		}
+	}
 
 	// Update is called once per frame
 	void Update() {
 		if (currentPower < 100.0f) {
 			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
 		}
+
+		checkCursor (currentPower, leftObj.GetComponent<Spawnable> ().cost, rightObj.GetComponent<Spawnable> ().cost);
 		if (Input.mouseScrollDelta.y == -1) {
 			Debug.Log ("scroll down");
 			Debug.Log (gm.godButtons.Count);
@@ -77,10 +98,13 @@ public class PlayerCursor : MonoBehaviour {
 						currentPower = currentPower - cost;
 						toCreateL = 0f;
 					} else {
+						
 						initDownL = currMousePos;
 						toCreateL = cost;
 					}
-				} 
+				} else {
+					FindObjectOfType<GUIHandler> ().P2EnergyBarFlashRed ();
+				}
 			}
 			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
 				GameObject obj = Instantiate (leftObj, new Vector3(initDownL.x, initDownL.y,0), Quaternion.identity);
@@ -101,6 +125,8 @@ public class PlayerCursor : MonoBehaviour {
 						initDownR = currMousePos;
 						toCreateR = cost;
 					}
+				} else {
+					FindObjectOfType<GUIHandler> ().P2EnergyBarFlashRed ();
 				}
 			}
 			if (Input.GetMouseButtonUp (1) && toCreateR != 0f) {
