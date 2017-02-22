@@ -13,6 +13,7 @@ public class PlayerCursor : MonoBehaviour {
 
 	public float currentPower = 100.0f;
 	public float rechargeRate = 3.0f;
+	public bool notEnoughEnergy = false;
 //	public float boxCost = 15.0f;
 //	public float bombCost = 10.0f;
 //	public float fanCost = 10.0f;
@@ -80,7 +81,9 @@ public class PlayerCursor : MonoBehaviour {
 						initDownL = currMousePos;
 						toCreateL = cost;
 					}
-				} 
+				} else {
+					FindObjectOfType<GUIHandler> ().P2EnergyBarFlashRed ();
+				}
 			}
 			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
 				GameObject obj = Instantiate (leftObj, new Vector3(initDownL.x, initDownL.y,0), Quaternion.identity);
@@ -101,6 +104,8 @@ public class PlayerCursor : MonoBehaviour {
 						initDownR = currMousePos;
 						toCreateR = cost;
 					}
+				} else {
+					FindObjectOfType<GUIHandler> ().P2EnergyBarFlashRed ();
 				}
 			}
 			if (Input.GetMouseButtonUp (1) && toCreateR != 0f) {

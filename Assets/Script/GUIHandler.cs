@@ -22,6 +22,11 @@ public class GUIHandler : MonoBehaviour {
 	private float displayStart;
 	private float displayTimePassed;
 
+	private bool flashRed = false;
+	private float flashTime;
+	private float flashStart;
+	private float flashTimePassed;
+
 	private GameManager gameManager;
 
 	void Awake () {
@@ -37,8 +42,6 @@ public class GUIHandler : MonoBehaviour {
 	}
 
 	void Update() {
-//		Debug.Log (P2EnergyBarFill);
-//		P2EnergyBarFill.color = Color.green;
 
 		var P1 = FindObjectOfType<Player> ();
 		var P1Controller = P1.GetComponent<Attackable> ();
@@ -91,6 +94,20 @@ public class GUIHandler : MonoBehaviour {
 				textMessage = "";
 			}
 		}
+
+		if (flashRed) {
+			if (flashTimePassed < flashTime) {
+				flashTimePassed = Time.time - flashStart;
+				float fTimeRatio = flashTimePassed / flashTime;
+				if (fTimeRatio <= 0.25f || (fTimeRatio > 0.5f && fTimeRatio <= 0.75f)) {
+					P2EnergyBarFill.color = Color.red;
+				} else {
+					P2EnergyBarFill.color = Color.yellow;
+				}
+			} else {
+				flashRed = false;
+			}
+		}
 	}
 
 	public void displayText(string msg, float dTime) {
@@ -99,6 +116,13 @@ public class GUIHandler : MonoBehaviour {
 		displayTime = dTime;
 		displayStart = Time.time;
 		displayTimePassed = 0f;
+	}
+
+	public void P2EnergyBarFlashRed() {
+		flashRed = true;
+		flashTime = 0.4f;
+		flashStart = Time.time;
+		flashTimePassed = 0f;
 	}
 
 	void OnGUI() {
