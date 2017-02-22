@@ -28,6 +28,7 @@ public class FollowPlayer : MonoBehaviour {
 		controller.setGravityScale(gravity);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		setTarget(FindObjectOfType<Player> ());
+
 	}
 
 	void setTarget(Player target) {

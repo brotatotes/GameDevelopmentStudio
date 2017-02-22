@@ -18,6 +18,7 @@ public class Fighter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myFac = gameObject.GetComponent<Attackable> ().faction;
+		currentCooldown = attackCooldown / 2f;
 	}
 	
 	// Update is called once per frame
