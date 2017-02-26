@@ -27,6 +27,8 @@ public class GUIHandler : MonoBehaviour {
 	private float flashStart;
 	private float flashTimePassed;
 
+	public GameObject HealthTarget;
+	public PlayerCursor GodTarget;
 	private GameManager gameManager;
 
 	void Awake () {
@@ -49,8 +51,8 @@ public class GUIHandler : MonoBehaviour {
 
 		var P1 = FindObjectOfType<Player> ();
 
-		if (P1 ) {
-			var P1Controller = P1.GetComponent<Attackable> ();
+		if (HealthTarget) {
+			var P1Controller = HealthTarget.GetComponent<Attackable> ();
 
 			P1EnergyBar.value = P1Controller.energy;
 
@@ -66,9 +68,9 @@ public class GUIHandler : MonoBehaviour {
 				P1HealthBar.value = P1Controller.health;
 			}
 		}
-		var P2 = FindObjectOfType<Player_net> ();
-		if (P2) {
-			P2EnergyBar.value = P2.currentPower;
+		//var P2 = FindObjectOfType<Player_net> ();
+		if (GodTarget) {
+			P2EnergyBar.value = GodTarget.currentPower;
 			if (displayTextMessage) {
 				if (displayTimePassed < displayTime) {
 					displayTimePassed = Time.time - displayStart;
@@ -80,17 +82,17 @@ public class GUIHandler : MonoBehaviour {
 			foreach (KeyValuePair<string, Button> entry in allButtons) {
 				Color buttonColor;
 				string click = "";
-				if (entry.Key == P2.leftObj.name) {
+				if (entry.Key == GodTarget.leftObj.name) {
 					buttonColor = new Color (0.4f, 0.7f, 1f);
 					click = "left";
-				} else if (entry.Key == P2.rightObj.name) {
+				} else if (entry.Key == GodTarget.rightObj.name) {
 					buttonColor = new Color (0.6f, 0.6f, 1f);
 					click = "right";
 				} else {
 					buttonColor = Color.white;
 				}
 
-				if (P2.currentPower < allPowers [entry.Key].cost) {
+				if (GodTarget.currentPower < allPowers [entry.Key].cost) {
 					if (buttonColor == Color.white)
 						buttonColor = Color.grey;
 					else if (click == "left") {

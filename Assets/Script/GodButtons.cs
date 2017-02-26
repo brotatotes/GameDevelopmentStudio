@@ -11,7 +11,7 @@ public class GodButtons : MonoBehaviour, IPointerClickHandler {
 	public int buttonID;
 	public void OnPointerClick(PointerEventData eventData)
 	{
-//		Debug.Log ("OnPointerClick");
+		Debug.Log ("OnPointerClick");
 		if (eventData.button == PointerEventData.InputButton.Left) {
 			setSpawnObj ("left");
 		//	godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
@@ -22,11 +22,18 @@ public class GodButtons : MonoBehaviour, IPointerClickHandler {
 		}
 	}
 	public void setSpawnObj(string pointer) {
+		PlayerCursor[] cursors = FindObjectsOfType<PlayerCursor> ();
 		if (pointer == "left") {
-			godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
+			//godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
+			foreach (PlayerCursor pc in cursors) {
+				pc.setIndex ("left", buttonID -1);
+			}
 		} else {
-			godCursor.GetComponent<PlayerCursor> ().rightObj = spawnObj;
+			//godCursor.GetComponent<PlayerCursor> ().rightObj = spawnObj;
 			//			gameObject.GetComponent<Button> ().Invoke ("OnClick", 0.0f);
+			foreach (PlayerCursor pc in cursors) {
+				pc.setIndex ("right", buttonID -1);
+			}
 		}
 	}
 }

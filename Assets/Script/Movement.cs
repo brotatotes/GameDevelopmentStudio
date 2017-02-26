@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour {
 	public float gravityScale = 40.0f;
 	public float speed;
 	public bool facingLeft = false;
+	public bool grounded;
 
 	float maxClimbAngle = 80;
 
@@ -44,21 +45,24 @@ public class Movement : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Mathf.Abs(accumulatedVelocity.x) > 0.1f) {
-			if (collisions.below) {
-				accumulatedVelocity.x *= 0.9f;
+		
+		accumulatedVelocity.y *= (1 - 3f * Time.deltaTime);
+
+		if (Mathf.Abs(accumulatedVelocity.x) > 0.05f) {
+			if (grounded) {
+				accumulatedVelocity.x *= (1 - 6f * Time.deltaTime);
 			} else {
-				accumulatedVelocity.x *= 0.95f;
+				accumulatedVelocity.x *= (1 - 5f * Time.deltaTime);
 			}
 		} else {
 			accumulatedVelocity.x = 0f;
 		}
-		if (Mathf.Abs(accumulatedVelocity.y) > 0.1f) {
-			accumulatedVelocity.y *= 0.95f;
+
+		if (Mathf.Abs(accumulatedVelocity.y) > 0.03f) {
+			accumulatedVelocity.y *= (1 - 2f * Time.deltaTime);
 		} else {
 			accumulatedVelocity.y = 0f;
 		}
-
 	}
 
 	public void addToVelocity(Vector2 veloc )
@@ -176,6 +180,7 @@ public class Movement : MonoBehaviour {
 			}
 		}
 		falling = "none";
+		grounded = false;
 		if (directionY == -1) {
 			string tempFalling = "none";
 			bool collide = false;
@@ -188,6 +193,7 @@ public class Movement : MonoBehaviour {
 				RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
 				Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 				if (hit && !hit.collider.isTrigger) {
+					grounded = true;
 					//Debug.Log ("collide");
 					//Debug.Log (hit.collider.gameObject.tag);
 					if ( started && !collide) {

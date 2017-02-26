@@ -11,7 +11,7 @@ public class GameManager : NetworkBehaviour {
 	public bool gameOver = false;
 	public string lastMouseButtonPressed = "Left Button";
 	public Player Player1;
-	List<GameObject> godPowers = new List<GameObject>();
+	public List<GameObject> godPowers = new List<GameObject>();
 	public GameObject prefabButton;
 	public GameObject prefabText;
 	public GameObject playerCursorPrefab;

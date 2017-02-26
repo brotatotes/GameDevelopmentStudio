@@ -86,6 +86,8 @@ public class hitbox : MonoBehaviour {
 					if (counterF < 0) {
 						force.y = force.y - counterF;
 					}
+					Debug.Log (other.gameObject.GetComponent<Attackable> ().netId);
+					Debug.Log ("adding to Velocity");
 					otherObj.addToVelocity (force);
 				}
 			}

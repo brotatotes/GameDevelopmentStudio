@@ -44,6 +44,24 @@ public class Attackable : NetworkBehaviour {
 		if (!isServer)
 			return;
 		//Debug.Log ("Damage Taken. Health before: " + health);
+		/*
+		health = Mathf.Max(Mathf.Min(max_health, health - damage),0);
+		if (damage > 0) {
+			GameObject explosion = GameObject.Instantiate (HitEffect, transform.position, Quaternion.identity);
+		} else if (damage < 0) {
+			GameObject explosion = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
+		}
+		//Debug.Log("Health afterwards: " + health);
+		if (health < 0) {
+			alive = false;
+		} else {
+			alive = true;
+		}*/
+		RpcDamage (damage);
+	}
+
+	[ClientRpc]
+	void RpcDamage(float damage) {
 		health = Mathf.Max(Mathf.Min(max_health, health - damage),0);
 		if (damage > 0) {
 			GameObject explosion = GameObject.Instantiate (HitEffect, transform.position, Quaternion.identity);
@@ -62,12 +80,23 @@ public class Attackable : NetworkBehaviour {
 		if (!isServer)
 			return;
 		//Debug.Log ("Damage Taken. Health before: " + health);
+		/*
 		energy = Mathf.Max(Mathf.Min(max_energy, energy + energyDiff),0);
 		if (energyDiff > 20) {
 			GameObject explosion = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
-		}
+		}*/
 		//Debug.Log("Health afterwards: " + health);
+		RpcEnergy(energyDiff);
 	}
+
+	[ClientRpc]
+	public void RpcEnergy(float energyDiff) {
+		energy = Mathf.Max(Mathf.Min(max_energy, energy + energyDiff),0);
+		if (energyDiff > 20) {
+			GameObject healFX = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
+		}
+	}
+		
 	public void resetHealth() {
 		damageObj (-1000f);
 	}
@@ -76,6 +105,13 @@ public class Attackable : NetworkBehaviour {
 	{
 		if (!isServer)
 			return;
+		if (movementController) {
+			movementController.addToVelocity(veloc);
+		} 
+		RpcKnockback (veloc);
+	}
+	[ClientRpc]
+	public void RpcKnockback(Vector2 veloc) {
 		if (movementController) {
 			movementController.addToVelocity(veloc);
 		} 

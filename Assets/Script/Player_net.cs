@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Player_net : NetworkBehaviour {
 
@@ -44,15 +45,20 @@ public class Player_net : NetworkBehaviour {
 	Vector3 initDownL;
 	Vector3 initDownR;
 	GameManager gm;
+	PlayerCursor pc;
 	// Use this for initialization
 	void Start () {
-		
+		string ip = Network.player.ipAddress;
+		GameObject.Find("IPText").GetComponent<Text>().text = ip ;
+
 		if (!isLocalPlayer) {
 			Destroy (this);
 			return;
 		}
 		gm = FindObjectOfType<GameManager> ();
 		gm.InitGod (true);
+		GUIHandler gui = FindObjectOfType<GUIHandler> ();
+		gui.HealthTarget = gameObject;
 		/*
 		if (false) { //!gameManager.foundGodPlayer) {
 			if (isLocalPlayer) {
@@ -68,6 +74,7 @@ public class Player_net : NetworkBehaviour {
 		Debug.Log (isLocalPlayer);
 
 		GameObject.FindObjectOfType<CameraFollow> ().setTarget( GetComponent<Movement> ());
+		pc = GetComponent<PlayerCursor> ();
 	}
 	
 	// Update is called once per frame
@@ -135,7 +142,7 @@ public class Player_net : NetworkBehaviour {
 						Debug.Log (newObj);
 						RpcCreateObject (newObj);*/
 						Debug.Log ("Attempting RPC call");
-						CmdCreateObject ("left",currMousePos,Vector2.zero);
+						pc.CmdCreateObject ("left",currMousePos,Vector2.zero);
 					} else {
 
 						initDownL = currMousePos;
@@ -146,14 +153,14 @@ public class Player_net : NetworkBehaviour {
 				}
 			}
 			if (Input.GetMouseButtonUp (0) && toCreateL != 0f) {
-				CmdCreateObject ("left", new Vector3 (initDownL.x, initDownL.y, 0), new Vector2 (currMousePos.x - initDownL.x, currMousePos.y - initDownL.y));
+				pc.CmdCreateObject ("left", new Vector3 (initDownL.x, initDownL.y, 0), new Vector2 (currMousePos.x - initDownL.x, currMousePos.y - initDownL.y));
 			}
 			if (Input.GetMouseButtonDown (1)) {
 				float cost = rightObj.GetComponent<Spawnable> ().cost;
 				if (currentPower >= cost) {
 					if (rightObj.GetComponent<Spawnable> ().instantDeploy) {
 
-						CmdCreateObject ("right",currMousePos,Vector2.zero);
+						pc.CmdCreateObject ("right",currMousePos,Vector2.zero);
 					} else {
 						initDownR = currMousePos;
 						toCreateR = cost;
@@ -163,7 +170,7 @@ public class Player_net : NetworkBehaviour {
 				}
 			}
 			if (Input.GetMouseButtonUp (1) && toCreateR != 0f) {
-				CmdCreateObject ("right", new Vector3 (initDownR.x, initDownR.y, 0), new Vector2 (currMousePos.x - initDownR.x, currMousePos.y - initDownR.y));
+				pc.CmdCreateObject ("right", new Vector3 (initDownR.x, initDownR.y, 0), new Vector2 (currMousePos.x - initDownR.x, currMousePos.y - initDownR.y));
 			}
 		}
 		/*
@@ -174,50 +181,6 @@ public class Player_net : NetworkBehaviour {
 		}*/
 	}
 
-	// expects a spawnable object, gets position to be placed, which handles special case of block.
-	// block should never be placed on top of P1
-	public Vector3 GetPlacePos(GameObject obj, Vector3 mousePos) {
-		if (obj.name != "Block") {
-			return new Vector3 (mousePos.x, mousePos.y, 0);
-		} else {
-			Player player = FindObjectOfType<Player> ();
-			if (player) {
-				GameObject P1 = FindObjectOfType<Player> ().gameObject;
-				float Playerx = P1.transform.position.x;
-				float Playery = P1.transform.position.y;
-				float bufferx = obj.GetComponent<Renderer> ().bounds.size.x / 2 + P1.GetComponent <Renderer> ().bounds.size.x / 2 + 0.1f;
-				float buffery = obj.GetComponent<Renderer> ().bounds.size.y / 2 + P1.GetComponent <Renderer> ().bounds.size.y / 2 + 0.1f;
-				if (mousePos.x < Playerx - bufferx || mousePos.x > Playerx + bufferx || mousePos.y < Playery - buffery || mousePos.y > Playery + buffery) {
-					return new Vector3 (mousePos.x, mousePos.y, 0);
-				} else {
-					// get a new location to place block
-					float leftx = mousePos.x - (Playerx - bufferx);
-					float rightx = (Playerx + bufferx) - mousePos.x;
-					float topy = (Playery + buffery) - mousePos.y;
-					float boty = mousePos.y - (Playery - buffery);
-					float finalx;
-					float finaly;
-					if (leftx < rightx)
-						finalx = Playerx - bufferx;
-					else
-						finalx = Playerx + bufferx;
-
-					if (boty < topy)
-						finaly = Playery - buffery;
-					else
-						finaly = Playery + buffery;
-
-					if (Mathf.Abs (finaly - mousePos.y) < Mathf.Abs (finalx - mousePos.x))
-						return new Vector3 (mousePos.x, finaly, 0);
-					else
-						return new Vector3 (finalx, mousePos.y, 0);
-				}
-			} else {
-				return new Vector3 (mousePos.x, mousePos.y, 0);
-			}
-		}
-	}
-
 	void OnMouseEnter(){
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);	
 	}
@@ -226,37 +189,10 @@ public class Player_net : NetworkBehaviour {
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);	
 	}
 
-	[Command]
-	public void CmdCreateObject(string mouseButton, Vector3 currMousePos, Vector2 angleDiff)
-	{
-		RpcCreateObject (mouseButton, currMousePos, angleDiff);
-	}
-	[ClientRpc]
-	public void RpcCreateObject(string mouseButton, Vector3 currMousePos, Vector2 angleDiff)
-	{
-		Debug.Log ("RPC Spawning Obj");
-
-		GameObject spawnObj;
-		if (mouseButton == "left") {
-			spawnObj = leftObj;
-		} else {
-			spawnObj = rightObj;
-		}
-		GameObject newObj = Instantiate (spawnObj, GetPlacePos(leftObj,currMousePos), Quaternion.identity);
-		newObj.GetComponent<Spawnable> ().angleDiff = angleDiff;
-		currentPower = currentPower - newObj.GetComponent<Spawnable>().cost;
-		toCreateR = 0f;
-		Debug.Log (newObj);
-		Debug.Log (newObj.GetComponent<Attackable>().netId);
-		NetworkServer.Spawn (newObj);
-	}
-
 
 	// Use this for initialization
 	void initCursor () {
-		Cursor.SetCursor(defaultTexture, hotSpot, curMode);
-		deadX = FindObjectOfType<GameManager> ().startX;
-		gm = FindObjectOfType<GameManager> ();
+
 	}
 
 	void checkCursor(float currentPower, float left_cost, float right_cost){

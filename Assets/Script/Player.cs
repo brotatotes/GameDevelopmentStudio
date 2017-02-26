@@ -35,8 +35,6 @@ public class Player : NetworkBehaviour {
 	float timeSinceLastAttack = 0.0f;
 	public float dashTime = 0.15f;
 
-	public bool grounded;
-
 	private GameManager gameManager;
 
 	Animator anim;
@@ -56,9 +54,6 @@ public class Player : NetworkBehaviour {
 		right = r;
 		attackDown = aD;
 		jumpDown = jD;
-		if (lD) {
-			Debug.Log (netId);
-		}
 	}
 	[Command]
 	public void CmdControls(bool lD, bool l, bool rD, bool r, bool aD, bool jD) {
@@ -68,9 +63,6 @@ public class Player : NetworkBehaviour {
 		right = r;
 		attackDown = aD;
 		jumpDown = jD;
-		if (lD) {
-			Debug.Log (netId);
-		}
 	}
 	public void updateControls(bool lD, bool l, bool rD, bool r, bool aD, bool jD) {
 		leftDown = lD;
@@ -79,9 +71,6 @@ public class Player : NetworkBehaviour {
 		right = r;
 		attackDown = aD;
 		jumpDown = jD;
-		if (lD) {
-			Debug.Log (netId);
-		}
 	}
 
 	internal void Start() {
@@ -114,7 +103,7 @@ public class Player : NetworkBehaviour {
 		timeSinceRight += Time.deltaTime;
 		timeSinceLastDash += Time.deltaTime;
 		timeSinceLastAttack += Time.deltaTime;
-		anim.SetBool ("grounded", controller.collisions.below);
+		anim.SetBool ("grounded", controller.grounded);
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
 		if (leftDown ) {
@@ -141,7 +130,7 @@ public class Player : NetworkBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0.0f;
 		}
-		if (controller.collisions.below) {
+		if (controller.grounded) {
 			canDoubleJump = true;
 		}
 
@@ -173,7 +162,7 @@ public class Player : NetworkBehaviour {
 		}
 				
 		if (jumpDown) {
-			if (controller.collisions.below) {
+			if (controller.grounded) {
 				velocity.y = jumpVelocity;
 			} else if (canDoubleJump && attackable.energy > 30.0f) {
 				velocity.y = jumpVelocity;
