@@ -24,7 +24,7 @@ public class Player : MonoBehaviour {
 	public string upKey = "space";
 	public string downKey = "s";
 	public string jumpKey = "w";
-
+	public string dashKey = "shift";
 	public bool spawnNextToEndzone = false;
 
 	public bool attemptingInteraction = false;
