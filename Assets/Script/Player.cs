@@ -24,7 +24,6 @@ public class Player : MonoBehaviour {
 	public string upKey = "space";
 	public string downKey = "s";
 	public string jumpKey = "w";
-	public KeyCode dashKey = KeyCode.LeftShift;
 	public bool spawnNextToEndzone = false;
 
 	public bool attemptingInteraction = false;
@@ -78,9 +77,8 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
 		if (Input.GetKey (leftKey) ) {
-			if (Input.GetKeyDown(dashKey) && attackable.energy > 25.0f
+			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
-				Debug.Log ("REEE");
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
 				attackable.modifyEnergy( -25.0f);
 				timeSinceLastDash = 0.0f;
@@ -88,11 +86,9 @@ public class Player : MonoBehaviour {
 			timeSinceRight += dashThreashold;
 			timeSinceLeft = 0.0f;
 		}
-		if (Input.GetKey (dashKey)) {
-			Debug.Log ("dashing?");
-		}
+
 		if (Input.GetKey (rightKey)) {
-			if (Input.GetKeyDown(dashKey) && attackable.energy > 25.0f
+			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy > 25.0f
 				&& timeSinceLastDash > 0.5f) {
 				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
 				attackable.modifyEnergy(-25.0f);
