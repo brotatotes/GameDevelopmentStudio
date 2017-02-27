@@ -167,7 +167,8 @@ public class Player : NetworkBehaviour {
 			} else if (canDoubleJump && attackable.energy > 30.0f) {
 				velocity.y = jumpVelocity;
 				canDoubleJump = false;
-				attackable.energy = attackable.energy - 30.0f;
+				attackable.modifyEnergy(-25.0f);
+				//attackable.energy = attackable.energy - 30.0f;
 			}
 		}
 

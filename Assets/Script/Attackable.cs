@@ -28,10 +28,15 @@ public class Attackable : NetworkBehaviour {
 	void Update () {
 		alive = transform.position.y >= bottomOfTheWorld && health > 0;
 		if (!alive && !immortal) {
+			CmdDied ();
 			RpcDied ();
 			//Destroy (gameObject);
 		}
 		modifyEnergy(EnergyRegenRate * Time.deltaTime);
+	}
+	[Command]
+	void CmdDied() {
+		RpcDied ();
 	}
 
 	[ClientRpc]

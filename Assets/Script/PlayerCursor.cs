@@ -46,7 +46,20 @@ public class PlayerCursor : NetworkBehaviour {
 		leftObj = gm.godPowers [0];
 		rightObj = gm.godPowers [1];
 	}
-
+	[Command]
+	public void CmdTurnToGod() {
+		Debug.Log ("Command Turn to God");
+		RpcTurnToGod ();
+	}
+	[ClientRpc]
+	void RpcTurnToGod() {
+		Debug.Log ("Attempting to remove stuff");
+		Destroy (GetComponent<SpriteRenderer> ());
+		Destroy (GetComponent<Player>());
+		Destroy (GetComponent<Fighter> ());
+		Destroy (GetComponent<Attackable> ());
+		FindObjectOfType<GUIHandler> ().GodTarget = this;
+	}
 
 	/*
 	void checkCursor(float currentPower, float left_cost, float right_cost){
@@ -65,14 +78,18 @@ public class PlayerCursor : NetworkBehaviour {
 	}*/
 
 	// Update is called once per frame
-	void Update() {	}
+	void Update() {	
+		if (currentPower < 100.0f) {
+			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
+		}
+	}
 
 
 	public void setIndex(string mouseButton, int index) {
-		Debug.Log ("setting Index");
+		//Debug.Log ("setting Index");
 		if (!isLocalPlayer)
 			return;
-		Debug.Log ("Is Local Player");
+		//Debug.Log ("Is Local Player");
 		CmdSetIndex (mouseButton, index);
 	}
 
@@ -97,9 +114,16 @@ public class PlayerCursor : NetworkBehaviour {
 	[Command]
 	public void CmdCreateObject(string mouseButton, Vector3 currMousePos, Vector2 angleDiff)
 	{
+		if (!isServer)
+			return;
 		Debug.Log ("Cmd Spawning Obj");
 		Debug.Log (netId);
 
+		RpcCreateObject(mouseButton,currMousePos, angleDiff);
+	}
+
+	[ClientRpc]
+	public void RpcCreateObject(string mouseButton, Vector3 currMousePos, Vector2 angleDiff) { 
 		GameObject spawnObj;
 		if (mouseButton == "left") {
 			spawnObj = leftObj;
@@ -108,16 +132,23 @@ public class PlayerCursor : NetworkBehaviour {
 		}
 		GameObject newObj = Instantiate (spawnObj, GetPlacePos(leftObj,currMousePos), Quaternion.identity);
 		newObj.GetComponent<Spawnable> ().angleDiff = angleDiff;
-		currentPower = currentPower - newObj.GetComponent<Spawnable>().cost;
+		Debug.Log (currentPower);
+		//currentPower = currentPower - newObj.GetComponent<Spawnable>().cost;
+		RpcModEnergy(- newObj.GetComponent<Spawnable>().cost);
+		Debug.Log (currentPower);
 		toCreateR = 0f;
 		Debug.Log (newObj);
 		Debug.Log (newObj.GetComponent<Attackable>().netId);
 		Debug.Log ("Network Spawning obj");
-		
-		NetworkServer.Spawn (newObj);
+
+		//NetworkServer.Spawn (newObj);
 		Debug.Log ("After Networkserver spawn");
 	}
 
+	[ClientRpc]
+	public void RpcModEnergy(float diff) {
+		currentPower = currentPower + diff;
+	}
 	// expects a spawnable object, gets position to be placed, which handles special case of block.
 	// block should never be placed on top of P1
 	public Vector3 GetPlacePos(GameObject obj, Vector3 mousePos) {

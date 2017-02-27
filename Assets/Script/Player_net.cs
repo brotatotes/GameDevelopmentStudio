@@ -27,7 +27,6 @@ public class Player_net : NetworkBehaviour {
 	//	public GameObject boxObstacle;
 	//	public GameObject fanItem;
 
-	public float currentPower = 100.0f;
 	public float rechargeRate = 3.0f;
 	public bool notEnoughEnergy = false;
 	//	public float boxCost = 15.0f;
@@ -46,37 +45,41 @@ public class Player_net : NetworkBehaviour {
 	Vector3 initDownR;
 	GameManager gm;
 	PlayerCursor pc;
+	public bool godPlayer = false;
 	// Use this for initialization
 	void Start () {
-		string ip = Network.player.ipAddress;
-		GameObject.Find("IPText").GetComponent<Text>().text = ip ;
+		//string ip = Network.player.ipAddress;
+		//GameObject.Find("IPText").GetComponent<Text>().text = ip ;
 
 		if (!isLocalPlayer) {
 			Destroy (this);
 			return;
 		}
+		Player[] oldPlayers = GameObject.FindObjectsOfType<Player> ();
+		Debug.Log (oldPlayers);
+		Movement oldMovement = GetComponent<Movement>();
+		foreach (Player pl in oldPlayers) {
+			if (pl != GetComponent<Player>()) {
+				godPlayer = true;
+				oldMovement = pl.gameObject.GetComponent<Movement> ();
+			}
+		}
 		gm = FindObjectOfType<GameManager> ();
 		gm.InitGod (true);
+		Debug.Log (godPlayer);
 		GUIHandler gui = FindObjectOfType<GUIHandler> ();
-		gui.HealthTarget = gameObject;
-		/*
-		if (false) { //!gameManager.foundGodPlayer) {
-			if (isLocalPlayer) {
-				gameManager.InitGod ( true);
-			}
-			Destroy (gameObject);
-			return;
-		} else {
-			gameManager.InitGod (false);
-		}*/
-		Debug.Log ("Player added");
-		Debug.Log (netId);
-		Debug.Log (isLocalPlayer);
 
-		GameObject.FindObjectOfType<CameraFollow> ().setTarget( GetComponent<Movement> ());
-		pc = GetComponent<PlayerCursor> ();
+		if (godPlayer) {
+			pc = GetComponent<PlayerCursor> ();
+			GameObject.FindObjectOfType<CameraFollow> ().setTarget( oldMovement );
+			pc.CmdTurnToGod ();
+			gui.HealthTarget = oldMovement.gameObject;
+		} else {
+			GameObject.FindObjectOfType<CameraFollow> ().setTarget( GetComponent<Movement> ());
+			gui.HealthTarget = gameObject;
+		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		bool lD = Input.GetKeyDown (leftKey);
@@ -88,41 +91,41 @@ public class Player_net : NetworkBehaviour {
 		if (lD) {
 			Debug.Log (netId);
 		}
-		GetComponent<Player> ().updateControls (lD, l, rD, r, aD, jD);
-		if (isServer) {
-			GetComponent<Player> ().RpcControls (lD, l, rD, r, aD, jD);
-		} else {
-			GetComponent<Player> ().CmdControls (lD, l, rD, r, aD, jD);
-		}
-		if (true) { //gm.godPlayer) {
+
+		if (godPlayer) {
 			playerControl ();
+		} else {
+			GetComponent<Player> ().updateControls (lD, l, rD, r, aD, jD);
+			if (isServer) {
+				GetComponent<Player> ().RpcControls (lD, l, rD, r, aD, jD);
+			} else {
+				GetComponent<Player> ().CmdControls (lD, l, rD, r, aD, jD);
+			}
 		}
 	}
 
 	void playerControl() { 
-		if (currentPower < 100.0f) {
-			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
-		}
+		
 
-		checkCursor (currentPower, leftObj.GetComponent<Spawnable> ().cost, rightObj.GetComponent<Spawnable> ().cost);
+		checkCursor (pc.currentPower, leftObj.GetComponent<Spawnable> ().cost, rightObj.GetComponent<Spawnable> ().cost);
 		if (Input.mouseScrollDelta.y == -1) {
-			Debug.Log ("scroll down");
-			Debug.Log (gm.godButtons.Count);
+			//Debug.Log ("scroll down");
+			//Debug.Log (gm.godButtons.Count);
 			int nextInd = gm.currIndex - 1;
 			if (nextInd < 0) {
 				nextInd = gm.godButtons.Count - 1;
 			}
-			Debug.Log (nextInd);
+			//Debug.Log (nextInd);
 			gm.currIndex = nextInd;
 			gm.godButtons [nextInd].setSpawnObj ("left");
 		}
 		if (Input.mouseScrollDelta.y == 1) {
-			Debug.Log ("scroll up");
+			//Debug.Log ("scroll up");
 			int nextInd = gm.currIndex + 1;
 			if (nextInd >= gm.godButtons.Count) {
 				nextInd = 0;
 			}
-			Debug.Log (nextInd);
+			//Debug.Log (nextInd);
 			gm.currIndex = nextInd;
 			gm.godButtons [nextInd].setSpawnObj ("left");
 		}
@@ -131,9 +134,9 @@ public class Player_net : NetworkBehaviour {
 			Vector3 currMousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
 			if (Input.GetMouseButtonDown (0)) {
-				float cost = leftObj.GetComponent<Spawnable> ().cost;
-				if (currentPower >= cost) {
-					if (leftObj.GetComponent<Spawnable> ().instantDeploy) {/*
+				float cost = pc.leftObj.GetComponent<Spawnable> ().cost;
+				if (pc.currentPower >= cost) {
+					if (pc.leftObj.GetComponent<Spawnable> ().instantDeploy) {/*
 						GameObject newObj = Instantiate (leftObj, GetPlacePos(leftObj,currMousePos), Quaternion.identity);
 						newObj.GetComponent<Spawnable> ().angleDiff = Vector2.zero;
 						currentPower = currentPower - cost;
@@ -141,10 +144,9 @@ public class Player_net : NetworkBehaviour {
 						Debug.Log (gm);
 						Debug.Log (newObj);
 						RpcCreateObject (newObj);*/
-						Debug.Log ("Attempting RPC call");
+						//Debug.Log ("Attempting RPC call");
 						pc.CmdCreateObject ("left",currMousePos,Vector2.zero);
 					} else {
-
 						initDownL = currMousePos;
 						toCreateL = cost;
 					}
@@ -156,10 +158,9 @@ public class Player_net : NetworkBehaviour {
 				pc.CmdCreateObject ("left", new Vector3 (initDownL.x, initDownL.y, 0), new Vector2 (currMousePos.x - initDownL.x, currMousePos.y - initDownL.y));
 			}
 			if (Input.GetMouseButtonDown (1)) {
-				float cost = rightObj.GetComponent<Spawnable> ().cost;
-				if (currentPower >= cost) {
-					if (rightObj.GetComponent<Spawnable> ().instantDeploy) {
-
+				float cost = pc.rightObj.GetComponent<Spawnable> ().cost;
+				if (pc.currentPower >= cost) {
+					if (pc.rightObj.GetComponent<Spawnable> ().instantDeploy) {
 						pc.CmdCreateObject ("right",currMousePos,Vector2.zero);
 					} else {
 						initDownR = currMousePos;

@@ -1,0 +1,8 @@
+b459625ccd3b8863d54a921f956935e56a202792 commit	refs/heads/devel
+d5ab4c1d41838819291fca5df930caa05cf7d6b7 commit	refs/heads/master
+34042869797c975da6ac447dfcb5ad869cf7b8c6 commit	refs/heads/networking
+d5ab4c1d41838819291fca5df930caa05cf7d6b7 commit	refs/remotes/origin/HEAD
+e550f59d1a10caca07285d0aa56bbaf565abe66e commit	refs/remotes/origin/austin
+3be31e890c9f86bf78258fcfaf53ae56d387f56d commit	refs/remotes/origin/devel
+d5ab4c1d41838819291fca5df930caa05cf7d6b7 commit	refs/remotes/origin/master
+3d355bb2b89d2756f73bcdae0172a428e84df182 commit	refs/remotes/origin/networking

@@ -11,7 +11,7 @@ public class fan : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("Fan Start");
+		//Debug.Log ("Fan Start");
 		float xOffset = 0;
 
 		if (gameObject.GetComponent<Spawnable> ().angleDiff.x < 0) {
