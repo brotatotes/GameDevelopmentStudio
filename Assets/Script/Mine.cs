@@ -11,7 +11,17 @@ public class Mine : MonoBehaviour {
 	public GameObject ExplosionPrefab;
 	public Vector2 hitboxScale = new Vector2 (1.0f, 1.0f);
 	public float hitboxDuration = 0.5f;
+	public bool inPlay = true;
+	public Vector2 respawnPos; 
+	public float respawnTime = 10.0f;
+	GameObject respawnObj;
 
+	void Start(){
+
+	}
+
+	void Update(){
+	}
 
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
