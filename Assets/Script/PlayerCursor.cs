@@ -10,18 +10,14 @@ public class PlayerCursor : NetworkBehaviour {
 	public Texture2D rightFull;
 	public Texture2D noneFull;
 */
+	public int divscale = 4;
+
 	public CursorMode curMode = CursorMode.Auto;
 	public Vector2 hotSpot = Vector2.zero;
-//	public GameObject bombClass;
-//	public GameObject boxObstacle;
-//	public GameObject fanItem;
 
 	public float currentPower = 100.0f;
 	public float rechargeRate = 3.0f;
 	public bool notEnoughEnergy = false;
-//	public float boxCost = 15.0f;
-//	public float bombCost = 10.0f;
-//	public float fanCost = 10.0f;
 
 	public GameObject leftObj;
 	public bool initLeft = false;
@@ -41,6 +37,15 @@ public class PlayerCursor : NetworkBehaviour {
 		//Cursor.SetCursor(defaultTexture, hotSpot, curMode);
 		Debug.Log("Initializing");
 		Debug.Log (netId);
+//		int w = defaultTexture.width;
+//		int h = defaultTexture.height;
+//
+//		foreach (Texture2D t in new Texture2D[4] {defaultTexture, leftFull, rightFull, noneFull}) {
+//			t.Resize (w / divscale, h / divscale);
+//			t.Apply ();
+//		}
+
+		//Cursor.SetCursor(defaultTexture, hotSpot, curMode);
 		deadX = FindObjectOfType<GameManager> ().startX;
 		gm = FindObjectOfType<GameManager> ();
 		leftObj = gm.godPowers [0];
@@ -119,11 +124,11 @@ public class PlayerCursor : NetworkBehaviour {
 		Debug.Log ("Cmd Spawning Obj");
 		Debug.Log (netId);
 
-		RpcCreateObject(mouseButton,currMousePos, angleDiff);
+		/*RpcCreateObject(mouseButton,currMousePos, angleDiff);
 	}
 
 	[ClientRpc]
-	public void RpcCreateObject(string mouseButton, Vector3 currMousePos, Vector2 angleDiff) { 
+	public void RpcCreateObject(string mouseButton, Vector3 currMousePos, Vector2 angleDiff) { */
 		GameObject spawnObj;
 		if (mouseButton == "left") {
 			spawnObj = leftObj;
@@ -141,7 +146,7 @@ public class PlayerCursor : NetworkBehaviour {
 		Debug.Log (newObj.GetComponent<Attackable>().netId);
 		Debug.Log ("Network Spawning obj");
 
-		//NetworkServer.Spawn (newObj);
+		NetworkServer.Spawn (newObj);
 		Debug.Log ("After Networkserver spawn");
 	}
 

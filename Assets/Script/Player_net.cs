@@ -38,6 +38,8 @@ public class Player_net : NetworkBehaviour {
 	public GameObject rightObj;
 	public bool initRight = false;
 	public float deadX = 0.0f;
+	public bool singlePlayer = true;
+
 	float deadY = 30.0f;
 	float toCreateL = 0f;
 	float toCreateR = 0f;
@@ -69,7 +71,17 @@ public class Player_net : NetworkBehaviour {
 		Debug.Log (godPlayer);
 		GUIHandler gui = FindObjectOfType<GUIHandler> ();
 
-		if (godPlayer) {
+		if (singlePlayer) {
+			pc = GetComponent<PlayerCursor> ();
+			//GameObject.FindObjectOfType<CameraFollow> ().setTarget( GetComponent<Movement>() );
+			//pc.CmdTurnToGod ();
+			FindObjectOfType<GUIHandler> ().GodTarget = pc;
+			//gui.HealthTarget = oldMovement.gameObject;
+			GameObject.FindObjectOfType<CameraFollow> ().setTarget( GetComponent<Movement> ());
+			gui.HealthTarget = gameObject;
+			//godPlayer = true;
+		}
+		else if (godPlayer) {
 			pc = GetComponent<PlayerCursor> ();
 			GameObject.FindObjectOfType<CameraFollow> ().setTarget( oldMovement );
 			pc.CmdTurnToGod ();
@@ -89,10 +101,17 @@ public class Player_net : NetworkBehaviour {
 		bool aD = Input.GetKey (downKey);
 		bool jD = Input.GetKeyDown (jumpKey);
 		if (lD) {
+			GetComponent<Player> ().updateControls (lD, l, rD, r, aD, jD);
+			if (isServer) {
+				GetComponent<Player> ().RpcControls (lD, l, rD, r, aD, jD);
+			} else {
+				GetComponent<Player> ().CmdControls (lD, l, rD, r, aD, jD);
+			}
 			Debug.Log (netId);
 		}
-
-		if (godPlayer) {
+		if (singlePlayer) {
+			playerControl ();
+		} if (godPlayer) {
 			playerControl ();
 		} else {
 			GetComponent<Player> ().updateControls (lD, l, rD, r, aD, jD);

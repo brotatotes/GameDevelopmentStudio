@@ -14,6 +14,9 @@ public class GUIHandler : MonoBehaviour {
 	public Slider P2EnergyBar;
 	public Image P2EnergyBarFill;
 
+	public Color leftColor;
+	public Color rightColor;
+
 	public Dictionary<string, Button> allButtons;
 	public Dictionary<string, Spawnable> allPowers;
 
@@ -32,7 +35,6 @@ public class GUIHandler : MonoBehaviour {
 	private GameManager gameManager;
 
 	void Awake () {
-//		Debug.Log ("Awake");
 		if (instance == null)
 			instance = this;
 		else if (instance != this) {
@@ -49,12 +51,13 @@ public class GUIHandler : MonoBehaviour {
 
 	void Update() {
 
-		var P1 = FindObjectOfType<Player> ();
+		//var P1 = FindObjectOfType<Player> ();
 
 		if (HealthTarget) {
 			var P1Controller = HealthTarget.GetComponent<Attackable> ();
 
 			P1EnergyBar.value = P1Controller.energy;
+			P1HealthBar.value = P1Controller.health;
 
 			//		allButtons [P2.leftObj.name].GetComponent<Image> ().color = Color.cyan;
 			//		allButtons [P2.rightObj.name].GetComponent<Image> ().color = Color.green;
@@ -64,29 +67,32 @@ public class GUIHandler : MonoBehaviour {
 				gameManager.gameOver = false;
 				gameManager.winner = 0;
 				P1HealthBar.value = 0;
-			} else {
-				P1HealthBar.value = P1Controller.health;
 			}
+
 		}
+
 		//var P2 = FindObjectOfType<Player_net> ();
-		if (GodTarget) {
-			P2EnergyBar.value = GodTarget.currentPower;
-			if (displayTextMessage) {
-				if (displayTimePassed < displayTime) {
-					displayTimePassed = Time.time - displayStart;
-				} else {
-					displayTextMessage = false;
-					textMessage = "";
+			if (GodTarget) {
+				P2EnergyBar.value = GodTarget.currentPower;
+				if (displayTextMessage) {
+					if (displayTimePassed < displayTime) {
+						displayTimePassed = Time.time - displayStart;
+					} else {
+						displayTextMessage = false;
+						textMessage = "";
+					}
 				}
-			}
+				//if (GodTarget.currentPower < allPowers[entry.Key].cost) {
+				//	buttonColor = buttonColor - new Color(0.2f, 0.2f, 0.2f, 0f);
+				//}
 			foreach (KeyValuePair<string, Button> entry in allButtons) {
 				Color buttonColor;
 				string click = "";
 				if (entry.Key == GodTarget.leftObj.name) {
-					buttonColor = new Color (0.4f, 0.7f, 1f);
+					buttonColor = leftColor; //new Color (0.4f, 0.7f, 1f);
 					click = "left";
 				} else if (entry.Key == GodTarget.rightObj.name) {
-					buttonColor = new Color (0.6f, 0.6f, 1f);
+					buttonColor = rightColor; //new Color (0.6f, 0.6f, 1f);
 					click = "right";
 				} else {
 					buttonColor = Color.white;
