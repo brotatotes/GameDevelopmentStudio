@@ -143,6 +143,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void startGame() {
+		GUIHandler guihandler = FindObjectOfType<GUIHandler> ();
+		guihandler.P1Instructions.gameObject.SetActive(false);
+		guihandler.P2Instructions.gameObject.SetActive (false);
+
 		Destroy (gamestartsin.gameObject);
 		Destroy (countdown.gameObject);
 		Destroy (startObstacle.gameObject);
