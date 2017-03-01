@@ -58,9 +58,9 @@ public class PlayerCursor : MonoBehaviour {
 		white = new Color(1f, 1f, 1f, 50f/255f);
 
 		GameObject moonObj = GameObject.FindGameObjectWithTag("Moon");
-		Debug.Log ("Moon");
+//		Debug.Log ("Moon");
 		ParticleSystem moonpart = moonObj.GetComponentInChildren<ParticleSystem> ();
-		Debug.Log ("Moon2");
+//		Debug.Log ("Moon2");
 		Debug.Log (moonpart.main);
 		Moon = moonpart.main;
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);

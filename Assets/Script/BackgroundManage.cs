@@ -53,7 +53,7 @@ public class BackgroundManage : MonoBehaviour {
 	}
 	private void ScrollLeft() 
 	{
-		int lastRight = rightIndex;
+//		int lastRight = rightIndex;
 		Vector3 oldPos = layers [leftIndex].position;
 		layers[rightIndex].position = new Vector3(oldPos.x - backgroundSize,oldPos.y,oldPos.z);
 		leftIndex = rightIndex;
@@ -65,7 +65,7 @@ public class BackgroundManage : MonoBehaviour {
 	private void ScrollRight()
 	{
 		//Debug.Log ("Scrolling Right");
-		int lastLeft = leftIndex;
+//		int lastLeft = leftIndex;
 		Vector3 oldPos = layers [rightIndex].position;
 		layers[leftIndex].position = new Vector3(oldPos.x + backgroundSize,oldPos.y,oldPos.z);
 		rightIndex = leftIndex;

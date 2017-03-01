@@ -79,13 +79,10 @@ public class GUIHandler : MonoBehaviour {
 
 		foreach(KeyValuePair<string, Button> entry in allButtons) {
 			Color buttonColor;
-			string click = "";
 			if (entry.Key == P2.leftObj.name) {
 				buttonColor = leftColor;
-				click = "left";
 			} else if (entry.Key == P2.rightObj.name) {
 				buttonColor = rightColor;
-				click = "right";
 			} else {
 				buttonColor = Color.white;
 			}

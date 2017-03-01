@@ -62,9 +62,9 @@ public class Player : MonoBehaviour {
 
 	public void Reset() {
 		if (spawnNextToEndzone)
-			startPosition = new Vector2 (105f, 14f); // this is right next to the endzone.
+			startPosition = new Vector2 (105f, 14f); // this is right next to the endzone. (in Scene.unity)
 		else
-			startPosition = new Vector2 (-4.0f, 1.5f);
+			startPosition = new Vector2 (-4.0f, -4f);
 		transform.position = startPosition;
 		controller.accumulatedVelocity = Vector2.zero;
 		attackable.resetHealth ();
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
 		if (lastHealth > GetComponent<Attackable> ().health) {
-			Debug.Log ("Reset");
+//			Debug.Log ("Reset");
 			FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
 		}
 		lastHealth = GetComponent<Attackable> ().health;
