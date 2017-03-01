@@ -28,6 +28,17 @@ public class PlayerCursor : MonoBehaviour {
 	Vector3 initDownL;
 	Vector3 initDownR;
 	GameManager gm;
+	public float timeSinceLastHit = 0.0f;
+	ParticleSystem.MainModule Moon;
+	string MoonLevel;
+	public float levelGap = 3.0f;
+
+	Color black;
+	Color red;
+	Color yellow;
+	Color green;
+	Color blue;
+	Color white;
 
 
 	// Use this for initialization
@@ -39,10 +50,23 @@ public class PlayerCursor : MonoBehaviour {
 //			t.Resize (w / divscale, h / divscale);
 //			t.Apply ();
 //		}
+		black = new Color(0f, 0f, 0f, 190f/255f);
+		red = new Color(1f, 0f, 0f, 8f/255f);
+		yellow = new Color(1f, 1f, 0f, 8f/255f);
+		green = new Color(0f, 1f, 0.5f, 8f/255f);
+		blue = new Color(0f, 0.5f, 1f, 8f/255f);
+		white = new Color(1f, 1f, 1f, 50f/255f);
 
+		GameObject moonObj = GameObject.FindGameObjectWithTag("Moon");
+		Debug.Log ("Moon");
+		ParticleSystem moonpart = moonObj.GetComponentInChildren<ParticleSystem> ();
+		Debug.Log ("Moon2");
+		Debug.Log (moonpart.main);
+		Moon = moonpart.main;
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);
 		deadX = FindObjectOfType<GameManager> ().startX;
 		gm = FindObjectOfType<GameManager> ();
+		MoonLevel = "blue";
 	}
 
 	void checkCursor(float currentPower, float left_cost, float right_cost){
@@ -62,6 +86,30 @@ public class PlayerCursor : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		timeSinceLastHit = timeSinceLastHit + Time.deltaTime;
+		if (timeSinceLastHit > levelGap * 5  && MoonLevel != "black") {
+			MoonLevel = "black";
+			//Color bl = new Color(0f, 0f, 0f, 12f/255f);
+			Moon.startColor = black;
+			rechargeRate = 8.0f;
+		} else if (timeSinceLastHit > levelGap * 3 && MoonLevel != "red") {
+			MoonLevel = "red";
+			Moon.startColor = red;
+			rechargeRate = 6.0f;
+		} else if (timeSinceLastHit > levelGap * 2 && MoonLevel != "yellow") {
+			MoonLevel = "yellow";
+			Moon.startColor = yellow;
+			rechargeRate = 4.0f;
+		} else if (timeSinceLastHit > levelGap && MoonLevel != "green") {
+			MoonLevel = "green";
+			Moon.startColor = green;
+			rechargeRate = 3.0f;
+		} else if (timeSinceLastHit < levelGap && MoonLevel != "blue") {
+			MoonLevel = "blue";
+			Moon.startColor = blue;
+			rechargeRate = 2.0f;
+		}
+
 		if (currentPower < 100.0f) {
 			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
 		}

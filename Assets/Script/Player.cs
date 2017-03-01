@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
 	private GameManager gameManager;
 
 	Animator anim;
-
+	public float lastHealth;
 	internal void Start() {
 		anim = GetComponent<Animator> ();
 		controller = GetComponent<Movement> ();
@@ -55,6 +55,7 @@ public class Player : MonoBehaviour {
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
 		gameManager = FindObjectOfType<GameManager> ();
+		lastHealth = GetComponent<Attackable> ().health;
 	}
 
 	public void Reset() {
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour {
 		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
 		attackable.energy = 20.0f;
 		// reset should also bring back the startblock, if we want to keep using it.
+
 	}
 
 	internal void Update() {
@@ -78,6 +80,11 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("grounded", controller.collisions.below);
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
+		if (lastHealth > GetComponent<Attackable> ().health) {
+			Debug.Log ("Reset");
+			FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
+		}
+		lastHealth = GetComponent<Attackable> ().health;
 		if (Input.GetKey (leftKey) ) {
 			if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);

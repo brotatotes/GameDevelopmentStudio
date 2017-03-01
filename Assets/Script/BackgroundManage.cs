@@ -57,14 +57,14 @@ public class BackgroundManage : MonoBehaviour {
 		Vector3 oldPos = layers [leftIndex].position;
 		layers[rightIndex].position = new Vector3(oldPos.x - backgroundSize,oldPos.y,oldPos.z);
 		leftIndex = rightIndex;
-		Debug.Log ("Scrolling Left");
+		//Debug.Log ("Scrolling Left");
 		rightIndex--;
 		if (rightIndex < 0)
 			rightIndex = layers.Length - 1;
 	}
 	private void ScrollRight()
 	{
-		Debug.Log ("Scrolling Right");
+		//Debug.Log ("Scrolling Right");
 		int lastLeft = leftIndex;
 		Vector3 oldPos = layers [rightIndex].position;
 		layers[leftIndex].position = new Vector3(oldPos.x + backgroundSize,oldPos.y,oldPos.z);
