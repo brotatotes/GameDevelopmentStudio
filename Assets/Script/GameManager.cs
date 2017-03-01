@@ -22,8 +22,7 @@ public class GameManager : MonoBehaviour {
 //	GameObject godPowerUI;
 	bool foundPlayer;
 
-	public Text gamestartsin;
-	public Text countdown;
+	public GameObject startmsgs;
 	private float startTime;
 
 	private bool gameStarted = false;
@@ -121,7 +120,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		if (! gameStarted) {
-			countdown.text = ((int)20f - (Time.time - startTime)).ToString ();
+			startmsgs.transform.FindChild("Countdown").GetComponent<Text>().text = ((int)20f - (Time.time - startTime)).ToString ();
 			Player1.GetComponent<Attackable> ().health = 100;
 			if (Input.GetKeyDown(KeyCode.Escape)) {
 				startGame ();
@@ -150,8 +149,7 @@ public class GameManager : MonoBehaviour {
 		guihandler.P1Instructions.gameObject.SetActive(false);
 		guihandler.P2Instructions.gameObject.SetActive (false);
 
-		Destroy (gamestartsin.gameObject);
-		Destroy (countdown.gameObject);
+		Destroy (startmsgs.gameObject);
 		Destroy (startObstacle.gameObject);
 		killAllSpawnables ();
 		Player1.Reset ();
