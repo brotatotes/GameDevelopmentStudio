@@ -33,3 +33,6 @@ sysinfo.txt
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
+
+# Logic Pro #
+*.logicx*
