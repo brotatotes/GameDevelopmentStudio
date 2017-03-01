@@ -12,6 +12,8 @@ public class GUIHandler : MonoBehaviour {
 	public Slider P1HealthBar;
 	public Slider P1EnergyBar;
 	public Slider P2EnergyBar;
+	public Slider P2EnergyShower;
+	private string P2EnergyShowing;
 	public Image P2EnergyBarFill;
 
 	public Color leftColor;
@@ -41,6 +43,8 @@ public class GUIHandler : MonoBehaviour {
 		gameManager = FindObjectOfType<GameManager> ();
 		allButtons = gameManager.allButtons;
 		allPowers = gameManager.allPowers;
+		P2EnergyShower.gameObject.SetActive (false);
+		P2EnergyShowing = "";
 	}
 
 	void Update() {
@@ -69,6 +73,16 @@ public class GUIHandler : MonoBehaviour {
 				buttonColor = buttonColor - new Color(0.2f, 0.2f, 0.2f, 0f);
 			}
 			entry.Value.GetComponent<Image> ().color = buttonColor;
+
+			if ((Input.mousePosition.y <= entry.Value.transform.position.y) && (Input.mousePosition.y >= entry.Value.transform.position.y - 30)
+			    && (Input.mousePosition.x >= entry.Value.transform.position.x) && (Input.mousePosition.x <= entry.Value.transform.position.x + 50)) {
+				P2EnergyShower.gameObject.SetActive (true);
+				P2EnergyShower.value = allPowers [entry.Key].cost;
+				P2EnergyShowing = entry.Key;
+			} else if (entry.Key == P2EnergyShowing) {
+				P2EnergyShower.gameObject.SetActive (false);
+			}
+			
 		}
 
 		if (gameManager.gameOver) {
