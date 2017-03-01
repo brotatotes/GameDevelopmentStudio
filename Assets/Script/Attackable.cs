@@ -52,7 +52,7 @@ public class Attackable : MonoBehaviour {
 		//Debug.Log ("Damage Taken. Health before: " + health);
 		energy = Mathf.Max(Mathf.Min(max_energy, energy + energyDiff),0);
 		if (energyDiff > 20) {
-			GameObject explosion = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
+			GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
 		}
 		//Debug.Log("Health afterwards: " + health);
 	}

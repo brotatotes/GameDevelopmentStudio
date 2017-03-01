@@ -177,7 +177,7 @@ public class Movement : MonoBehaviour {
 		}
 		falling = "none";
 		if (directionY == -1) {
-			string tempFalling = "none";
+//			string tempFalling = "none";
 			bool collide = false;
 			bool started = false;
 			rayLength = 0.1f;

@@ -81,7 +81,7 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
 		if (lastHealth > GetComponent<Attackable> ().health) {
-			Debug.Log ("Reset");
+//			Debug.Log ("Reset");
 			FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
 		}
 		lastHealth = GetComponent<Attackable> ().health;
