@@ -38,6 +38,8 @@ public class Player : MonoBehaviour {
 	float timeSinceLastAttack = 0.0f;
 	public float dashTime = 0.15f;
 	public float P1AbilityCost = 20.0f;
+	public float inputX = 0.0f;
+	public float inputY = 0.0f;
 
 	public bool grounded;
 
@@ -112,8 +114,8 @@ public class Player : MonoBehaviour {
 			canDoubleJump = true;
 		}
 
-		float inputX = 0.0f;
-		float inputY = 0.0f;
+		inputX = 0.0f;
+		inputY = 0.0f;
 		if (Input.GetKey(leftKey)) { 
 			anim.SetBool ("tryingToMove",true);
 			controller.setFacingLeft (true);

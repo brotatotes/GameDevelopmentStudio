@@ -29,15 +29,21 @@ public class Fighter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		anim.SetBool ("tryingToMove", false);
-		anim.SetBool ("isattacking", false);
+
 		anim.SetBool ("grounded", controller.collisions.below);
 		if (GetComponent<FollowPlayer> ()) {
-			if (GetComponent<FollowPlayer>().inputX != 0.0f) {
+			if (GetComponent<FollowPlayer> ().inputX != 0.0f) {
+				anim.SetBool ("tryingToMove", true);
+			}
+		} else if (GetComponent<Player> ()) {
+			if (GetComponent<Player> ().inputX != 0.0f) {
 				anim.SetBool ("tryingToMove", true);
 			}
 		}
-		if (timeSinceLastAttack < 0.2f) {
+		if (timeSinceLastAttack < 0.23f) {
 			anim.SetBool ("isattacking", true);
+		} else {
+			anim.SetBool ("isattacking", false);
 		}
 		timeSinceLastAttack += Time.deltaTime;
 
@@ -52,9 +58,8 @@ public class Fighter : MonoBehaviour {
 			currentCooldown = attackCooldown;
 			Vector2 realKB = knockback;
 			Vector2 realOff = offset;
+			timeSinceLastAttack = 0.0f;
 			if (gameObject.GetComponent<Movement> ().facingLeft) {
-				
-				timeSinceLastAttack = 0.0f;
 				realKB = new Vector2 (-knockback.x, knockback.y);
 				realOff = new Vector2 (-offset.x, offset.y);
 			}
