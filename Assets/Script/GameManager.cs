@@ -79,12 +79,12 @@ public class GameManager : MonoBehaviour {
 					godCursor.GetComponent<PlayerCursor> ().initRight = true;
 				}
 
-				GameObject textObj = (GameObject)Instantiate (prefabText);
-				Text tempText = textObj.GetComponent<Text> ();
-				textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
-				textObj.GetComponent<RectTransform> ().transform.position = 
-					new Vector3 (tempButton.transform.position.x+25f, tempButton.transform.position.y-38f);
-				tempText.text = spawnInfo.cost.ToString ();
+//				GameObject textObj = (GameObject)Instantiate (prefabText);
+//				Text tempText = textObj.GetComponent<Text> ();
+//				textObj.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
+//				textObj.GetComponent<RectTransform> ().transform.position = 
+//					new Vector3 (tempButton.transform.position.x+25f, tempButton.transform.position.y-38f);
+//				tempText.text = spawnInfo.cost.ToString ();
 
 
 				allButtons.Add (spawnInfo.name, tempButton);
