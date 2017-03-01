@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+	public GameObject startObstacle;
+
 	public static GameManager instance = null;
 	public int winner = 0; // 0 for no winner, 1 for player 1, 2 for player 2
 	public bool gameOver = false;
@@ -19,6 +21,12 @@ public class GameManager : MonoBehaviour {
 //	GameObject playerHealthUI;
 //	GameObject godPowerUI;
 	bool foundPlayer;
+
+	public Text gamestartsin;
+	public Text countdown;
+	private float startTime;
+
+	private bool gameStarted = false;
 
 	public GameObject playerHealth;
 	public GameObject godPower;
@@ -98,10 +106,25 @@ public class GameManager : MonoBehaviour {
 //		godPowerUI = (GameObject)Instantiate (godPower);
 //		godPowerUI.transform.SetParent (GameObject.FindObjectOfType<Canvas> ().transform);
 //		godPowerUI.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0.0f, -45.0f);
+
+		startTime = Time.time;
 	}
 		
 	// Update is called once per frame
 	void Update () {
+		if (!gameStarted && Time.time - startTime >= 20.0f) {
+			startGame ();
+		}
+
+		if (!gameStarted && Time.time - startTime >= 19.0f) {
+			killAllSpawnables ();
+		}
+
+		if (! gameStarted) {
+			countdown.text = ((int)20f - (Time.time - startTime)).ToString ();
+			Player1.GetComponent<Attackable> ().health = 100;
+		}
+
 		if (!foundPlayer) {
 			curPlayer = GameObject.FindGameObjectWithTag("Player") as GameObject;
 			foundPlayer = true;
@@ -117,5 +140,19 @@ public class GameManager : MonoBehaviour {
 			lastMouseButtonPressed = "Left button";
 		if (Input.GetMouseButton (1))
 			lastMouseButtonPressed = "Right button";		
+	}
+
+	void startGame() {
+		Destroy (gamestartsin.gameObject);
+		Destroy (countdown.gameObject);
+		Destroy (startObstacle.gameObject);
+		killAllSpawnables ();
+		gameStarted = true;
+	}
+
+	void killAllSpawnables() {
+		foreach (Spawnable enemy in FindObjectsOfType<Spawnable>()) {
+			Destroy (enemy.gameObject);
+		}
 	}
 }
