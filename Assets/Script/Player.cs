@@ -66,6 +66,7 @@ public class Player : MonoBehaviour {
 		controller.accumulatedVelocity = Vector2.zero;
 		attackable.resetHealth ();
 		FindObjectOfType<PlayerCursor> ().currentPower = 20.0f;
+		attackable.energy = 20.0f;
 		// reset should also bring back the startblock, if we want to keep using it.
 	}
 

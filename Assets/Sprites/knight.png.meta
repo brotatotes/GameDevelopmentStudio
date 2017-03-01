@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 4e5fd733723e91e4b95c7bf873849241
 timeCreated: 1488341455
 licenseType: Free
@@ -21,6 +22,13 @@ TextureImporter:
     21300028: knight_14
     21300030: knight_15
     21300032: knight_16
+=======
+guid: 16eeee7adf2c64010b9d4a133d706be5
+timeCreated: 1488338676
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName: {}
+>>>>>>> 4946a53ade88a8bae7ebe071d4b8389c359b5dfd
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -51,13 +59,21 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
+<<<<<<< HEAD
   spriteMode: 2
+=======
+  spriteMode: 1
+>>>>>>> 4946a53ade88a8bae7ebe071d4b8389c359b5dfd
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+<<<<<<< HEAD
   spritePixelsToUnits: 64
+=======
+  spritePixelsToUnits: 100
+>>>>>>> 4946a53ade88a8bae7ebe071d4b8389c359b5dfd
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -75,6 +91,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+<<<<<<< HEAD
   - buildTarget: Standalone
     maxTextureSize: 2048
     textureFormat: -1
@@ -307,6 +324,11 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
+=======
+  spriteSheet:
+    serializedVersion: 2
+    sprites: []
+>>>>>>> 4946a53ade88a8bae7ebe071d4b8389c359b5dfd
     outline: []
   spritePackingTag: 
   userData: 
