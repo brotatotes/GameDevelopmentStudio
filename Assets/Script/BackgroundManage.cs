@@ -29,7 +29,7 @@ public class BackgroundManage : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 
 		if (paralax) {
 			float deltaX = cameraTransform.position.x - lastCamera.x;
