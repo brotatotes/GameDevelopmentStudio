@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
 	public float dashThreashold = 0.6f;
 	float timeSinceLastAttack = 0.0f;
 	public float dashTime = 0.15f;
+	public float P1AbilityCost = 20.0f;
 
 	public bool grounded;
 
@@ -77,10 +78,9 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
 		if (Input.GetKey (leftKey) ) {
-			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy > 25.0f
-				&& timeSinceLastDash > 0.5f) {
+			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
-				attackable.modifyEnergy( -25.0f);
+				attackable.modifyEnergy( -P1AbilityCost);
 				timeSinceLastDash = 0.0f;
 			}
 			timeSinceRight += dashThreashold;
@@ -88,10 +88,9 @@ public class Player : MonoBehaviour {
 		}
 
 		if (Input.GetKey (rightKey)) {
-			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy > 25.0f
-				&& timeSinceLastDash > 0.5f) {
+			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
 				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
-				attackable.modifyEnergy(-25.0f);
+				attackable.modifyEnergy(-P1AbilityCost);
 				timeSinceLastDash = 0.0f;
 			}
 			timeSinceLeft += dashThreashold;
