@@ -36,9 +36,9 @@ public class Attackable : MonoBehaviour {
 		//Debug.Log ("Damage Taken. Health before: " + health);
 		health = Mathf.Max(Mathf.Min(max_health, health - damage),0);
 		if (damage > 0) {
-			GameObject explosion = GameObject.Instantiate (HitEffect, transform.position, Quaternion.identity);
+			GameObject.Instantiate (HitEffect, transform.position, Quaternion.identity);
 		} else if (damage < 0) {
-			GameObject explosion = GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
+			GameObject.Instantiate (HealEffect, transform.position, Quaternion.identity);
 		}
 		//Debug.Log("Health afterwards: " + health);
 		if (health < 0) {
