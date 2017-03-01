@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour {
 		Destroy (countdown.gameObject);
 		Destroy (startObstacle.gameObject);
 		killAllSpawnables ();
+		Player1.Reset ();
 		gameStarted = true;
 	}
 
