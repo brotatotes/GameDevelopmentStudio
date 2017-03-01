@@ -32,15 +32,15 @@ public class BackgroundManage : MonoBehaviour {
 	void Update () {
 
 		if (paralax) {
-			float deltaX = camera.transform.position.x - lastCamera.x;
-			float deltaY = camera.transform.position.y - lastCamera.y;
+			float deltaX = GetComponent<Camera>().transform.position.x - lastCamera.x;
+			float deltaY = GetComponent<Camera>().transform.position.y - lastCamera.y;
 
 			transform.position += new Vector3 (deltaX * paralaxSpeed,deltaY*paralaxSpeed, 0f);
 		}
 		if (autoScroll) {
 			transform.position += innateSpeed * Time.deltaTime;
 		}
-		lastCamera = new Vector2(cameraTransform.position.x,cameraTransform.position.y)
+		lastCamera = new Vector2 (cameraTransform.position.x, cameraTransform.position.y);
 		if (scrolling) {
 			if (cameraTransform.position.x < (layers [leftIndex].transform.position.x + viewZone))
 				ScrollLeft ();

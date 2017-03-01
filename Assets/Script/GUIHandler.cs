@@ -16,6 +16,9 @@ public class GUIHandler : MonoBehaviour {
 	private string P2EnergyShowing;
 	public Image P2EnergyBarFill;
 
+	public GameObject P1Instructions;
+	public GameObject P2Instructions;
+
 	public Color leftColor;
 	public Color rightColor;
 
@@ -45,9 +48,27 @@ public class GUIHandler : MonoBehaviour {
 		allPowers = gameManager.allPowers;
 		P2EnergyShower.gameObject.SetActive (false);
 		P2EnergyShowing = "";
+		P1Instructions.gameObject.SetActive (true);
+		P2Instructions.gameObject.SetActive (true);
 	}
 
 	void Update() {
+
+		if (Input.GetKeyDown(KeyCode.H)) {
+			if (P1Instructions.activeSelf) {
+				P1Instructions.gameObject.SetActive(false);
+			} else {
+				P1Instructions.gameObject.SetActive(true);
+			}
+		}
+
+		if (Input.GetKeyDown(KeyCode.Mouse2)) {
+			if (P2Instructions.activeSelf) {
+				P2Instructions.gameObject.SetActive(false);
+			} else {
+				P2Instructions.gameObject.SetActive(true);
+			}
+		}
 
 		var P1 = FindObjectOfType<Player> ();
 		var P1Controller = P1.GetComponent<Attackable> ();
