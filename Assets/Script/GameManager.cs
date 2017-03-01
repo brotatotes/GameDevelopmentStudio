@@ -123,6 +123,9 @@ public class GameManager : MonoBehaviour {
 		if (! gameStarted) {
 			countdown.text = ((int)20f - (Time.time - startTime)).ToString ();
 			Player1.GetComponent<Attackable> ().health = 100;
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				startGame ();
+			}
 		}
 
 		if (!foundPlayer) {
