@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
 		if (Input.GetKey (leftKey) ) {
-			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
+			if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
 				attackable.modifyEnergy( -P1AbilityCost);
 				timeSinceLastDash = 0.0f;
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour {
 		}
 
 		if (Input.GetKey (rightKey)) {
-			if (Input.GetKeyDown(KeyCode.LeftShift) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
+			if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
 				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
 				attackable.modifyEnergy(-P1AbilityCost);
 				timeSinceLastDash = 0.0f;
