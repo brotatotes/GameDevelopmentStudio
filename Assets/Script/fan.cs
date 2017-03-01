@@ -6,6 +6,7 @@ public class fan : MonoBehaviour {
 	public Vector2 knockback = new Vector2(50.0f,0.0f);
 	public GameObject hitboxClass;
 	public bool facingLeft = true;
+	public bool overrideDir = false;
 	continuousHitbox mHitbox;
 	Movement movement;
 
@@ -13,16 +14,17 @@ public class fan : MonoBehaviour {
 	void Start () {
 		Debug.Log ("Fan Start");
 		float xOffset = 0;
+		if (!overrideDir) {
+			if (gameObject.GetComponent<Spawnable> ().angleDiff.x < 0) {
+				facingLeft = true;
 
-		if (gameObject.GetComponent<Spawnable> ().angleDiff.x < 0) {
-			facingLeft = true;
-			GetComponent<SpriteRenderer>().flipX = true;
-		} else {
-			facingLeft = false;
+			} else {
+				facingLeft = false;
+			}
 		}
-			
 		if (facingLeft) {
 			xOffset = -7;
+			GetComponent<SpriteRenderer> ().flipX = true;
 		} else {
 			xOffset = 7;
 		}
