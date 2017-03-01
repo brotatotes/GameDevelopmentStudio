@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof (HitboxMaker))]
+//[RequireComponent (typeof (Shooter))]
 [RequireComponent (typeof (Movement))]
 public class Fighter : MonoBehaviour {
 	public float damage = 10.0f;
@@ -12,6 +13,8 @@ public class Fighter : MonoBehaviour {
 	public float hitboxDuration = 0.5f;
 	public float attackCooldown = 1.0f;
 	public Vector2 offset = new Vector2(0f,0f);
+	public bool canShoot;
+	public GameObject projectile;
 	float timeSinceLastAttack = 0.0f;
 
 	float currentCooldown = 0.0f;
@@ -64,6 +67,9 @@ public class Fighter : MonoBehaviour {
 				realOff = new Vector2 (-offset.x, offset.y);
 			}
 			gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,realOff,damage,hitboxDuration,realKB,true,myFac,true);
+			if (canShoot) {
+				GetComponent<Shooter> ().fire(Vector2.zero,gameObject.GetComponent<Movement> ().facingLeft,myFac);
+			}
 			return true;
 		}
 		return false;

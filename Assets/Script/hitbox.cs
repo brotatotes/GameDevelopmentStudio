@@ -64,20 +64,22 @@ public class hitbox : MonoBehaviour {
 			if (faction == "noFaction" || otherObj.faction == "noFaction" ||
 			    faction != otherObj.faction) {
 				otherObj.damageObj (damage);
-				if (fixedKnockback) {
-					otherObj.addToVelocity (knockback);
-				} else {
-					Vector3 otherPos = other.gameObject.transform.position;
-					float angle = Mathf.Atan2 (transform.position.y - otherPos.y, transform.position.x - otherPos.x); //*180.0f / Mathf.PI;
-					float magnitude = knockback.magnitude;
-					float forceX = Mathf.Cos (angle) * magnitude;
-					float forceY = Mathf.Sin (angle) * magnitude;
-					Vector2 force = new Vector2 (-forceX, -forceY);
-					float counterF = (other.gameObject.GetComponent<Movement> ().velocity.y * (1 / Time.deltaTime));
-					if (counterF < 0) {
-						force.y = force.y - counterF;
+				if (other.gameObject.GetComponent<Movement> ()) {
+					if (fixedKnockback) {
+						otherObj.addToVelocity (knockback);
+					} else {
+						Vector3 otherPos = other.gameObject.transform.position;
+						float angle = Mathf.Atan2 (transform.position.y - otherPos.y, transform.position.x - otherPos.x); //*180.0f / Mathf.PI;
+						float magnitude = knockback.magnitude;
+						float forceX = Mathf.Cos (angle) * magnitude;
+						float forceY = Mathf.Sin (angle) * magnitude;
+						Vector2 force = new Vector2 (-forceX, -forceY);
+						float counterF = (other.gameObject.GetComponent<Movement> ().velocity.y * (1 / Time.deltaTime));
+						if (counterF < 0) {
+							force.y = force.y - counterF;
+						}
+						otherObj.addToVelocity (force);
 					}
-					otherObj.addToVelocity (force);
 				}
 			}
 			collidedObjs.Add (otherObj);

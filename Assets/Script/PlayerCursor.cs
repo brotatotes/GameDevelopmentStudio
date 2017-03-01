@@ -28,18 +28,26 @@ public class PlayerCursor : MonoBehaviour {
 	Vector3 initDownL;
 	Vector3 initDownR;
 	GameManager gm;
-	public float timeSinceLastHit = 0.0f;
+	public float  moonPower = 0.0f;
 	ParticleSystem.MainModule Moon;
 	string MoonLevel;
 	public float levelGap = 3.0f;
+	float mLevelGap = 3.0f;
+	float introLevelGap = 3.0f;
 
 	Color black;
 	Color red;
+	Color orange;
 	Color yellow;
 	Color green;
 	Color blue;
 	Color white;
 
+	public GameObject tiny_proj;
+	public GameObject small_proj;
+	public GameObject mid_proj;
+	public GameObject large_proj;
+	GameObject curPlayer;
 
 	// Use this for initialization
 	void Start () {
@@ -61,12 +69,14 @@ public class PlayerCursor : MonoBehaviour {
 //		Debug.Log ("Moon");
 		ParticleSystem moonpart = moonObj.GetComponentInChildren<ParticleSystem> ();
 //		Debug.Log ("Moon2");
+		mLevelGap = introLevelGap;
 		Debug.Log (moonpart.main);
 		Moon = moonpart.main;
 		Cursor.SetCursor(defaultTexture, hotSpot, curMode);
 		deadX = FindObjectOfType<GameManager> ().startX;
 		gm = FindObjectOfType<GameManager> ();
 		MoonLevel = "blue";
+		curPlayer = FindObjectOfType<Player> ().gameObject;
 	}
 
 	void checkCursor(float currentPower, float left_cost, float right_cost){
@@ -84,36 +94,63 @@ public class PlayerCursor : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
-	void Update() {
-		timeSinceLastHit = timeSinceLastHit + Time.deltaTime;
-		if (timeSinceLastHit > levelGap * 5  && MoonLevel != "black") {
+	public void MoonStuff() {
+		//moonLevel = moonLevel + Time.deltaTime;
+		setMoonLevel (Time.deltaTime);
+		if (moonPower >= mLevelGap * 5  && MoonLevel != "black") {
 			MoonLevel = "black";
-			//Color bl = new Color(0f, 0f, 0f, 12f/255f);
 			Moon.startColor = black;
-			rechargeRate = 8.0f;
-		} else if (timeSinceLastHit > levelGap * 3 && MoonLevel != "red") {
+			rechargeRate = 10.0f;
+			mLevelGap = levelGap;
+			curPlayer.GetComponent<Fighter> ().canShoot = false;
+			//curPlayer.GetComponent<Shooter>().projectile = tiny_proj;
+		} else if (moonPower > mLevelGap * 4 && moonPower < mLevelGap * 5 && MoonLevel != "red") {
 			MoonLevel = "red";
 			Moon.startColor = red;
 			rechargeRate = 6.0f;
-		} else if (timeSinceLastHit > levelGap * 2 && MoonLevel != "yellow") {
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = tiny_proj;
+		} else if (moonPower > mLevelGap * 3 &&  moonPower < mLevelGap * 4 && MoonLevel != "orange") {
+			MoonLevel = "orange";
+			Moon.startColor = orange;
+			rechargeRate = 5.0f;
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = small_proj;
+		} else if (moonPower > mLevelGap * 2 &&  moonPower < mLevelGap * 3 && MoonLevel != "yellow") {
 			MoonLevel = "yellow";
 			Moon.startColor = yellow;
 			rechargeRate = 4.0f;
-		} else if (timeSinceLastHit > levelGap && MoonLevel != "green") {
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = small_proj;
+		} else if (moonPower > mLevelGap &&  moonPower < mLevelGap * 2 && MoonLevel != "green") {
 			MoonLevel = "green";
 			Moon.startColor = green;
 			rechargeRate = 3.0f;
-		} else if (timeSinceLastHit < levelGap && MoonLevel != "blue") {
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = mid_proj;
+		} else if (moonPower < mLevelGap && moonPower > 0 && MoonLevel != "blue") {
 			MoonLevel = "blue";
 			Moon.startColor = blue;
 			rechargeRate = 2.0f;
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = mid_proj;
+		} else if (moonPower < 0 && MoonLevel != "whites") {
+			MoonLevel = "white";
+			Moon.startColor = white;
+			rechargeRate = 1.0f;
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = large_proj;
 		}
-
+	}
+	public void setMoonLevel(float diff) {
+		moonPower = Mathf.Max(-mLevelGap * 2,Mathf.Min(mLevelGap * 5,moonPower + diff));
+	}
+	// Update is called once per frame
+	void Update() {
+		MoonStuff ();
 		if (currentPower < 100.0f) {
 			currentPower = Mathf.Min (100.0f, currentPower + (Time.deltaTime * rechargeRate));
 		}
-
 		checkCursor (currentPower, leftObj.GetComponent<Spawnable> ().cost, rightObj.GetComponent<Spawnable> ().cost);
 		if (Input.mouseScrollDelta.y == -1) {
 			Debug.Log ("scroll down");

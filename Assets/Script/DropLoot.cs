@@ -8,6 +8,10 @@ public class DropLoot : MonoBehaviour {
 	public float chanceDropHealth;
 	public GameObject energyPowerUp;
 	public float chanceDropEnergy;
+	public float chanceDropPowerupLg;
+	public GameObject powerUpLg;
+	public float chanceDropPowerupSm;
+	public GameObject powerUpSm;
 	void Start () {}
 	void Update () {}
 
@@ -20,6 +24,16 @@ public class DropLoot : MonoBehaviour {
 		rand = Random.value;
 		if (rand * 100 < chanceDropEnergy) {
 			GameObject go = Instantiate(energyPowerUp,transform.position,Quaternion.identity) as GameObject; 
+			go.GetComponent<Movement> ().addToVelocity (new Vector2 (Random.Range (-15, 15), 30));
+		}
+		rand = Random.value;
+		if (rand * 100 < chanceDropPowerupSm) {
+			GameObject go = Instantiate(powerUpSm,transform.position,Quaternion.identity) as GameObject; 
+			go.GetComponent<Movement> ().addToVelocity (new Vector2 (Random.Range (-15, 15), 30));
+		}
+		rand = Random.value;
+		if (rand * 100 < chanceDropPowerupLg) {
+			GameObject go = Instantiate(powerUpLg,transform.position,Quaternion.identity) as GameObject; 
 			go.GetComponent<Movement> ().addToVelocity (new Vector2 (Random.Range (-15, 15), 30));
 		}
 	}

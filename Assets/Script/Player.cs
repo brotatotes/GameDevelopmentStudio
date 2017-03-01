@@ -82,10 +82,10 @@ public class Player : MonoBehaviour {
 		anim.SetBool ("grounded", controller.collisions.below);
 		anim.SetBool ("tryingToMove", false);
 		anim.SetBool ("isattacking", false);
-		if (lastHealth > GetComponent<Attackable> ().health) {
-//			Debug.Log ("Reset");
-			FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
-		}
+		//if (lastHealth > GetComponent<Attackable> ().health) {
+		//			Debug.Log ("Reset");
+		//	FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
+		//}
 		lastHealth = GetComponent<Attackable> ().health;
 		if (Input.GetKey (leftKey) ) {
 			if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
