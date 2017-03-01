@@ -4,7 +4,7 @@ using System.Collections;
 
 public class BackgroundManage : MonoBehaviour {
 
-	public bool scrolling, paralax,autoScroll;
+	public bool scrolling, paralax,autoScroll,lockOnCam;
 	public float backgroundSize; 
 	public float paralaxSpeed;
 	public Vector3 innateSpeed;
@@ -18,7 +18,7 @@ public class BackgroundManage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		cameraTransform = Camera.main.transform;
+		cameraTransform = FindObjectOfType<CameraFollow>().transform;
 		layers = new Transform[transform.childCount];
 		for (int i = 0; i < transform.childCount; i++) {
 			layers [i] = transform.GetChild (i);
@@ -32,13 +32,16 @@ public class BackgroundManage : MonoBehaviour {
 	void Update () {
 
 		if (paralax) {
-			float deltaX = GetComponent<Camera>().transform.position.x - lastCamera.x;
-			float deltaY = GetComponent<Camera>().transform.position.y - lastCamera.y;
+			float deltaX = cameraTransform.position.x - lastCamera.x;
+			float deltaY = cameraTransform.position.y - lastCamera.y;
 
 			transform.position += new Vector3 (deltaX * paralaxSpeed,deltaY*paralaxSpeed, 0f);
 		}
 		if (autoScroll) {
 			transform.position += innateSpeed * Time.deltaTime;
+		}
+		if (lockOnCam) {
+			transform.position = new Vector3 (cameraTransform.position.x, cameraTransform.position.y, transform.position.z);
 		}
 		lastCamera = new Vector2 (cameraTransform.position.x, cameraTransform.position.y);
 		if (scrolling) {
