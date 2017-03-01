@@ -20,6 +20,8 @@ public class FollowPlayer : MonoBehaviour {
 	float accelerationTimeGrounded = .1f;
 	public float moveSpeed = 8.0f;
 	public bool targetSet = true;
+	public float inputX = 0.0f;
+	public float inputY = 0.0f;
 
 
 	void Start () {
@@ -40,8 +42,8 @@ public class FollowPlayer : MonoBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0.0f;
 		}
-		float inputX = 0.0f;
-		float inputY = 0.0f;
+		inputX = 0.0f;
+		inputY = 0.0f;
 		if (followObj.transform.position.x > transform.position.x) {
 			controller.setFacingLeft (false);
 			inputX = 1.0f;
