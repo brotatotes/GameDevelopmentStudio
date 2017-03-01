@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject startmsgs;
 	private float startTime;
 
+	public GameObject audio;
+
 	private bool gameStarted = false;
 
 	public GameObject playerHealth;
@@ -148,6 +150,9 @@ public class GameManager : MonoBehaviour {
 		GUIHandler guihandler = FindObjectOfType<GUIHandler> ();
 		guihandler.P1Instructions.gameObject.SetActive(false);
 		guihandler.P2Instructions.gameObject.SetActive (false);
+
+		audio.transform.FindChild ("IntroAudio").GetComponent<AudioSource> ().Pause ();
+		audio.transform.FindChild ("GameAudio").GetComponent<AudioSource> ().Play ();
 
 		Destroy (startmsgs.gameObject);
 		Destroy (startObstacle.gameObject);
