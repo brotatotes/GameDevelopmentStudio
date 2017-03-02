@@ -102,8 +102,8 @@ public class PlayerCursor : MonoBehaviour {
 			Moon.startColor = black;
 			rechargeRate = 10.0f;
 			mLevelGap = levelGap;
-			curPlayer.GetComponent<Fighter> ().canShoot = false;
-			//curPlayer.GetComponent<Shooter>().projectile = tiny_proj;
+			curPlayer.GetComponent<Fighter> ().canShoot = true;
+			curPlayer.GetComponent<Shooter>().projectile = tiny_proj;
 		} else if (moonPower > mLevelGap * 4 && moonPower < mLevelGap * 5 && MoonLevel != "red") {
 			MoonLevel = "red";
 			Moon.startColor = red;
