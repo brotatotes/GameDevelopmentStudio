@@ -144,10 +144,10 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (jumpKey)) {
 			if (controller.collisions.below) {
 				velocity.y = jumpVelocity;
-			} else if (canDoubleJump && attackable.energy > 30.0f) {
+			} else if (canDoubleJump && attackable.energy >= P1AbilityCost) {
 				velocity.y = jumpVelocity;
 				canDoubleJump = false;
-				attackable.energy = attackable.energy - 30.0f;
+				attackable.energy = attackable.energy - P1AbilityCost;
 			}
 		}
 
