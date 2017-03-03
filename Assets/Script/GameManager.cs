@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 	private float startTime;
 
 	public GameObject audio;
+	public GameObject soundfx;
 
 	private bool gameStarted = false;
 

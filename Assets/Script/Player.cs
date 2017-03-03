@@ -144,8 +144,10 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (jumpKey)) {
 			if (controller.collisions.below) {
 				velocity.y = jumpVelocity;
+				gameManager.soundfx.gameObject.transform.FindChild ("P1Jump").GetComponent<AudioSource> ().Play ();
 			} else if (canDoubleJump && attackable.energy >= P1AbilityCost) {
 				velocity.y = jumpVelocity;
+				gameManager.soundfx.gameObject.transform.FindChild ("P1Jump").GetComponent<AudioSource> ().Play ();
 				canDoubleJump = false;
 				attackable.energy = attackable.energy - P1AbilityCost;
 			}

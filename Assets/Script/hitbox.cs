@@ -64,6 +64,7 @@ public class hitbox : MonoBehaviour {
 			if (faction == "noFaction" || otherObj.faction == "noFaction" ||
 			    faction != otherObj.faction) {
 				otherObj.damageObj (damage);
+				FindObjectOfType<GameManager> ().soundfx.gameObject.transform.FindChild ("Hit").GetComponent<AudioSource> ().Play ();
 				if (other.gameObject.GetComponent<Movement> ()) {
 					if (fixedKnockback) {
 						otherObj.addToVelocity (knockback);
