@@ -21,5 +21,11 @@ public class bomb : MonoBehaviour {
 		GameObject explosion = GameObject.Instantiate (ExplosionPrefab, transform.position, Quaternion.identity);
 		explosion.transform.localScale = new Vector3 (hitboxScale.x/16f,hitboxScale.y/16f,hitboxScale.x/16f);
 		gameObject.GetComponent<HitboxMaker> ().createHitbox(hitboxScale,Vector2.zero,damage,hitboxDuration,knockback,false,"noFaction",false);
+		if (damage >= 30) {
+			FindObjectOfType<GameManager> ().soundfx.gameObject.transform.FindChild ("NukeExplosion").GetComponent<AudioSource> ().Play ();	
+		} else {
+			FindObjectOfType<GameManager> ().soundfx.gameObject.transform.FindChild ("BombExplosion").GetComponent<AudioSource> ().Play ();	
+		}
+
 	}
 }
