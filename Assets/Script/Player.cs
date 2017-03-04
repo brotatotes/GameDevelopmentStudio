@@ -92,6 +92,7 @@ public class Player : MonoBehaviour {
 				controller.addSelfForce (new Vector2 (-45.0f, 0.0f),dashTime);
 				attackable.modifyEnergy( -P1AbilityCost);
 				timeSinceLastDash = 0.0f;
+				gameManager.soundfx.gameObject.transform.FindChild ("P1Dash").GetComponent<AudioSource> ().Play ();
 			}
 			timeSinceRight += dashThreashold;
 			timeSinceLeft = 0.0f;
@@ -102,6 +103,7 @@ public class Player : MonoBehaviour {
 				controller.addSelfForce(new Vector2(45.0f,0.0f),dashTime);
 				attackable.modifyEnergy(-P1AbilityCost);
 				timeSinceLastDash = 0.0f;
+				gameManager.soundfx.gameObject.transform.FindChild ("P1Dash").GetComponent<AudioSource> ().Play ();
 			}
 			timeSinceLeft += dashThreashold;
 			timeSinceRight = 0.0f;
