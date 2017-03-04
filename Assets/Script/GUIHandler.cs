@@ -142,6 +142,11 @@ public class GUIHandler : MonoBehaviour {
 		displayTime = dTime;
 		displayStart = Time.time;
 		displayTimePassed = 0f;
+		if (gameManager.winner == 1) {
+			gameManager.soundfx.gameObject.transform.FindChild ("P1Win").GetComponent<AudioSource> ().Play ();
+		} else {
+			gameManager.soundfx.gameObject.transform.FindChild ("P1Death").GetComponent<AudioSource> ().Play ();
+		}
 	}
 
 	public void P2EnergyBarFlashRed() {
