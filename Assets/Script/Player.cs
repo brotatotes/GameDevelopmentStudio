@@ -134,7 +134,7 @@ public class Player : MonoBehaviour {
 			if (gameObject.GetComponent<Fighter> ().tryAttack ()) {
 				timeSinceLastAttack = 0.0f;
 				anim.SetBool ("isattacking", true);
-//				Debug.Log ("goteeem");
+				gameManager.soundfx.gameObject.transform.FindChild ("P1Attack").GetComponent<AudioSource> ().Play ();
 			}
 			attemptingInteraction = true;
 		} else {
