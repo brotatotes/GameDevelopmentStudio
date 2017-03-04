@@ -11,7 +11,10 @@ public class Spawnable : MonoBehaviour {
 	public bool instantDeploy = true;
 	// Use this for initialization
 	void Start () {
-		
+		GameObject soundfx = FindObjectOfType<GameManager> ().soundfx.gameObject;
+		if (prefab.name.Contains ("Block")) {
+			soundfx.transform.FindChild ("PlaceBlock").GetComponent<AudioSource> ().Play ();
+		} 
 	}
 	
 	// Update is called once per frame

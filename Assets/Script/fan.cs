@@ -10,9 +10,17 @@ public class fan : MonoBehaviour {
 	continuousHitbox mHitbox;
 	Movement movement;
 
+	public AudioClip fanClip;
+	private AudioSource fanAudio;
+
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("Fan Start");
+		fanAudio = gameObject.AddComponent<AudioSource> ();
+		fanAudio.clip = fanClip;
+		fanAudio.volume = 0.5f;
+		fanAudio.Play ();
+
+
 		float xOffset = 0;
 		if (!overrideDir) {
 			if (gameObject.GetComponent<Spawnable> ().angleDiff.x < 0) {
