@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 	private float startTime;
 
 	public GameObject audio;
+	public float introTime;
 	public GameObject soundfx;
 
 	private bool gameStarted = false;
@@ -114,16 +115,16 @@ public class GameManager : MonoBehaviour {
 		
 	// Update is called once per frame
 	void Update () {
-		if (!gameStarted && Time.time - startTime >= 20.0f) {
+		if (!gameStarted && Time.time - startTime >= introTime) {
 			startGame ();
 		}
 
-		if (!gameStarted && Time.time - startTime >= 19.0f) {
+		if (!gameStarted && Time.time - startTime >= introTime - 1) {
 			killAllSpawnables ();
 		}
 
 		if (! gameStarted) {
-			startmsgs.transform.FindChild("Countdown").GetComponent<Text>().text = ((int)20f - (Time.time - startTime)).ToString ();
+			startmsgs.transform.FindChild("Countdown").GetComponent<Text>().text = ((int) introTime - (Time.time - startTime)).ToString ();
 			Player1.GetComponent<Attackable> ().health = 100;
 			if (Input.GetKeyDown(KeyCode.Escape)) {
 				startGame ();
