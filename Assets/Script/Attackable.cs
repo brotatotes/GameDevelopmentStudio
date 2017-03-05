@@ -21,6 +21,7 @@ public class Attackable : MonoBehaviour {
 	void Start () {
 		movementController = gameObject.GetComponent<Movement> ();
 		health = Mathf.Min (health, max_health);
+
 	}
 	
 	// Update is called once per frame
