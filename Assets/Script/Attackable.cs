@@ -71,4 +71,11 @@ public class Attackable : MonoBehaviour {
 			movementController.addToVelocity(veloc);
 		} 
 	}
+
+	public void AddConstantVel(Vector2 veloc, float time)
+	{
+		if (movementController) {
+			movementController.addSelfForce (veloc, time);
+		}
+	}
 }

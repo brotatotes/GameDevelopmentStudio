@@ -87,23 +87,23 @@ public class Player : MonoBehaviour {
 		//	FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
 		//}
 		lastHealth = GetComponent<Attackable> ().health;
-		if (Input.GetKey (leftKey) ) {
-			if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
-				controller.addSelfForce (new Vector2 (-dashSpeed, 0.0f),dashTime);
-				attackable.modifyEnergy( -P1AbilityCost);
-				timeSinceLastDash = 0.0f;
-				gameManager.soundfx.gameObject.transform.FindChild ("P1Dash").GetComponent<AudioSource> ().Play ();
+		if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
+			float dash = dashSpeed;
+			if (Input.GetKey (leftKey)) {
+				dash = -dash;
+			} else if (controller.facingLeft) {
+				dash = -dash;
 			}
+			controller.addSelfForce (new Vector2 (dash, 0.0f),dashTime);
+			attackable.modifyEnergy( -P1AbilityCost);
+			timeSinceLastDash = 0.0f;
+			gameManager.soundfx.gameObject.transform.FindChild ("P1Dash").GetComponent<AudioSource> ().Play ();
+		}
+		if (Input.GetKey (leftKey) ) {
 			timeSinceLeft = 0.0f;
 		}
 
 		if (Input.GetKey (rightKey)) {
-			if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
-				controller.addSelfForce(new Vector2(dashSpeed,0.0f),dashTime);
-				attackable.modifyEnergy(-P1AbilityCost);
-				timeSinceLastDash = 0.0f;
-				gameManager.soundfx.gameObject.transform.FindChild ("P1Dash").GetComponent<AudioSource> ().Play ();
-			}
 			timeSinceRight = 0.0f;
 		}
 
