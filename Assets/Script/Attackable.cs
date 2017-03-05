@@ -27,6 +27,11 @@ public class Attackable : MonoBehaviour {
 	void Update () {
 		alive = transform.position.y >= bottomOfTheWorld && health > 0;
 		if (!alive && !immortal) {
+			if(gameObject.name.Contains("Enemy")) {
+				FindObjectOfType<GameManager>().soundfx.transform.FindChild ("EnemyDeath").GetComponent<AudioSource> ().Play ();
+			} else if(gameObject.name.Contains("Giant")) {
+				FindObjectOfType<GameManager>().soundfx.transform.FindChild ("GiantDeath").GetComponent<AudioSource> ().Play ();
+			}
 			Destroy (gameObject);
 		}
 		modifyEnergy(EnergyRegenRate * Time.deltaTime);
