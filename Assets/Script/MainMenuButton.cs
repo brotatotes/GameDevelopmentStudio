@@ -39,8 +39,10 @@ public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		if (playButton) {
+		if (playButton && sceneName != "") {
 			setScene ();
+		} else if (playButton) {
+			descripBox.text = "Select a Level.";
 		} else {
 			descripBox.text = description;
 			GameObject.Find ("Play").GetComponent<MainMenuButton> ().sceneName = sceneName;
