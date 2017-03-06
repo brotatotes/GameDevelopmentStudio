@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour {
 		else if (instance != this) {
 			Destroy (gameObject);
 		}
-		DontDestroyOnLoad (gameObject);
+//		DontDestroyOnLoad (gameObject);
 		winner = 0;
 		gameOver = false;
 		InitGame ();

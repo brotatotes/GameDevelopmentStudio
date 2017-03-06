@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GUIHandler : MonoBehaviour {
 
@@ -35,6 +36,11 @@ public class GUIHandler : MonoBehaviour {
 	private float flashStart;
 	private float flashTimePassed;
 
+	private bool mainMenu = false;
+	private float menuTime;
+	private float menuStart;
+	private float menuTimePassed;
+
 	private GameManager gameManager;
 
 	void Awake () {
@@ -50,6 +56,7 @@ public class GUIHandler : MonoBehaviour {
 		P2EnergyShowing = "";
 		P1Instructions.gameObject.SetActive (true);
 		P2Instructions.gameObject.SetActive (true);
+
 	}
 
 	void Update() {
@@ -133,6 +140,14 @@ public class GUIHandler : MonoBehaviour {
 				flashRed = false;
 			}
 		}
+
+		if (mainMenu) {
+			if (menuTimePassed < menuTime) {
+				menuTimePassed = Time.time - menuStart;
+			} else {
+				SceneManager.LoadScene ("MainMenu", LoadSceneMode.Single);
+			}
+		}
 	}
 
 	public void displayText(string msg, float dTime) {
@@ -143,6 +158,7 @@ public class GUIHandler : MonoBehaviour {
 		displayTimePassed = 0f;
 		if (gameManager.winner == 1) {
 			gameManager.soundfx.gameObject.transform.FindChild ("P1Win").GetComponent<AudioSource> ().Play ();
+			GoToMainMenu (3f);
 		} else {
 			gameManager.soundfx.gameObject.transform.FindChild ("P1Death").GetComponent<AudioSource> ().Play ();
 		}
@@ -153,6 +169,14 @@ public class GUIHandler : MonoBehaviour {
 		flashTime = 0.4f;
 		flashStart = Time.time;
 		flashTimePassed = 0f;
+	}
+
+	// goes to main menu in 2 seconds
+	private void GoToMainMenu(float wTime) {
+		mainMenu = true;
+		menuTime = wTime;
+		menuStart = Time.time;
+		menuTimePassed = 0f;
 	}
 
 	void OnGUI() {
