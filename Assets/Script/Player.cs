@@ -81,7 +81,9 @@ public class Player : MonoBehaviour {
 		timeSinceLastAttack += Time.deltaTime;
 		anim.SetBool ("grounded", controller.collisions.below);
 		anim.SetBool ("tryingToMove", false);
-		anim.SetBool ("isattacking", false);
+		if (timeSinceLastAttack > 0.3f) {
+			anim.SetBool ("isattacking", false);
+		}
 		//if (lastHealth > GetComponent<Attackable> ().health) {
 		//			Debug.Log ("Reset");
 		//	FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
