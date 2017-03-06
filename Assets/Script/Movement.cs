@@ -28,6 +28,7 @@ public class Movement : MonoBehaviour {
 	SpriteRenderer sprite;
 	List<Vector2> CharForces = new List<Vector2>();
 	List<float> timeForces = new List<float>();
+	public bool onGround = true;
 
 	void Start() {
 		bCollider = GetComponent<BoxCollider2D> ();
@@ -176,11 +177,12 @@ public class Movement : MonoBehaviour {
 			}
 		}
 		falling = "none";
+		onGround = false;
 		if (directionY == -1) {
 //			string tempFalling = "none";
 			bool collide = false;
 			bool started = false;
-			rayLength = 0.1f;
+			rayLength = 0.2f;
 			//Debug.Log ("cast");
 			for (int i = 0; i < verticalRayCount; i++) {
 				Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
@@ -188,6 +190,7 @@ public class Movement : MonoBehaviour {
 				RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
 				Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 				if (hit && !hit.collider.isTrigger) {
+					onGround = true;
 					//Debug.Log ("collide");
 					//Debug.Log (hit.collider.gameObject.tag);
 					if ( started && !collide) {

@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
 		timeSinceRight += Time.deltaTime;
 		timeSinceLastDash += Time.deltaTime;
 		timeSinceLastAttack += Time.deltaTime;
-		anim.SetBool ("grounded", controller.collisions.below);
+		anim.SetBool ("grounded", controller.onGround);
 		anim.SetBool ("tryingToMove", false);
 		if (timeSinceLastAttack > 0.3f) {
 			anim.SetBool ("isattacking", false);
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0.0f;
 		}
-		if (controller.collisions.below) {
+		if (controller.onGround) {
 			canDoubleJump = true;
 		}
 
