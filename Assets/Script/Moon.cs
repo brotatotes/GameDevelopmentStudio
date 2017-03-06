@@ -45,7 +45,9 @@ public class Moon : MonoBehaviour {
 		moonPart = partsys.main;
 		MoonLevel = "blue";
 		pc = FindObjectOfType<PlayerCursor> ();
-		curPlayer = FindObjectOfType<Player> ().gameObject;
+		if (FindObjectOfType<Player> () != null) {
+			curPlayer = FindObjectOfType<Player> ().gameObject;
+		}
 	}
 	
 	// Update is called once per frame
