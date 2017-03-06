@@ -21,12 +21,15 @@ public class CameraFollow : MonoBehaviour {
 	bool lookAheadStopped;
 
 	void Start() {
-		focusArea = new FocusArea (target.GetComponent<Collider2D>().bounds, focusAreaSize);
+		if (target != null) {
+			focusArea = new FocusArea (target.GetComponent<Collider2D> ().bounds, focusAreaSize);
+		}
 	}
 
 	void LateUpdate() {
-		focusArea.Update (target.GetComponent<Collider2D>().bounds);
-
+		if (target != null) {
+			focusArea.Update (target.GetComponent<Collider2D> ().bounds);
+		}
 		Vector2 focusPosition = focusArea.centre + Vector2.up * verticalOffset;
 
 

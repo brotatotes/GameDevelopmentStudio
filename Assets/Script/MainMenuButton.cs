@@ -5,10 +5,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class MainMenuButton : MonoBehaviour, IPointerClickHandler,IPointerEnterHandler {
+public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
 
 	public string sceneName;
 	public string description;
+	public bool playButton;
 	Text descripBox;
 	// Use this for initialization
 	void Start () {
@@ -22,27 +23,33 @@ public class MainMenuButton : MonoBehaviour, IPointerClickHandler,IPointerEnterH
 		}
 	}
 
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		Debug.Log ("OnPointerClick");
-		if (eventData.button == PointerEventData.InputButton.Left) {
-			Debug.Log ("left button");
-			setScene ();
-			//	godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
-		}
-	}
+//	public void OnPointerClick(PointerEventData eventData)
+//	{
+//		Debug.Log ("OnPointerClick");
+//		if (eventData.button == PointerEventData.InputButton.Left) {
+//			Debug.Log ("left button");
+//			setScene ();
+//			//	godCursor.GetComponent<PlayerCursor> ().leftObj = spawnObj;
+//		}
+//	}
+
 	public void setScene() {
-		Debug.Log ("loading new scene");
 		SceneManager.LoadScene (sceneName, LoadSceneMode.Single);
 	}
 
-	public void OnPointerEnter(PointerEventData eventData)
+	public void OnPointerClick(PointerEventData eventData)
 	{
-		//Debug.Log (description);
-		descripBox.text = description;
+		if (playButton && sceneName != "") {
+			setScene ();
+		} else if (playButton) {
+			descripBox.text = "Select a Level.";
+		} else {
+			descripBox.text = description;
+			GameObject.Find ("Play").GetComponent<MainMenuButton> ().sceneName = sceneName;
+		}
 	}
-	public void OnPointerOver(PointerEventData eventData)
-	{
-		Debug.Log ("Overoverover");
-	}
+//	public void OnPointerOver(PointerEventData eventData)
+//	{
+//		Debug.Log ("Overoverover");
+//	}
 }
