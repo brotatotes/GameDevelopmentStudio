@@ -24,7 +24,7 @@ public class EndZone : MonoBehaviour {
 //			controller.winner = 1;
 			gameManager.winner = 1;
 			gameManager.gameOver = true;
-			other.gameObject.GetComponent<Player> ().Reset();
+			other.gameObject.GetComponent<Player> ().transform.position = other.gameObject.GetComponent<Player> ().startPosition;
 		}
 	}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GUIHandler : MonoBehaviour {
 
@@ -35,7 +36,14 @@ public class GUIHandler : MonoBehaviour {
 	private float flashStart;
 	private float flashTimePassed;
 
+	private bool mainMenu = false;
+	private float menuTime;
+	private float menuStart;
+	private float menuTimePassed;
+
 	private GameManager gameManager;
+
+	private int attemptNumber;
 
 	void Awake () {
 		if (instance == null)
@@ -50,6 +58,8 @@ public class GUIHandler : MonoBehaviour {
 		P2EnergyShowing = "";
 		P1Instructions.gameObject.SetActive (true);
 		P2Instructions.gameObject.SetActive (true);
+		attemptNumber = 1;
+		mainMenu = false;
 	}
 
 	void Update() {
@@ -103,10 +113,19 @@ public class GUIHandler : MonoBehaviour {
 		}
 
 		if (gameManager.gameOver) {
-			displayText ("Player " + gameManager.winner + " wins!", 3f);
-			gameManager.gameOver = false;
-			gameManager.winner = 0;
-			P1HealthBar.value = 0;
+			
+			if (gameManager.winner == 1) {
+				displayText ("Player 1 wins! (Attempt " + attemptNumber + ")", 3f);
+				gameManager.gameOver = false;
+				gameManager.winner = 0;
+				P1HealthBar.value = 0;
+			} else {
+				attemptNumber += 1;
+				displayText ("Attempt " + attemptNumber, 2f);
+				gameManager.gameOver = false;
+				gameManager.winner = 0;
+				P1HealthBar.value = 0;
+			}
 		} else {
 			P1HealthBar.value = P1Controller.health;
 		}
@@ -133,6 +152,14 @@ public class GUIHandler : MonoBehaviour {
 				flashRed = false;
 			}
 		}
+
+		if (mainMenu) {
+			if (menuTimePassed < menuTime) {
+				menuTimePassed = Time.time - menuStart;
+			} else {
+				SceneManager.LoadScene ("MainMenu", LoadSceneMode.Single);
+			}
+		}
 	}
 
 	public void displayText(string msg, float dTime) {
@@ -141,10 +168,14 @@ public class GUIHandler : MonoBehaviour {
 		displayTime = dTime;
 		displayStart = Time.time;
 		displayTimePassed = 0f;
+		var sound = gameManager.soundfx.gameObject.transform;
 		if (gameManager.winner == 1) {
-			gameManager.soundfx.gameObject.transform.FindChild ("P1Win").GetComponent<AudioSource> ().Play ();
+			if (!sound.FindChild ("P1Win").GetComponent<AudioSource> ().isPlaying ) {
+				sound.FindChild ("P1Win").GetComponent<AudioSource> ().Play ();
+				GoToMainMenu (3f);
+			}
 		} else {
-			gameManager.soundfx.gameObject.transform.FindChild ("P1Death").GetComponent<AudioSource> ().Play ();
+			sound.FindChild ("P1Death").GetComponent<AudioSource> ().Play ();
 		}
 	}
 
@@ -155,14 +186,24 @@ public class GUIHandler : MonoBehaviour {
 		flashTimePassed = 0f;
 	}
 
+	// goes to main menu in 2 seconds
+	private void GoToMainMenu(float wTime) {
+		if (mainMenu == false) {
+			mainMenu = true;
+			menuTime = wTime;
+			menuStart = Time.time;
+			menuTimePassed = 0f;
+		}
+	}
+
 	void OnGUI() {
 		if (displayTextMessage) {
 //			Debug.Log (Screen.width + ", " + Screen.height);
 			var centeredStyle = GUI.skin.GetStyle("Label");
 			centeredStyle.fontSize = Screen.width / 40;
 			centeredStyle.alignment = TextAnchor.UpperCenter;
-			int w = 200;
-			int h = 50;
+			int w = 250;
+			int h = 100;
 			GUI.Label (new Rect (Screen.width/2-w/2, Screen.height/2-h/2, w, h), textMessage, centeredStyle);
 		}
 	}
