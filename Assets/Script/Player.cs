@@ -41,6 +41,8 @@ public class Player : MonoBehaviour {
 	public float inputX = 0.0f;
 	public float inputY = 0.0f;
 
+	public float dashCooldown = 0.5f;
+
 	public bool grounded;
 
 	private GameManager gameManager;
@@ -89,7 +91,7 @@ public class Player : MonoBehaviour {
 		//	FindObjectOfType<PlayerCursor> ().timeSinceLastHit = 0.0f;
 		//}
 		lastHealth = GetComponent<Attackable> ().health;
-		if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > 0.5f) {
+		if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && attackable.energy >= P1AbilityCost && timeSinceLastDash > dashCooldown) {
 			float dash = dashSpeed;
 			if (Input.GetKey (leftKey)) {
 				dash = -dash;

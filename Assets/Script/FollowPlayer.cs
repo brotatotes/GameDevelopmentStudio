@@ -20,7 +20,7 @@ public class FollowPlayer : MonoBehaviour {
 	float accelerationTimeGrounded = .1f;
 	public float moveSpeed = 8.0f;
 	public bool targetSet = true;
-	public bool targetDistance = 0.0f;
+	public float targetDistance = 0.0f;
 	public float inputX = 0.0f;
 	public float inputY = 0.0f;
 
