@@ -9,6 +9,7 @@ public class RespawnObj : MonoBehaviour {
 	public int max_items = 3;
 	public int spawnedItems = 0;
 	public bool resetTimerOnDestroy = true;
+	public bool permanentObject = false;
 	float currentTime;
 	public Vector2 focusAreaSize = new Vector2(0,0);
 	// Use this for initialization
@@ -16,6 +17,9 @@ public class RespawnObj : MonoBehaviour {
 		MeshRenderer mr = GetComponent<MeshRenderer> ();
 		if (mr) {
 			Destroy (mr);
+		}
+		if (interval > 30.0f) {
+			currentTime = interval;
 		}
 	}
 	
@@ -33,6 +37,9 @@ public class RespawnObj : MonoBehaviour {
 			currentTime = 0f;
 			obj.AddComponent<Respawnable> ();
 			obj.GetComponent<Respawnable> ().spawnPoint = this;
+			if (permanentObject && obj.GetComponent<disappearing> ()) {
+				Destroy (obj.GetComponent<disappearing> ());
+			}
 		}
 	}
 	public void registerDestruction() {
