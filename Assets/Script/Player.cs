@@ -112,7 +112,7 @@ public class Player : MonoBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0.0f;
 		}
-		if (controller.collisions.below) {
+		if (controller.onGround) {
 			canDoubleJump = true;
 		}
 

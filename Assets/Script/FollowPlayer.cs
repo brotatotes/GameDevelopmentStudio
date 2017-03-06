@@ -20,6 +20,7 @@ public class FollowPlayer : MonoBehaviour {
 	float accelerationTimeGrounded = .1f;
 	public float moveSpeed = 8.0f;
 	public bool targetSet = true;
+	public bool targetDistance = 0.0f;
 	public float inputX = 0.0f;
 	public float inputY = 0.0f;
 
@@ -44,12 +45,14 @@ public class FollowPlayer : MonoBehaviour {
 		}
 		inputX = 0.0f;
 		inputY = 0.0f;
-		if (followObj.transform.position.x > transform.position.x) {
-			controller.setFacingLeft (false);
-			inputX = 1.0f;
-		} else {
-			controller.setFacingLeft (true);
-			inputX = -1.0f;
+		if (Vector3.Distance (transform.position, followObj.transform.position) > targetDistance) {
+			if (followObj.transform.position.x > transform.position.x) {
+				controller.setFacingLeft (false);
+				inputX = 1.0f;
+			} else {
+				controller.setFacingLeft (true);
+				inputX = -1.0f;
+			}
 		}
 		float targetVelocityX = inputX * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
