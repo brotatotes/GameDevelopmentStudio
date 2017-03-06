@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent (typeof (Attackable))]
 public class Player : MonoBehaviour {
 
-	public Vector2 startPosition;
+	public Vector2 startPosition = new Vector2 (-4.0f, -3f);
 	public float jumpHeight = 4.0f;
 	public float timeToJumpApex = .4f;
 	public string playerName = "Player 1";
@@ -65,8 +65,8 @@ public class Player : MonoBehaviour {
 	public void Reset() {
 		if (spawnNextToEndzone)
 			startPosition = new Vector2 (105f, 14f); // this is right next to the endzone. (in Scene.unity)
-		else
-			startPosition = new Vector2 (-4.0f, -3f);
+		//else
+			//startPosition = new Vector2 (-4.0f, -3f);
 		transform.position = startPosition;
 		controller.accumulatedVelocity = Vector2.zero;
 		attackable.resetHealth ();
