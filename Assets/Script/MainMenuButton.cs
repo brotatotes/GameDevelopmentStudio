@@ -5,17 +5,21 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
+public class MainMenuButton : MonoBehaviour, IPointerClickHandler,IPointerEnterHandler {
 
 	public string sceneName;
+	public string description;
+	Text descripBox;
 	// Use this for initialization
 	void Start () {
-		
+		descripBox = GameObject.FindGameObjectWithTag ("description").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (EventSystem.current.IsPointerOverGameObject ()) {
+			
+		}
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
@@ -30,5 +34,15 @@ public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
 	public void setScene() {
 		Debug.Log ("loading new scene");
 		SceneManager.LoadScene (sceneName, LoadSceneMode.Single);
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		//Debug.Log (description);
+		descripBox.text = description;
+	}
+	public void OnPointerOver(PointerEventData eventData)
+	{
+		Debug.Log ("Overoverover");
 	}
 }

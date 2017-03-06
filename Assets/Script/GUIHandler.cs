@@ -100,7 +100,6 @@ public class GUIHandler : MonoBehaviour {
 			} else if (entry.Key == P2EnergyShowing) {
 				P2EnergyShower.gameObject.SetActive (false);
 			}
-			
 		}
 
 		if (gameManager.gameOver) {

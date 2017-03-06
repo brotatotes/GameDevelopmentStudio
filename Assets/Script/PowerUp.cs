@@ -26,7 +26,7 @@ public class PowerUp : MonoBehaviour {
 		if (other.gameObject.GetComponent<Player> ()) {
 			Debug.Log ("Power Value");
 			if (FindObjectOfType<Moon> ()) {
-				FindObjectOfType<Moon> ().setMoonLevel (-powerValue);
+				FindObjectOfType<Moon> ().setMoonLevel (powerValue);
 				//other.gameObject.GetComponent<Attackable> ().modifyEnergy (powerValue);
 				GameObject.Destroy (gameObject);
 				FindObjectOfType<GameManager> ().soundfx.gameObject.transform.FindChild ("PowerUp").GetComponent<AudioSource> ().Play ();

@@ -84,7 +84,7 @@ public class Moon : MonoBehaviour {
 	}
 	public void MoonStuff() {
 		//moonLevel = moonLevel + Time.deltaTime;
-		setMoonLevel (Time.deltaTime);
+		setMoonLevel (-Time.deltaTime);
 		if (moonPower < -mLevelGap * 3  && MoonLevel != "black") {
 			MoonLevel = "black";
 			moonPart.startColor = black;
