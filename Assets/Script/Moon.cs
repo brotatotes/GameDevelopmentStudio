@@ -17,6 +17,8 @@ public class Moon : MonoBehaviour {
 	float mLevelGap = 3.0f;
 	float introLevelGap = 3.0f;
 	public bool moonActive = true;
+	public bool autoCycle = false;
+	public float autoRate = 1.0f;
 
 	Color black;
 	Color red;
@@ -28,7 +30,7 @@ public class Moon : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		black = new Color(0f, 0f, 0f, 190f/255f);
-		red = new Color(1f, 0f, 0f, 8f/255f);
+		red = new Color(1f, 0f, 0f, 16f/255f);
 		//yellow = new Color(1f, 1f, 0f, 8f/255f);
 		//green = new Color(0f, 1f, 0.5f, 8f/255f);
 		blue = new Color(0f, 0.5f, 1f, 8f/255f);
@@ -51,8 +53,35 @@ public class Moon : MonoBehaviour {
 		if (moonActive) {
 			MoonStuff ();
 		}
+		if (autoCycle) {
+			AutoCycle ();
+		}
 	}
 
+	public void AutoCycle() {
+		//moonLevel = moonLevel + Time.deltaTime;
+		setMoonLevel (autoRate * Time.deltaTime);
+		if (moonPower <= -mLevelGap * 4) {
+			autoRate = -autoRate;
+		} else if (moonPower < -mLevelGap * 3  && moonPower > -mLevelGap * 5 && MoonLevel != "black") {
+			MoonLevel = "black";
+			moonPart.startColor = black;
+		} else if (moonPower > -mLevelGap * 3 && moonPower < -mLevelGap && MoonLevel != "red") {
+			MoonLevel = "red";
+			moonPart.startColor = red;
+		} else if (moonPower > -mLevelGap &&  moonPower < mLevelGap && MoonLevel != "white") {
+			MoonLevel = "white";
+			moonPart.startColor = white;
+		} else if (moonPower > mLevelGap &&  moonPower < mLevelGap * 3 && MoonLevel != "blue") {
+			MoonLevel = "blue";
+			moonPart.startColor = blue;
+		} else if (moonPower > mLevelGap * 3 && moonPower < mLevelGap * 4 && MoonLevel != "shining") {
+			MoonLevel = "shining";
+			moonPart.startColor = shining;
+		} else if ( moonPower >= mLevelGap * 4) {
+			autoRate = -autoRate;
+		}
+	}
 	public void MoonStuff() {
 		//moonLevel = moonLevel + Time.deltaTime;
 		setMoonLevel (Time.deltaTime);
