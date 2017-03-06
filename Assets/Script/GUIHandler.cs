@@ -43,6 +43,8 @@ public class GUIHandler : MonoBehaviour {
 
 	private GameManager gameManager;
 
+	private int attemptNumber;
+
 	void Awake () {
 		if (instance == null)
 			instance = this;
@@ -56,6 +58,7 @@ public class GUIHandler : MonoBehaviour {
 		P2EnergyShowing = "";
 		P1Instructions.gameObject.SetActive (true);
 		P2Instructions.gameObject.SetActive (true);
+		attemptNumber = 1;
 
 	}
 
@@ -110,10 +113,19 @@ public class GUIHandler : MonoBehaviour {
 		}
 
 		if (gameManager.gameOver) {
-			displayText ("Player " + gameManager.winner + " wins!", 3f);
-			gameManager.gameOver = false;
-			gameManager.winner = 0;
-			P1HealthBar.value = 0;
+			
+			if (gameManager.winner == 1) {
+				displayText ("Player 1 wins! (Attempt " + attemptNumber + ")", 3f);
+				gameManager.gameOver = false;
+				gameManager.winner = 0;
+				P1HealthBar.value = 0;
+			} else {
+				attemptNumber += 1;
+				displayText ("Attempt " + attemptNumber, 2f);
+				gameManager.gameOver = false;
+				gameManager.winner = 0;
+				P1HealthBar.value = 0;
+			}
 		} else {
 			P1HealthBar.value = P1Controller.health;
 		}
@@ -185,7 +197,7 @@ public class GUIHandler : MonoBehaviour {
 			var centeredStyle = GUI.skin.GetStyle("Label");
 			centeredStyle.fontSize = Screen.width / 40;
 			centeredStyle.alignment = TextAnchor.UpperCenter;
-			int w = 200;
+			int w = 250;
 			int h = 50;
 			GUI.Label (new Rect (Screen.width/2-w/2, Screen.height/2-h/2, w, h), textMessage, centeredStyle);
 		}
