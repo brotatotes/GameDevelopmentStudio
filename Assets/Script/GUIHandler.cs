@@ -59,7 +59,7 @@ public class GUIHandler : MonoBehaviour {
 		P1Instructions.gameObject.SetActive (true);
 		P2Instructions.gameObject.SetActive (true);
 		attemptNumber = 1;
-
+		mainMenu = false;
 	}
 
 	void Update() {
@@ -168,11 +168,14 @@ public class GUIHandler : MonoBehaviour {
 		displayTime = dTime;
 		displayStart = Time.time;
 		displayTimePassed = 0f;
+		var sound = gameManager.soundfx.gameObject.transform;
 		if (gameManager.winner == 1) {
-			gameManager.soundfx.gameObject.transform.FindChild ("P1Win").GetComponent<AudioSource> ().Play ();
-			GoToMainMenu (3f);
+			if (!sound.FindChild ("P1Win").GetComponent<AudioSource> ().isPlaying ) {
+				sound.FindChild ("P1Win").GetComponent<AudioSource> ().Play ();
+				GoToMainMenu (3f);
+			}
 		} else {
-			gameManager.soundfx.gameObject.transform.FindChild ("P1Death").GetComponent<AudioSource> ().Play ();
+			sound.FindChild ("P1Death").GetComponent<AudioSource> ().Play ();
 		}
 	}
 
@@ -185,10 +188,12 @@ public class GUIHandler : MonoBehaviour {
 
 	// goes to main menu in 2 seconds
 	private void GoToMainMenu(float wTime) {
-		mainMenu = true;
-		menuTime = wTime;
-		menuStart = Time.time;
-		menuTimePassed = 0f;
+		if (mainMenu == false) {
+			mainMenu = true;
+			menuTime = wTime;
+			menuStart = Time.time;
+			menuTimePassed = 0f;
+		}
 	}
 
 	void OnGUI() {
@@ -198,7 +203,7 @@ public class GUIHandler : MonoBehaviour {
 			centeredStyle.fontSize = Screen.width / 40;
 			centeredStyle.alignment = TextAnchor.UpperCenter;
 			int w = 250;
-			int h = 50;
+			int h = 100;
 			GUI.Label (new Rect (Screen.width/2-w/2, Screen.height/2-h/2, w, h), textMessage, centeredStyle);
 		}
 	}
