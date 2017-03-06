@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -128,6 +129,10 @@ public class GameManager : MonoBehaviour {
 			Player1.GetComponent<Attackable> ().health = 100;
 			if (Input.GetKeyDown(KeyCode.Escape)) {
 				startGame ();
+			}
+		} else {
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				SceneManager.LoadScene ("MainMenu", LoadSceneMode.Single);
 			}
 		}
 
