@@ -90,14 +90,14 @@ public class Moon : MonoBehaviour {
 		if (moonPower < -mLevelGap * 3  && MoonLevel != "black") {
 			MoonLevel = "black";
 			moonPart.startColor = black;
-			pc.rechargeRate = 10.0f;
+			pc.rechargeRate = 12.0f;
 			mLevelGap = levelGap;
 			curPlayer.GetComponent<Fighter> ().canShoot = true;
 			curPlayer.GetComponent<Shooter>().projectile = tiny_proj;
 		} else if (moonPower > -mLevelGap * 3 && moonPower < -mLevelGap && MoonLevel != "red") {
 			MoonLevel = "red";
 			moonPart.startColor = red;
-			pc.rechargeRate = 6.0f;
+			pc.rechargeRate = 5.0f;
 			curPlayer.GetComponent<Fighter> ().canShoot = true;
 			curPlayer.GetComponent<Shooter>().projectile = tiny_proj;
 		} else if (moonPower > -mLevelGap &&  moonPower < mLevelGap && MoonLevel != "white") {
@@ -109,7 +109,7 @@ public class Moon : MonoBehaviour {
 		} else if (moonPower > mLevelGap &&  moonPower < mLevelGap * 3 && MoonLevel != "blue") {
 			MoonLevel = "blue";
 			moonPart.startColor = blue;
-			pc.rechargeRate = 4.0f;
+			pc.rechargeRate = 5.0f;
 			curPlayer.GetComponent<Fighter> ().canShoot = true;
 			curPlayer.GetComponent<Shooter>().projectile = mid_proj;
 		} else if (moonPower > mLevelGap * 3 &&  MoonLevel != "shining") {
