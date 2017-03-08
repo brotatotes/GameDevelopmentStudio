@@ -45,19 +45,20 @@ public class Movement : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Mathf.Abs(accumulatedVelocity.x) > 0.1f) {
+		//Debug.Log (Time.deltaTime);
+		if (Mathf.Abs(accumulatedVelocity.x) > 0.3f) {
 			if (collisions.below) {
-				accumulatedVelocity.x *= 0.9f;
+				accumulatedVelocity.x *= (1.0f - Time.deltaTime * 2.0f);
 			} else {
-				accumulatedVelocity.x *= 0.95f;
+				accumulatedVelocity.x *= (1.0f - Time.deltaTime * 3.0f);
 			}
 		} else {
 			accumulatedVelocity.x = 0f;
 		}
-		if (Mathf.Abs(accumulatedVelocity.y) > 0.1f) {
-			accumulatedVelocity.y *= 0.95f;
+		if (Mathf.Abs(accumulatedVelocity.y) > 2.0f) {
+			accumulatedVelocity.y *= (1f - Time.deltaTime * 3.0f);
 		} else {
-			accumulatedVelocity.y = 0f;
+			accumulatedVelocity.y = 0f; //(1f - Time.deltaTime * 2.0f);
 		}
 
 	}
