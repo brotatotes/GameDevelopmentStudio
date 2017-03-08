@@ -19,9 +19,9 @@ public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
 	
 	// Update is called once per frame
 	void Update () {
-		if (EventSystem.current.IsPointerOverGameObject ()) {
-			
-		}
+//		if (EventSystem.current.IsPointerOverGameObject ()) {
+//			
+//		}
 	}
 
 //	public void OnPointerClick(PointerEventData eventData)
