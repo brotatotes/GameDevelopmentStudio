@@ -63,6 +63,13 @@ public class GUIHandler : MonoBehaviour {
 	}
 
 	void Update() {
+		if (allButtons == null) {
+			allButtons = gameManager.allButtons;
+		}
+
+		if (allPowers == null) {
+			allPowers = gameManager.allPowers;
+		}
 
 		if (Input.GetKeyDown(KeyCode.H)) {
 			if (P1Instructions.activeSelf) {
