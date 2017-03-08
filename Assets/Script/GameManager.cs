@@ -160,7 +160,9 @@ public class GameManager : MonoBehaviour {
 
 		audio.transform.FindChild ("IntroAudio").GetComponent<AudioSource> ().Pause ();
 		audio.transform.FindChild ("GameAudio").GetComponent<AudioSource> ().Play ();
-
+		if (FindObjectOfType<Moon> () && FindObjectOfType<Moon> ().moonActive) {
+			FindObjectOfType<Moon> ().moonPower = 0.0f;
+		}
 		Destroy (startmsgs.gameObject);
 		Destroy (startObstacle.gameObject);
 		killAllSpawnables ();
