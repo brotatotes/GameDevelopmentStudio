@@ -26,7 +26,7 @@ public class hitbox : MonoBehaviour {
 		} else {
 			GameObject.Destroy (gameObject);
 		}
-		if (toFollow) {
+		if (followObj != null && toFollow) {
 			transform.position = new Vector3(followObj.transform.position.x + followOffset.x, followObj.transform.position.y + followOffset.y,0);
 		}
 	}

@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviour {
 
 	void Awake () {
 //		Debug.Log ("Awake");
-		if (instance == null)
-			instance = this;
-		else if (instance != this) {
-			Destroy (gameObject);
-		}
+//		if (instance == null)
+//			instance = this;
+//		else if (instance != this) {
+//			Destroy (gameObject);
+//		}
 //		DontDestroyOnLoad (gameObject);
 		winner = 0;
 		gameOver = false;

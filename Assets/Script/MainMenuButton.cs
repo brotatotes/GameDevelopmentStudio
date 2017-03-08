@@ -14,6 +14,7 @@ public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
 	// Use this for initialization
 	void Start () {
 		descripBox = GameObject.FindGameObjectWithTag ("description").GetComponent<Text>();
+		descripBox.text = "Select a level.";
 	}
 	
 	// Update is called once per frame
@@ -42,7 +43,7 @@ public class MainMenuButton : MonoBehaviour, IPointerClickHandler {
 		if (playButton && sceneName != "") {
 			setScene ();
 		} else if (playButton) {
-			descripBox.text = "Select a Level.";
+			descripBox.text = "Select a level.";
 		} else {
 			descripBox.text = description;
 			GameObject.Find ("Play").GetComponent<MainMenuButton> ().sceneName = sceneName;

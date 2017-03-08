@@ -24,7 +24,7 @@ public class PowerUp : MonoBehaviour {
 	internal void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.GetComponent<Player> ()) {
-			Debug.Log ("Power Value");
+//			Debug.Log ("Power Value");
 			if (FindObjectOfType<Moon> ()) {
 				FindObjectOfType<Moon> ().setMoonLevel (powerValue);
 				//other.gameObject.GetComponent<Attackable> ().modifyEnergy (powerValue);
