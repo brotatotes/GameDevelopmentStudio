@@ -3,7 +3,7 @@ In Lua, Player 1 uses the keyboard to control Lua, a platforming character in a 
   
 Lua was developed during Northwestern University's EECS 395 Game Development Studio course taught by Robert Zubek.  
   
-Student developers: Austin Chambers, Eric Hao, LuoLei "Larry" Zhao  
+Student developers: [Austin Chambers](https://github.com/austinchambers1), [Eric Hao](https://github.com/brotatotes), [LuoLei "Larry" Zhao](https://github.com/drdoak)  
 
 # Builds
 Mac: [Lua.app](https://drive.google.com/open?id=0B1st1Mlro2-iclZITW9NWk1HYkE)  
