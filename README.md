@@ -5,6 +5,8 @@ Lua was developed during Northwestern University's [EECS 395 Game Development St
   
 Student developers: [Austin Chambers](https://github.com/austinchambers1), [Eric Hao](https://github.com/brotatotes), [LuoLei "Larry" Zhao](https://github.com/drdoak)  
 
+Music: [Dylan Ong](https://soundcloud.com/prismbend)
+
 # Builds
 Mac: [Lua.app](https://drive.google.com/open?id=0B1st1Mlro2-iclZITW9NWk1HYkE)  
 Windows: [Lua.exe](https://drive.google.com/open?id=0B1st1Mlro2-iaGQxMkxrVXkwMGM)
