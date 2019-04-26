@@ -8,5 +8,5 @@ Student developers: [Austin Chambers](https://github.com/austinchambers1), [Eric
 Music: [Dylan Ong](https://soundcloud.com/prismbend)
 
 # Builds
-Mac: [Lua.app](https://drive.google.com/open?id=0B1st1Mlro2-iclZITW9NWk1HYkE)  
-Windows: [Lua.exe](https://drive.google.com/open?id=0B1st1Mlro2-iaGQxMkxrVXkwMGM)
+Mac: [Lua.app](https://drive.google.com/open?id=1khPS1T-oRCfukFYWsObDodAfYN5dzlz6)  
+Windows: [Lua.exe](https://drive.google.com/open?id=157LK4CxZOzgu_vDtZ_zT8vlbxhE4lH-L)
